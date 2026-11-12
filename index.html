@@ -85,7 +85,7 @@
   }
 
   .product { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: clamp(30px, 6.3vw, 96px); align-items: start; padding-block: clamp(24px, 3vw, 44px); }
-  .media { min-width:0; --product-photo-height:clamp(320px,38vw,440px); }
+  .media { min-width:0; --product-photo-height:clamp(230px, min(38vw, 62svh), 440px); }
   .product-gallery { display:grid; grid-template-columns:62px minmax(0,1fr); gap:10px; }
   .photo-strip { display:grid; grid-auto-rows:65px; align-content:start; gap:6px; max-height:var(--product-photo-height); padding:2px; overflow:auto; }
   .photo-thumb { min-width:0; min-height:0; padding:2px; border:1px solid var(--line); border-radius:4px; background:var(--photo-paper); }
@@ -115,7 +115,7 @@
   .product-size-buttons button { min-width:44px; min-height:42px; padding:4px; border:1px solid var(--line); border-radius:3px; color:var(--ink); background:var(--paper); }
   .product-size-buttons button[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
   .overline { color: var(--accent); text-transform: uppercase; letter-spacing: .13em; font-weight: 650; font-size: 12px; }
-  #product-title { font-size: clamp(37px, 5.2vw, 66px); line-height: 1; min-height: 2em; letter-spacing: -.057em; margin: 12px 0 16px; }
+  #product-title { font-size: clamp(37px, 5.2vw, 66px); line-height: 1; letter-spacing: -.057em; margin: 12px 0 16px; }
   #product-title em { display: block; color: var(--accent); font-weight: inherit; }
   .intro { color: var(--muted); font-size: clamp(16px, 1.5vw, 19px); max-width: 37ch; }
   .variant-label { margin: 24px 0 10px; font-size: 15px; }
@@ -129,10 +129,11 @@
   .thumbnail:focus-visible { outline-offset:-2px; }
   .thumbnail[aria-pressed="true"] { border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
   .thumbnail img { display:block; width:100%; height:clamp(48px, 8vw, 88px); object-fit:contain; object-position:center; }
-  .product-price { margin: 22px 0 13px; }
+  .product-purchase { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-top:14px; }
+  .product-price { flex:none; }
   .product-price strong { font-size: clamp(22px, 2.5vw, 31px); line-height: 1.2; font-variant-numeric: tabular-nums; }
   .fine { color: var(--muted); font-size: 13px; }
-  .product-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+  .product-actions { display:flex; flex-wrap:wrap; gap:7px; }
   .btn {
     min-height: 48px; display: inline-flex; justify-content: center; align-items: center;
     gap: 8px; border: 1px solid var(--accent); padding: 10px 16px; border-radius: 4px;
@@ -206,9 +207,6 @@
     .wrap { width: calc(100% - 52px); }
     .product { gap: 36px; }
   }
-  @media (max-width: 900px) {
-    .product-actions .btn { width: 100%; }
-  }
   @media (max-width: 750px) {
     .wrap { width: calc(100% - 34px); }
     .site-head .wrap { grid-template-columns: 1fr auto; gap: 0 13px; padding-top: 8px; }
@@ -220,7 +218,7 @@
     .media { grid-row: 2; }
     .product-options { grid-row: 3; }
     #product-title { font-size: clamp(42px, 9vw, 65px); margin-block: 9px 11px; }
-    .media { --product-photo-height:clamp(265px,72vw,390px); }
+    .media { --product-photo-height:clamp(170px, min(72vw, 34svh), 390px); }
     .product-gallery { grid-template-columns:minmax(0,1fr); gap:6px; }
     .product-gallery .enlarge { grid-row:1; }
     .photo-strip { grid-auto-flow:column; grid-auto-columns:58px; grid-auto-rows:59px; max-height:none; }
@@ -424,7 +422,7 @@
   .story-finish .btn { margin-top:15px; }
   .shop-bar { display:flex; align-items:center; min-height:44px; padding-top:6px; }
   .shop-bar a { color:var(--accent); font-size:14px; }
-  #product-title { color:var(--accent); min-height:1.9em; font-size:clamp(40px,5vw,72px); margin-block:10px 12px; }
+  #product-title { color:var(--accent); font-size:clamp(36px,4.4vw,66px); margin-block:8px 10px; }
   .product { grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:clamp(24px,6vw,88px); }
   .btn.ozon-link { background:#005bff; border-color:#005bff; color:#fff; }
   .btn.ozon-link:hover { background:#0046cc; border-color:#0046cc; }
@@ -440,9 +438,6 @@
   .site-foot { border-top:1px solid var(--line); }
   .site-foot .wrap { justify-content:stretch; }
   .site-foot .text-button { justify-self:start; font-size:13px; }
-  @media (min-width:1100px) {
-    #product-title { min-height:1em; font-size:clamp(48px,4.7vw,66px); }
-  }
   @media (max-width:950px) {
     .catalog-track { grid-template-columns:repeat(3,minmax(0,1fr)); }
   }
@@ -474,6 +469,21 @@
     .hero h1 { align-self:center; font-size:clamp(28px,7.8vw,38px); }
     .hero-copy, .hero-actions { grid-column:1 / -1; }
     .hero-copy { margin:0; }
+  }
+  @media (min-width:751px) and (max-height:760px) {
+    .product { gap:clamp(20px,4vw,58px); padding-block:12px 22px; }
+    .product-info { padding:clamp(14px,2vw,22px); }
+    .shop-bar { min-height:36px; padding-top:0; }
+    #product-title { font-size:clamp(33px, min(4vw, 7svh), 54px); }
+    .product-info .intro { font-size:15px; line-height:1.4; }
+    .variant-label { margin:12px 0 5px; }
+    .thumbnail img { height:clamp(42px, 9svh, 67px); }
+    .product-purchase { gap:6px 10px; margin-top:10px; }
+    .product-price .fine { font-size:12px; }
+    .product-actions .btn { min-height:44px; padding-inline:10px; }
+    .product-size-options { margin-top:10px; }
+    .product-size-buttons button { min-width:37px; min-height:36px; }
+    .product-options > .policy-link { min-height:36px; margin-top:0; font-size:14px; }
   }
   @media (max-height:650px) {
     .hero-layout { --photo-overlap:clamp(38px, 9svh, 60px); padding-bottom:20px; }
@@ -574,20 +584,22 @@
             <div class="thumbnails" id="thumbnails"></div>
             <button type="button" id="model-next" aria-label="Следующий свитер">›</button>
           </div>
+          <div class="product-purchase">
+            <div class="product-price">
+              <p class="fine">Пример цены по меркам</p>
+              <strong id="starting-price"></strong>
+            </div>
+            <div class="product-actions">
+              <button class="btn" type="button" id="open-order" data-open-order aria-haspopup="dialog">Заказать</button>
+              <a class="btn ozon-link" id="ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true"><span>На <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
           <fieldset class="product-size-options">
             <legend>Российский размер · по желанию</legend>
             <div class="product-size-buttons" id="product-size-buttons"></div>
           </fieldset>
           <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
           <button class="policy-link" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
-          <div class="product-price">
-            <p class="fine">По меркам · цена для примера</p>
-            <strong id="starting-price"></strong>
-          </div>
-          <div class="product-actions">
-            <button class="btn" type="button" id="open-order" data-open-order aria-haspopup="dialog">Заказать</button>
-            <a class="btn ozon-link" id="ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
-          </div>
           <p class="fine store-note" id="store-note">Ссылку на магазин можно указать в настройках макета.</p>
         </div>
       </div>
