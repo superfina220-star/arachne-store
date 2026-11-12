@@ -185,10 +185,13 @@
   .catalog-head h2 { font-size:clamp(30px,4vw,52px); line-height:1.04; letter-spacing:-.045em; margin:0; }
   .catalog-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .catalog-controls .arrow { min-width:48px; padding-inline:0; font-size:22px; }
-  .catalog-track { display:grid; grid-auto-flow:column; grid-auto-columns:clamp(152px,25vw,230px); gap:12px;
-    overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:3px; padding:5px 3px 12px; margin-top:13px; }
-  .catalog-card { display:grid; grid-template-rows:156px auto; gap:5px; padding:6px; width:100%;
-    border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink); text-align:left; scroll-snap-align:start; }
+  .catalog-scroll-controls { display:flex; gap:8px; }
+  .catalog-scroll-controls .arrow:disabled { opacity:.42; cursor:default; }
+  .catalog-track { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); align-items:stretch; gap:12px;
+    max-height:min(51vh, 485px); max-height:min(51dvh, 485px); overflow:auto; scrollbar-gutter:stable;
+    scroll-snap-type:y proximity; scroll-padding-block:4px; padding:4px; margin-top:13px; }
+  .catalog-card { display:grid; grid-template-rows:clamp(122px,15vw,160px) auto; gap:3px; padding:5px; min-width:0;
+    border:1px solid var(--line); border-radius:3px; background:#fff; color:var(--ink); text-align:left; scroll-snap-align:start; }
   .catalog-card:has(.catalog-select[aria-pressed="true"]) { box-shadow:inset 0 0 0 1px var(--gold); border-color:var(--gold); }
   .catalog-card img { width:100%; height:100%; object-fit:contain; }
   .catalog-select { overflow-wrap:anywhere; }
@@ -347,8 +350,6 @@
   .thumbnail { border-radius:2px; }
   .thumbnail[aria-pressed="true"], .catalog-card:has(.catalog-select[aria-pressed="true"]) { border-color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
   .catalog { border-top:1px solid var(--line); padding-block:24px 44px; }
-  .catalog-track { --card-gap:16px; grid-auto-columns:calc((100% - 3 * var(--card-gap))/4); gap:var(--card-gap); }
-  .catalog-card { grid-template-rows:clamp(130px,19vw,234px) auto; padding:6px; background:#fff; border-radius:2px; }
   .catalog-card strong { font:500 clamp(19px,2.3vw,26px)/1.08 var(--serif); color:var(--wine); }
   .catalog-card img { background:#fff; }
   .site-foot { border-top:1px solid var(--line); }
@@ -358,7 +359,7 @@
     #product-title { min-height:1em; font-size:clamp(48px,4.7vw,66px); }
   }
   @media (max-width:950px) {
-    .catalog-track { grid-auto-columns:calc((100% - 2 * var(--card-gap))/3); }
+    .catalog-track { grid-template-columns:repeat(3,minmax(0,1fr)); }
   }
   @media (max-width:750px) {
     .site-head .wrap { grid-template-columns:minmax(0,1fr) auto; gap:0 10px; }
@@ -376,8 +377,8 @@
     .site-head .wordmark-spider { --spider-scale:1.7; }
     .product { grid-template-columns:1fr; }
     #product-title { font-size:clamp(38px,9vw,62px); }
-    .catalog-track { --card-gap:10px; grid-auto-columns:minmax(140px, 46%); }
-    .catalog-card { grid-template-rows:clamp(125px,30vw,192px) auto; }
+    .catalog-track { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; max-height:58dvh; }
+    .catalog-card { grid-template-rows:clamp(98px,23vw,142px) auto; }
   }
   @media (prefers-reduced-motion:no-preference) {
     .catalog-card, .btn { transition:background-color .18s, border-color .18s; }
@@ -488,13 +489,15 @@
       <div class="catalog-head">
         <h2 class="serif" id="catalog-title">Коллекция</h2>
         <div class="catalog-controls">
-          <button class="btn outline arrow" type="button" id="catalog-prev" aria-label="Листать влево">‹</button>
-          <button class="btn outline arrow" type="button" id="catalog-next" aria-label="Листать вправо">›</button>
+          <div class="catalog-scroll-controls" id="catalog-scroll-controls" hidden>
+            <button class="btn outline arrow" type="button" id="catalog-prev" aria-label="Листать вверх" aria-controls="catalog-track">↑</button>
+            <button class="btn outline arrow" type="button" id="catalog-next" aria-label="Листать вниз" aria-controls="catalog-track">↓</button>
+          </div>
           <button class="btn outline" type="button" id="catalog-add" hidden>Добавить свитер</button>
           <a class="btn ozon-link" id="catalog-ozon-link" target="_blank" rel="noopener noreferrer"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <div class="catalog-track" id="catalog-track" aria-label="Модели свитеров"></div>
+      <div class="catalog-track" id="catalog-track" role="region" tabindex="0" aria-label="Модели свитеров"></div>
       <p class="fine catalog-status" id="catalog-status" role="status"></p>
     </section>
 
@@ -1453,19 +1456,33 @@
         for (const item of request.result) {
           addCatalogCard(item);
         }
+        updateCatalogScrollControls();
       };
     }).catch(() => {
       byId("catalog-status").textContent = "В этом режиме модели доступны до закрытия страницы.";
     });
 
-    for (const [id, direction] of [["catalog-prev", -1], ["catalog-next", 1]]) {
-      byId(id).addEventListener("click", () => {
+    const catalogControls = byId("catalog-scroll-controls");
+    const catalogPrev = byId("catalog-prev");
+    const catalogNext = byId("catalog-next");
+
+    function updateCatalogScrollControls() {
+      const remaining = catalogTrack.scrollHeight - catalogTrack.clientHeight;
+      catalogControls.hidden = remaining <= 2;
+      catalogPrev.disabled = catalogTrack.scrollTop <= 2;
+      catalogNext.disabled = catalogTrack.scrollTop >= remaining - 2;
+    }
+
+    catalogTrack.addEventListener("scroll", updateCatalogScrollControls, { passive: true });
+    new ResizeObserver(updateCatalogScrollControls).observe(catalogTrack);
+
+    for (const [button, direction] of [[catalogPrev, -1], [catalogNext, 1]]) {
+      button.addEventListener("click", () => {
         const first = catalogTrack.querySelector(".catalog-card");
         if (!first) return;
-        const step = first.offsetWidth + parseFloat(getComputedStyle(catalogTrack).columnGap);
-        const next = catalogTrack.scrollLeft + step * direction;
-        const end = catalogTrack.scrollWidth - catalogTrack.clientWidth;
-        catalogTrack.scrollTo({ left: direction < 0 && catalogTrack.scrollLeft <= 4 ? end : direction > 0 && catalogTrack.scrollLeft >= end - 4 ? 0 : next });
+        const row = first.offsetHeight + parseFloat(getComputedStyle(catalogTrack).rowGap);
+        catalogTrack.scrollBy({ top: row * direction });
+        updateCatalogScrollControls();
       });
     }
 
@@ -1515,7 +1532,8 @@
         selectVariant(item);
         catalogDialog.close();
         card.focus({ preventScroll: true });
-        card.scrollIntoView({ block: "nearest", inline: "end" });
+        card.scrollIntoView({ block: "nearest" });
+        updateCatalogScrollControls();
         byId("catalog-status").textContent = saved ? "Свитер добавлен в коллекцию в этом браузере." : "Свитер добавлен до закрытия страницы.";
       } catch {
         byId("catalog-error").textContent = "Не получилось открыть фото. Выберите другой файл.";
