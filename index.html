@@ -236,7 +236,9 @@
   .how a[aria-disabled="true"] { color:var(--muted); }
   @media (max-width:650px) { .how-grid.order-ways { grid-template-columns:1fr; } }
   .site-head { background:var(--paper); }
-  .site-head .wrap { grid-template-columns:minmax(155px,.85fr) minmax(0,1.65fr); min-height:76px; }
+  .site-head .wrap { grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); min-height:76px; }
+  .header-order { justify-self:center; }
+  .site-head .nav { justify-self:end; justify-content:flex-end; }
   .wordmark { width:max-content; display:inline-grid; grid-template-columns:auto auto; grid-template-rows:auto auto; column-gap:9px; row-gap:3px; text-decoration:none; color:var(--wine); }
   .wordmark strong { grid-column:1; }
   .wordmark small { grid-column:1; grid-row:2; }
@@ -334,7 +336,10 @@
   .shop-bar a { color:var(--gold); font-size:14px; }
   #product-title { color:var(--wine); min-height:1.9em; font-size:clamp(40px,5vw,72px); margin-block:10px 12px; }
   .product { grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:clamp(24px,6vw,88px); }
-  .ozon-secondary { display:inline-flex; align-items:center; padding-inline:10px; font-size:14px; }
+  .btn.ozon-link { background:#005bff; border-color:#005bff; color:#fff; }
+  .btn.ozon-link:hover { background:#0046cc; border-color:#0046cc; }
+  .ozon-link strong { font-weight:800; }
+  .ozon-link .external-arrow { font-size:17px; line-height:1; }
   .product-info .intro { max-width:44ch; }
   .product-info .overline { letter-spacing:.11em; }
   .product .media { outline:1px solid var(--line); outline-offset:4px; }
@@ -355,7 +360,8 @@
     .catalog-track { grid-auto-columns:calc((100% - 2 * var(--card-gap))/3); }
   }
   @media (max-width:750px) {
-    .site-head .wrap { grid-template-columns:1fr; gap:0; }
+    .site-head .wrap { grid-template-columns:minmax(0,1fr) auto; gap:0 10px; }
+    .header-order { justify-self:end; }
     .site-head .wordmark { padding-top:12px; }
     .nav { flex-wrap:wrap; gap:0 clamp(10px,3vw,18px); }
     .hero-layout { grid-template-columns:1fr; gap:26px; padding-block:27px 25px; }
@@ -385,9 +391,9 @@
         <small>Свитера с характером</small>
         <span class="wordmark-icon" aria-hidden="true"><span class="wordmark-spider"><i></i><i></i><i></i><i></i></span></span>
       </a>
+      <a class="btn header-order" href="#order" id="nav-order">Заказать</a>
       <nav class="nav" aria-label="Навигация">
         <a href="#story" id="nav-story">История</a>
-        <a href="#order" id="nav-order">Заказать</a>
         <a href="#collection" id="nav-collection">Коллекция</a>
         <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
       </nav>
@@ -405,7 +411,7 @@
             <div class="hero-actions">
               <a class="btn" href="#order">Заказать</a>
               <a class="btn outline" href="#catalog">Коллекция</a>
-              <a class="btn outline" id="home-ozon-link" target="_blank" rel="noopener noreferrer">Перейти в магазин на Ozon</a>
+              <a class="btn ozon-link" id="home-ozon-link" target="_blank" rel="noopener noreferrer"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
             </div>
           </div>
           <div class="hero-gallery" aria-label="Свитера из коллекции">
@@ -470,7 +476,7 @@
           </div>
           <div class="product-actions">
             <button class="btn" type="button" id="open-order" data-open-order aria-haspopup="dialog">Заказать</button>
-            <a class="policy-link ozon-secondary" id="ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true">Магазин на Ozon</a>
+            <a class="btn ozon-link" id="ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
           </div>
           <p class="fine store-note" id="store-note">Ссылку на магазин можно указать в настройках макета.</p>
         </div>
@@ -484,7 +490,7 @@
           <button class="btn outline arrow" type="button" id="catalog-prev" aria-label="Листать влево">‹</button>
           <button class="btn outline arrow" type="button" id="catalog-next" aria-label="Листать вправо">›</button>
           <button class="btn outline" type="button" id="catalog-add" hidden>Добавить свитер</button>
-          <a class="btn outline" id="catalog-ozon-link" target="_blank" rel="noopener noreferrer">Перейти на Ozon</a>
+          <a class="btn ozon-link" id="catalog-ozon-link" target="_blank" rel="noopener noreferrer"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
       <div class="catalog-filters">
@@ -559,7 +565,7 @@
           <section>
             <h3>Готовые свитеры на Ozon</h3>
             <p>Посмотрите готовые модели и размеры в нашем магазине на Ozon. Покупка и доставка оформляются там.</p>
-            <a class="btn outline" id="how-ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true">Посмотреть на Ozon</a>
+            <a class="btn ozon-link" id="how-ozon-link" target="_blank" rel="noopener noreferrer" aria-disabled="true"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
           </section>
         </div>
       </div>
