@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data: blob:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
-<meta name="description" content="Arachne — ажурные свитера по вашим меркам. Выберите модель, оттенок и пряжу или покажите нам свой образец.">
-<title>Arachne — свитера с характером по вашим меркам</title>
+<meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель, оттенок и пряжу или покажите нам свой образец.">
+<title>Арахна — свитера с характером по вашим меркам</title>
 <style>
   :root {
     color-scheme: light;
@@ -232,7 +232,25 @@
   .site-head { background:var(--paper); }
   .site-head .wrap { grid-template-columns:1fr auto; min-height:76px; }
   .wordmark { width:max-content; display:inline-grid; gap:5px; text-decoration:none; color:var(--wine); }
-  .wordmark strong { font:500 29px/.9 var(--serif); letter-spacing:.15em; }
+  .wordmark strong {
+    display:flex; align-items:center; gap:8px;
+    font:italic 500 clamp(32px,4vw,39px)/.99 "Cormorant Garamond","Noto Serif Display",Georgia,serif;
+    letter-spacing:-.045em;
+  }
+  .wordmark-spider { position:relative; flex:none; width:19px; height:17px; color:var(--gold); }
+  .wordmark-spider::before, .wordmark-spider::after {
+    position:absolute; left:50%; translate:-50% 0; content:""; border-radius:50%; background:currentColor;
+  }
+  .wordmark-spider::before { top:7px; width:5.5px; height:6.5px; }
+  .wordmark-spider::after { top:4px; width:3.5px; height:3.5px; }
+  .wordmark-spider i {
+    position:absolute; inset-inline:2px; height:5px; border:solid currentColor; border-width:1px 1px 0;
+    border-radius:50% 50% 0 0;
+  }
+  .wordmark-spider i:nth-child(1) { top:4px; inset-inline:3.5px; }
+  .wordmark-spider i:nth-child(2) { top:6px; }
+  .wordmark-spider i:nth-child(3) { top:8px; }
+  .wordmark-spider i:nth-child(4) { top:10px; inset-inline:3.5px; }
   .wordmark small { font-size:11px; color:var(--muted); letter-spacing:.065em; }
   .nav { gap:clamp(12px, 3vw, 36px); }
   .nav .policy-link { font-size:14px; text-decoration:none; color:var(--ink); }
@@ -310,7 +328,10 @@
 <body>
   <header class="site-head">
     <div class="wrap">
-      <a class="wordmark" href="#top" aria-label="Arachne, главная"><strong>ARACHNE</strong><small>Свитера с характером</small></a>
+      <a class="wordmark" href="#top" aria-label="Арахна, главная">
+        <strong>Арахна<span class="wordmark-spider" aria-hidden="true"><i></i><i></i><i></i><i></i></span></strong>
+        <small>Свитера с характером</small>
+      </a>
       <nav class="nav" aria-label="Навигация">
         <a href="#collection" id="nav-collection">Коллекция</a>
         <a href="#story" id="nav-story">История</a>
@@ -452,7 +473,10 @@
 
   <footer class="site-foot">
     <div class="wrap">
-      <a class="wordmark" href="#top" aria-label="Arachne, главная"><strong>ARACHNE</strong><small>Свитера с характером</small></a>
+      <a class="wordmark" href="#top" aria-label="Арахна, главная">
+        <strong>Арахна<span class="wordmark-spider" aria-hidden="true"><i></i><i></i><i></i><i></i></span></strong>
+        <small>Свитера с характером</small>
+      </a>
       <div class="footer-links">
         <a href="#collection" class="policy-link">Коллекция</a>
         <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
