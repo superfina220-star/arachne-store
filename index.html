@@ -197,6 +197,8 @@
     background: var(--subtle); border-top: 1px solid var(--line);
     padding: 12px clamp(16px, 3vw, 34px);
   }
+  .order-footer-actions { display:flex; flex-wrap:wrap; gap:8px; }
+  .btn:disabled { opacity:.55; cursor:not-allowed; }
   .order-footer strong, .request-price { font-size: 24px; line-height: 1.15; font-variant-numeric: tabular-nums; }
   .step-actions { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
   .outcome { display: grid; gap: 11px; }
@@ -600,7 +602,7 @@
           </div>
           <div class="product-purchase">
             <div class="product-price">
-              <p class="fine">Пример цены по меркам</p>
+              <p class="fine" id="starting-price-caption">Тестовая цена</p>
               <strong id="starting-price"></strong>
             </div>
             <div class="product-actions">
@@ -1007,14 +1009,18 @@
         <img class="reference-preview" id="reference-preview" alt="Фото модели для заказа" hidden>
         <button class="policy-link fine" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
         <button class="policy-link fine" type="button" data-open-dialog="privacy-dialog">Как обрабатываются данные заявки</button>
-        <p class="fine status-text" id="registration-status" role="status" hidden>Регистрация в макете завершена. Проверьте параметры и оставьте заявку.</p>
+        <p class="fine status-text" id="registration-status" role="status" hidden>Регистрация в макете завершена. Проверьте параметры и нажмите «Оставить без оплаты».</p>
       </div>
       <div class="order-footer">
         <div aria-live="polite">
-          <p class="fine" id="price-caption">Расчёт в макете</p>
+          <p class="fine" id="price-caption">Тестовая цена</p>
           <strong id="order-price"></strong>
+          <p class="fine" id="payment-note" hidden>Подключаем Робокассу</p>
         </div>
-        <button class="btn" type="submit" id="request-button">Оставить заявку</button>
+        <div class="order-footer-actions">
+          <button class="btn outline" type="submit" id="request-button">Оставить без оплаты</button>
+          <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note" disabled>Оплатить</button>
+        </div>
       </div>
     </form>
 
@@ -1034,7 +1040,7 @@
       <p id="request-note" hidden></p>
       <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
-      <p class="fine">В рабочем магазине заявка с этими параметрами поступит мастерской для согласования.</p>
+      <p class="fine">Заявка собрана в макете. Отправка в мастерскую пока не подключена.</p>
       <div><button class="btn" type="button" data-close>К коллекции</button></div>
     </div>
   </dialog>
@@ -1046,11 +1052,15 @@
     </div>
     <div class="dialog-head"><button class="policy-link" type="button" data-open-dialog="size-admin-dialog">Таблица размеров</button></div>
     <form class="sheet" id="settings-form">
-      <p class="dialog-sub">Меняйте базовую цену и надбавки. Общая надбавка за мерки, пряжу и пайетки ограничена 20%.</p>
+      <p class="dialog-sub">Меняйте базовую цену и надбавки. Общая надбавка за мерки, пряжу и пайетки ограничена 20%. Во время теста цена заказа фиксирована.</p>
       <div class="fields pricing-fields" id="price-fields"></div>
       <label class="field">Ссылка на магазин Ozon
         <input type="url" name="store" placeholder="https://www.ozon.ru/seller/…" autocomplete="off">
       </label>
+      <label class="field comment">Ссылка на оплату Робокассы
+        <input type="url" name="paymentLink" placeholder="https://…" autocomplete="off" aria-describedby="payment-settings-note">
+      </label>
+      <p class="fine form-note" id="payment-settings-note">Вставьте готовую ссылку виджета на 1 ₽. Эта настройка действует в текущем браузере.</p>
       <div class="step-actions">
         <button class="btn" type="submit">Сохранить настройки</button>
         <button class="btn outline" type="button" data-close>К витрине</button>
@@ -1076,6 +1086,7 @@
       { key: "micro", label: "Очень мелкие пайетки, %", value: 50 },
       { key: "small", label: "Мелкие пайетки, %", value: 90 }
     ];
+    const pilotPayment = { amount: 1, link: "" };
     const defaultStore = "https://www.ozon.ru/seller/oktsept/";
     const cap = 200; // Надбавки хранятся в десятых долях процента.
     const storageKey = "svitera-pricing-v2";
@@ -1091,6 +1102,8 @@
     const settingsForm = byId("settings-form");
     const settingsDialog = byId("settings-dialog");
     const storeField = settingsForm.elements.store;
+    const paymentField = settingsForm.elements.paymentLink;
+    const payButton = byId("pay-button");
     const thumbs = byId("thumbnails");
     const models = new Map();
     const catalogTrack = byId("catalog-track");
@@ -1138,9 +1151,22 @@
       return "";
     }
 
+    function validatePaymentLink(value) {
+      try {
+        const url = new URL(value);
+        const host = url.hostname;
+        const robokassa = ["robokassa.ru", "robokassa.com", "robo.market"].some(
+          domain => host === domain || host.endsWith("." + domain)
+        );
+        if (url.protocol === "https:" && robokassa && !url.username && !url.password && !url.port) return url.href;
+      } catch {}
+      return "";
+    }
+
     function loadSettings() {
       const defaults = Object.fromEntries(priceFields.map(({ key, value }) => [key, value]));
       defaults.store = defaultStore;
+      defaults.paymentLink = pilotPayment.link;
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
         if (!saved) return defaults;
@@ -1150,6 +1176,7 @@
             defaults[key] = value;
           }
         }
+        if (!pilotPayment.link && typeof saved.paymentLink === "string") defaults.paymentLink = validatePaymentLink(saved.paymentLink);
         if (typeof saved.store === "string") defaults.store = validateStore(saved.store) || defaultStore;
       } catch {
         // При открытии файла настройки могут храниться только до закрытия страницы.
@@ -1166,14 +1193,23 @@
 
     function updateQuote() {
       const { requested, applied, amount } = quote(order.elements.yarn.value, order.elements.sequins.value);
-      byId("order-price").textContent = rubles.format(amount);
+      byId("order-price").textContent = rubles.format(pilotPayment.amount ?? amount);
+      if (pilotPayment.amount !== null) {
+        byId("price-caption").textContent = "Тестовая цена";
+        return;
+      }
       byId("price-caption").textContent = requested > cap
         ? "Расчёт в макете · предел +20%"
         : "Расчёт в макете" + (applied ? " · +" + decimal.format(applied / 10) + "%" : "");
     }
 
     function updateStorefront() {
-      byId("starting-price").textContent = "от " + rubles.format(quote("standard", "plain").amount);
+      byId("starting-price").textContent = pilotPayment.amount === null
+        ? "от " + rubles.format(quote("standard", "plain").amount)
+        : rubles.format(pilotPayment.amount);
+      byId("starting-price-caption").textContent = pilotPayment.amount === null ? "Пример цены по меркам" : "Тестовая цена";
+      payButton.disabled = !settings.paymentLink;
+      byId("payment-note").hidden = Boolean(settings.paymentLink);
       for (const id of ["home-ozon-link", "ozon-link", "catalog-ozon-link", "how-ozon-link"]) {
         const link = byId(id);
         if (settings.store) {
@@ -1518,6 +1554,10 @@
 
     order.addEventListener("submit", (event) => {
       event.preventDefault();
+      if (event.submitter === payButton) {
+        if (settings.paymentLink) window.location.assign(settings.paymentLink);
+        return;
+      }
       if (!registered) {
         showOrderStep("registration");
         registration.elements.email.focus();
@@ -1586,11 +1626,14 @@
         settingsForm.elements[key].value = base ? settings[key] : settings[key] / 10;
       }
       storeField.value = settings.store;
+      paymentField.value = settings.paymentLink;
+      paymentField.setCustomValidity("");
       storeField.setCustomValidity("");
       byId("settings-status").textContent = "";
       settingsDialog.showModal();
     });
     storeField.addEventListener("input", () => storeField.setCustomValidity(""));
+    paymentField.addEventListener("input", () => paymentField.setCustomValidity(""));
     settingsForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const enteredStore = storeField.value.trim();
@@ -1600,7 +1643,14 @@
         storeField.reportValidity();
         return;
       }
-      const saved = { store: store || defaultStore };
+      const enteredPaymentLink = paymentField.value.trim();
+      const paymentLink = validatePaymentLink(enteredPaymentLink);
+      if (enteredPaymentLink && !paymentLink) {
+        paymentField.setCustomValidity("Укажите HTTPS-ссылку на оплату из Робокассы.");
+        paymentField.reportValidity();
+        return;
+      }
+      const saved = { store: store || defaultStore, paymentLink: pilotPayment.link || paymentLink };
       for (const { key, base } of priceFields) {
         const value = settingsForm.elements[key].valueAsNumber;
         saved[key] = base ? value : Math.round(value * 10);
