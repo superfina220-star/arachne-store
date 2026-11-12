@@ -330,6 +330,7 @@
   .craft-colors img { display:block; width:100%; height:100%; object-fit:cover; }
   .craft-colors img:first-child { object-position:center 60%; }
   .sequin-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+  .sequin-pair button { display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in; }
   .sequin-pair img { width:100%; display:block; aspect-ratio:.71; max-height:265px; object-fit:cover; background:var(--warm); }
   .sequin-pair figcaption { color:var(--muted); font-size:13px; margin-top:5px; }
   .story-finish { border-top:1px solid var(--line); margin-top:clamp(24px,4vw,50px); padding-top:18px; }
@@ -544,11 +545,15 @@
             <section aria-labelledby="sequins-title">
               <div class="sequin-pair">
                 <figure>
-                  <img src="assets/sweaters/milk-small-sequins.webp" loading="lazy" alt="Мелкие пайетки на белом свитере крупным планом">
+                  <button type="button" aria-label="Увеличить фото: мелкие пайетки" aria-haspopup="dialog">
+                    <img src="assets/sweaters/milk-small-sequins.webp" loading="lazy" alt="Мелкие пайетки на белом свитере крупным планом">
+                  </button>
                   <figcaption>Мелкие</figcaption>
                 </figure>
                 <figure>
-                  <img src="assets/sweaters/midnight-8.webp" loading="lazy" alt="Крупные пайетки на тёмно-синем свитере крупным планом">
+                  <button type="button" aria-label="Увеличить фото: крупные пайетки" aria-haspopup="dialog">
+                    <img src="assets/sweaters/midnight-8.webp" loading="lazy" alt="Крупные пайетки на тёмно-синем свитере крупным планом">
+                  </button>
                   <figcaption>Крупные</figcaption>
                 </figure>
               </div>
@@ -1068,7 +1073,7 @@
     function renderGallery(item, images, index, imageId, controlsPrefix) {
       const image = byId(imageId);
       image.src = images[index];
-      image.alt = [item.title, item.name, "Фото " + (index + 1)].filter(Boolean).join(" · ");
+      image.alt = item.photoLabels?.[index] ?? [item.title, item.name, "Фото " + (index + 1)].filter(Boolean).join(" · ");
       byId(controlsPrefix + "-position").textContent = (index + 1) + " / " + images.length;
       byId(controlsPrefix + "-prev").disabled = images.length < 2;
       byId(controlsPrefix + "-next").disabled = images.length < 2;
@@ -1184,6 +1189,16 @@
     }
 
     byId("open-photo").addEventListener("click", () => openPhoto(variant, photoIndex, true));
+    const sequinButtons = [...document.querySelectorAll(".sequin-pair button")];
+    const sequinImages = sequinButtons.map(button => button.querySelector("img"));
+    const sequinGallery = {
+      title: "Пайетки",
+      gallery: sequinImages.map(img => img.getAttribute("src")),
+      photoLabels: sequinImages.map(img => img.alt)
+    };
+    for (const [index, button] of sequinButtons.entries()) {
+      button.addEventListener("click", () => openPhoto(sequinGallery, index));
+    }
     byId("full-photo-prev").addEventListener("click", () => moveEnlargedPhoto(-1));
     byId("full-photo-next").addEventListener("click", () => moveEnlargedPhoto(1));
     photoDialog.addEventListener("keydown", (event) => {
