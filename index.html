@@ -236,7 +236,7 @@
   .wordmark small { font-size:11px; color:var(--muted); letter-spacing:.065em; }
   .nav { gap:clamp(12px, 3vw, 36px); }
   .nav .policy-link { font-size:14px; text-decoration:none; color:var(--ink); }
-  .nav a[aria-current="location"] { color:var(--wine); text-decoration:underline; }
+  .nav a[aria-current="page"] { color:var(--wine); text-decoration:underline; }
   .btn { border-color:var(--wine); background:var(--wine); }
   .btn:hover { background:var(--wine-dark); }
   .btn.outline { color:var(--wine); border-color:var(--line); }
@@ -248,16 +248,22 @@
   .hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; }
   .hero-actions .btn { padding-inline:22px; }
   .hero-actions .policy-link { display:inline-flex; align-items:center; }
-  .hero-figure { display:grid; gap:12px; }
-  .hero-photo { display:block; background:#fff; outline:1px solid #c8ad84; outline-offset:5px; aspect-ratio:4/4.45; }
-  .hero-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 31%; }
-  .hero-figure figcaption { font-size:13px; color:var(--muted); text-align:right; }
+  .hero-gallery { display:grid; grid-template-columns:minmax(0,1.58fr) minmax(0,1fr); grid-template-rows:repeat(2,minmax(0,1fr)); gap:10px; aspect-ratio:1.07; }
+  .hero-photo { display:block; min-height:0; overflow:hidden; border:1px solid #cfb690; background:#fff; }
+  .hero-photo-main { grid-row:span 2; }
+  .hero-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 37%; }
+  #shop-view { display:flex; flex-direction:column; }
+  #shop-view.catalog-first .catalog { border-top:0; padding-top:24px; padding-bottom:14px; }
+  #shop-view.catalog-first .product { border-top:1px solid var(--line); }
   .home-details { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(22px,5vw,72px); padding-block:clamp(36px,6vw,82px); }
   .home-details h2 { font-size:clamp(30px,4vw,54px); line-height:1.02; letter-spacing:-.045em; margin-bottom:15px; }
   .home-details p { max-width:47ch; color:var(--muted); }
   .home-details .policy-link { display:inline-flex; align-items:center; margin-top:8px; }
   .weave { height:10px; width:72px; margin-bottom:20px; color:var(--gold); border-block:1px solid currentColor;
     background:repeating-linear-gradient(45deg, transparent 0 4px, currentColor 4px 5px, transparent 5px 8px); }
+  .info-view { min-height:56vh; padding-block:clamp(32px,6vw,78px); }
+  .info-view h1 { color:var(--wine); font-size:clamp(42px,6vw,76px); line-height:1; letter-spacing:-.052em; }
+  .story-copy { max-width:59ch; color:var(--muted); margin-block:19px 22px; font-size:clamp(17px,1.8vw,21px); }
   .shop-bar { display:flex; align-items:center; min-height:44px; padding-top:6px; }
   .shop-bar a { color:var(--gold); font-size:14px; }
   #product-title { color:var(--wine); min-height:1.9em; font-size:clamp(40px,5vw,72px); margin-block:10px 12px; }
@@ -288,8 +294,7 @@
     .nav { flex-wrap:wrap; gap:0 18px; }
     .hero-layout { grid-template-columns:1fr; gap:26px; padding-block:27px 25px; }
     .hero h1 { font-size:clamp(41px, 10vw, 66px); }
-    .hero-figure { width:min(100% - 12px, 430px); margin-inline:auto; }
-    .hero-photo { aspect-ratio:4/3.55; }
+    .hero-gallery { width:min(100%, 470px); margin-inline:auto; }
     .hero-copy { margin-block:17px 19px; }
     .home-details { grid-template-columns:1fr; }
     .product { grid-template-columns:1fr; }
@@ -302,14 +307,14 @@
   }
 </style>
 </head>
-<body id="top">
+<body>
   <header class="site-head">
     <div class="wrap">
       <a class="wordmark" href="#top" aria-label="Arachne, главная"><strong>ARACHNE</strong><small>Свитера с характером</small></a>
       <nav class="nav" aria-label="Навигация">
         <a href="#collection" id="nav-collection">Коллекция</a>
         <a href="#story" id="nav-story">История</a>
-        <a href="#how">Как заказать</a>
+        <a href="#how" id="nav-how">Как заказать</a>
         <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
       </nav>
     </div>
@@ -324,16 +329,21 @@
             <h1 class="serif" id="home-title">Свитера с характером<em>по вашим меркам</em></h1>
             <p class="hero-copy">Свяжем ажурный свитер с той посадкой и длиной, которые вам удобны. Выберите модель из коллекции или пришлите фото своего образца.</p>
             <div class="hero-actions">
-              <a class="btn" href="#collection">Выбрать свитер по меркам</a>
-              <a class="policy-link" href="#story">История Arachne</a>
+              <a class="btn" href="#catalog">Подобрать по меркам</a>
+              <a class="btn outline" id="home-ozon-link" target="_blank" rel="noopener noreferrer">Перейти в магазин на Ozon</a>
             </div>
           </div>
-          <figure class="hero-figure">
-            <a class="hero-photo" href="#collection" aria-label="Смотреть свитер «Сиреневый туман»">
-              <img id="home-photo" alt="Ажурный свитер «Сиреневый туман» на манекене">
+          <div class="hero-gallery" aria-label="Свитера из коллекции">
+            <a class="hero-photo hero-photo-main" href="#collection" data-home-model="lilac">
+              <img alt="Сиреневый туман">
             </a>
-            <figcaption>Сиреневый туман</figcaption>
-          </figure>
+            <a class="hero-photo" href="#collection" data-home-model="milk">
+              <img alt="Молочный свет">
+            </a>
+            <a class="hero-photo" href="#collection" data-home-model="burgundy">
+              <img alt="Бургунди">
+            </a>
+          </div>
         </div>
       </section>
       <div class="wrap home-details">
@@ -342,16 +352,17 @@
           <p>Подберём состав под модель. Для лёгкой ажурной вязки используем кид-мохер, в разных моделях добавляем шёлк или хлопок. Мелкие пайетки дают фактуру и лёгкое мерцание.</p>
           <a class="policy-link" href="#how">Как оформить заказ</a>
         </section>
-        <section id="story" aria-labelledby="story-title">
-          <h2 class="serif" id="story-title">Легенда об Арахне</h2>
-          <p>По древнегреческому мифу, искусная ткачиха Арахна состязалась с Афиной. В пересказе Овидия после состязания она превращается в паука и продолжает плести. Мы назвали мастерскую в честь её умения работать с тонкой нитью.</p>
+        <section aria-labelledby="story-preview-title">
+          <h2 class="serif" id="story-preview-title">Легенда об Арахне</h2>
+          <p>Имя мастерской вдохновлено мифом об искусной ткачихе Арахне.</p>
+          <a class="policy-link" href="#story">Читать историю</a>
         </section>
       </div>
     </div>
 
     <div id="shop-view" hidden>
     <div class="wrap shop-bar"><a href="#top">‹ На главную</a></div>
-    <section class="product wrap" id="collection" aria-labelledby="product-title">
+    <section class="product wrap" id="product-section" aria-labelledby="product-title">
       <figure class="media">
         <button class="enlarge" type="button" id="open-photo" aria-label="Увеличить фото">
           <img id="product-photo" alt="">
@@ -387,7 +398,7 @@
       </div>
     </section>
 
-    <section class="catalog wrap" id="catalog" aria-labelledby="catalog-title">
+    <section class="catalog wrap" id="catalog-section" aria-labelledby="catalog-title">
       <div class="catalog-head">
         <h2 class="serif" id="catalog-title">Коллекция</h2>
         <div class="catalog-controls">
@@ -409,14 +420,25 @@
       <p class="fine catalog-status" id="catalog-status" role="status"></p>
     </section>
 
-    <section class="how" id="how" aria-labelledby="how-title">
+    </div>
+
+    <section class="info-view" id="story-view" aria-labelledby="story-title" hidden>
       <div class="wrap">
-        <h2 class="serif" id="how-title">Как заказать</h2>
+        <div class="weave" aria-hidden="true"></div>
+        <h1 class="serif" id="story-title">Легенда об Арахне</h1>
+        <p class="story-copy">По древнегреческому мифу, искусная ткачиха Арахна состязалась с Афиной. В пересказе Овидия после состязания она превращается в паука и продолжает плести. Мы назвали мастерскую в честь её умения работать с тонкой нитью.</p>
+        <a class="btn outline" href="#collection">Смотреть коллекцию</a>
+      </div>
+    </section>
+
+    <section class="how info-view" id="how-view" aria-labelledby="how-title" hidden>
+      <div class="wrap">
+        <h1 class="serif" id="how-title">Как заказать</h1>
         <div class="how-grid order-ways">
           <section>
             <h3>Изготовим свитер по заказу</h3>
             <p>Выберите оттенок или приложите фото своей модели к заявке. Обычно вяжем свитер около трёх дней. Свяжемся с вами и согласуем бесплатную доставку по указанному адресу.</p>
-            <a class="btn" href="#catalog">Выбрать свитер</a>
+            <a class="btn" href="#collection">Выбрать свитер</a>
           </section>
           <section>
             <h3>Готовые свитеры на Ozon</h3>
@@ -426,14 +448,13 @@
         </div>
       </div>
     </section>
-    </div>
   </main>
 
   <footer class="site-foot">
     <div class="wrap">
       <a class="wordmark" href="#top" aria-label="Arachne, главная"><strong>ARACHNE</strong><small>Свитера с характером</small></a>
       <div class="footer-links">
-        <a href="#catalog" class="policy-link">Коллекция</a>
+        <a href="#collection" class="policy-link">Коллекция</a>
         <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
         <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты</button>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
@@ -856,7 +877,7 @@
 
     function updateStorefront() {
       byId("starting-price").textContent = "от " + rubles.format(quote("standard", "plain").amount);
-      for (const id of ["ozon-link", "how-ozon-link"]) {
+      for (const id of ["home-ozon-link", "ozon-link", "how-ozon-link"]) {
         const link = byId(id);
         if (settings.store) {
           link.href = settings.store;
@@ -1142,8 +1163,12 @@
       button.append(photo, caption);
       button.addEventListener("click", () => {
         selectVariant(item);
-        byId("open-order").focus({ preventScroll: true });
-        byId("collection").scrollIntoView({ block: "start" });
+        if (window.location.hash === "#catalog") {
+          window.location.hash = "#collection";
+        } else {
+          byId("open-order").focus({ preventScroll: true });
+          window.scrollTo(0, 0);
+        }
       });
       catalogTrack.append(button);
       return button;
@@ -1341,34 +1366,63 @@
     for (const button of document.querySelectorAll("[data-open-dialog]")) {
       button.addEventListener("click", () => byId(button.dataset.openDialog).showModal());
     }
-    const shopSections = new Set(["#collection", "#catalog", "#how"]);
-    const homeView = byId("home-view");
-    const shopView = byId("shop-view");
+    const pages = {
+      home: { view: byId("home-view"), heading: byId("home-title") },
+      collection: { view: byId("shop-view"), heading: byId("product-title"), nav: byId("nav-collection") },
+      story: { view: byId("story-view"), heading: byId("story-title"), nav: byId("nav-story") },
+      how: { view: byId("how-view"), heading: byId("how-title"), nav: byId("nav-how") }
+    };
+    const routes = new Map([
+      ["#top", pages.home],
+      ["#collection", pages.collection],
+      ["#catalog", pages.collection],
+      ["#story", pages.story],
+      ["#how", pages.how]
+    ]);
 
-    function renderPage() {
+    const catalogSection = byId("catalog-section");
+    const productSection = byId("product-section");
+
+    function renderPage(focusHeading = false) {
       const hash = window.location.hash;
-      const showShop = shopSections.has(hash);
-      const changedPage = showShop !== homeView.hidden;
-      homeView.hidden = showShop;
-      shopView.hidden = !showShop;
-      for (const [id, isCurrent] of [["nav-collection", showShop], ["nav-story", hash === "#story"]]) {
-        const link = byId(id);
-        if (isCurrent) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
+      const page = routes.get(hash) ?? pages.home;
+      const catalogFirst = hash === "#catalog";
+      const shop = pages.collection.view;
+      if (catalogFirst !== shop.classList.contains("catalog-first")) {
+        shop.classList.toggle("catalog-first", catalogFirst);
+        shop.insertBefore(catalogSection, catalogFirst ? productSection : null);
       }
-      if (changedPage) {
-        window.requestAnimationFrame(() => {
-          const target = byId(hash.slice(1));
-          if (hash === "#collection" || !target) window.scrollTo(0, 0);
-          else target.scrollIntoView({ block: "start" });
-        });
+      for (const item of Object.values(pages)) {
+        item.view.hidden = item !== page;
+        if (!item.nav) continue;
+        if (item === page) item.nav.setAttribute("aria-current", "page");
+        else item.nav.removeAttribute("aria-current");
       }
+      if (focusHeading) {
+        const heading = catalogFirst ? byId("catalog-title") : page.heading;
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }
+      window.scrollTo(0, 0);
     }
 
-    const homePhoto = byId("home-photo");
-    homePhoto.src = photos.lilac;
-    homePhoto.parentElement.addEventListener("click", () => selectVariant(variants.find(item => item.key === "lilac")));
-    window.addEventListener("hashchange", renderPage);
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    for (const link of document.querySelectorAll('a[href^="#"]')) {
+      link.addEventListener("click", (event) => {
+        if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.hash === window.location.hash) {
+          event.preventDefault();
+          renderPage(true);
+        }
+      });
+    }
+
+    for (const link of document.querySelectorAll("[data-home-model]")) {
+      const item = variants.find(variant => variant.key === link.dataset.homeModel);
+      link.querySelector("img").src = photos[item.key];
+      link.addEventListener("click", () => selectVariant(item));
+    }
+    window.addEventListener("hashchange", () => renderPage(true));
     renderPage();
     renderSizeGuide();
     selectVariant(variants[0]);
