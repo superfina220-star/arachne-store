@@ -50,16 +50,35 @@
   }
 
   .product { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: clamp(30px, 6.3vw, 96px); align-items: start; padding-block: clamp(24px, 3vw, 44px); }
-  .media { min-width: 0; border: 1px solid var(--line); }
+  .media { min-width:0; --product-photo-height:clamp(320px,38vw,440px); }
+  .product-gallery { display:grid; grid-template-columns:62px minmax(0,1fr); gap:10px; }
+  .photo-strip { display:grid; grid-auto-rows:65px; align-content:start; gap:6px; max-height:var(--product-photo-height); padding:2px; overflow:auto; }
+  .photo-thumb { min-width:0; min-height:0; padding:2px; border:1px solid var(--line); border-radius:4px; background:#fff; }
+  .photo-thumb[aria-pressed="true"] { border-color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
+  .photo-thumb:focus-visible { outline-offset:-2px; }
+  .photo-thumb img { display:block; width:100%; height:100%; object-fit:contain; }
   .enlarge {
-    display: block; width: 100%; background: #fff; border: 0; padding: 0;
-    height: clamp(310px, 38vw, 440px); cursor: zoom-in;
+    display:block; width:100%; height:var(--product-photo-height); position:relative; overflow:hidden;
+    background:#fff; border:1px solid var(--line); border-radius:5px; padding:0; cursor:zoom-in;
   }
-  .enlarge img, .photo-full { display: block; width: 100%; height: 100%; object-fit: contain; }
-  .media figcaption {
-    border-top: 1px solid var(--line); background: var(--warm); padding: 10px 14px;
-    font-size: 14px; color: var(--gold); text-align: center;
+  .enlarge img, .photo-full { display:block; width:100%; height:100%; object-fit:contain; }
+  .enlarge img { transform-origin:var(--zoom-x,50%) var(--zoom-y,50%); }
+  @media (hover:hover) and (pointer:fine) {
+    .enlarge:hover img { transform:scale(1.85); }
   }
+  @media (prefers-reduced-motion:no-preference) {
+    .enlarge img { transition:transform .32s ease; }
+  }
+  .zoom-icon { position:absolute; right:12px; bottom:12px; width:39px; height:39px; display:grid; place-items:center;
+    border:1px solid var(--line); border-radius:50%; background:var(--paper); color:var(--wine); pointer-events:none; }
+  .zoom-icon::before { content:""; width:12px; height:12px; border:1.5px solid currentColor; border-radius:50%; margin:-3px 0 0 -3px; }
+  .zoom-icon::after { content:""; width:6px; height:1.5px; position:absolute; top:23px; left:22px; background:currentColor; transform:rotate(45deg); }
+  .product-info { border:1px solid var(--line); border-radius:5px; background:#fff; padding:clamp(16px,2.5vw,30px); }
+  .product-size-options { margin-top:17px; }
+  .product-size-options legend { font-size:15px; margin-bottom:7px; }
+  .product-size-buttons { display:flex; flex-wrap:wrap; gap:5px; }
+  .product-size-buttons button { min-width:44px; min-height:42px; padding:4px; border:1px solid var(--line); border-radius:3px; color:var(--ink); background:var(--paper); }
+  .product-size-buttons button[aria-pressed="true"] { border-color:var(--wine); color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
   .overline { color: var(--gold); text-transform: uppercase; letter-spacing: .13em; font-weight: 650; font-size: 12px; }
   #product-title { font-size: clamp(37px, 5.2vw, 66px); line-height: 1; min-height: 2em; letter-spacing: -.057em; margin: 12px 0 16px; }
   #product-title em { display: block; color: var(--gold); font-weight: inherit; }
@@ -166,7 +185,10 @@
     .media { grid-row: 2; }
     .product-options { grid-row: 3; }
     #product-title { font-size: clamp(42px, 9vw, 65px); margin-block: 9px 11px; }
-    .enlarge { height: clamp(265px, 72vw, 390px); }
+    .media { --product-photo-height:clamp(265px,72vw,390px); }
+    .product-gallery { grid-template-columns:minmax(0,1fr); gap:6px; }
+    .product-gallery .enlarge { grid-row:1; }
+    .photo-strip { grid-auto-flow:column; grid-auto-columns:58px; grid-auto-rows:59px; max-height:none; }
     .variant-label { margin-top: 0; }
     .how-grid { grid-template-columns: 1fr; gap: 13px; margin-top: 15px; }
     .how { padding-block: 25px; }
@@ -206,7 +228,7 @@
   .site-foot .wrap { display:grid; gap:10px; padding-block:24px 32px; }
   .footer-links { display:flex; align-items:center; flex-wrap:wrap; gap:2px 18px; }
   .footer-links .policy-link { display:inline-flex; align-items:center; }
-  .media { width:min(100%, 440px); justify-self:center; }
+  .media { width:min(100%, 540px); justify-self:center; }
   .gallery-controls { display:flex; align-items:center; justify-content:center; gap:14px; border-top:1px solid var(--line); }
   .gallery-controls button { border:0; background:transparent; min-width:48px; min-height:48px; color:var(--gold); font-size:24px; }
   .gallery-controls button:disabled { visibility:hidden; }
@@ -346,7 +368,6 @@
   .ozon-link .external-arrow { font-size:17px; line-height:1; }
   .product-info .intro { max-width:44ch; }
   .product-info .overline { letter-spacing:.11em; }
-  .product .media { outline:1px solid var(--line); outline-offset:4px; }
   .thumbnail { border-radius:2px; }
   .thumbnail[aria-pressed="true"], .catalog-card:has(.catalog-select[aria-pressed="true"]) { border-color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
   .catalog { border-top:1px solid var(--line); padding-block:24px 44px; }
@@ -446,17 +467,15 @@
     <div id="shop-view" hidden>
     <div class="wrap shop-bar"><a href="#top">‹ На главную</a></div>
     <section class="product wrap" id="product-section" aria-labelledby="product-title">
-      <figure class="media">
-        <button class="enlarge" type="button" id="open-photo" aria-label="Увеличить фото">
-          <img id="product-photo" alt="">
-        </button>
-        <div class="gallery-controls" aria-label="Фотографии оттенка">
-          <button type="button" id="photo-prev" aria-label="Предыдущее фото">‹</button>
-          <span class="fine" id="photo-position" aria-live="polite"></span>
-          <button type="button" id="photo-next" aria-label="Следующее фото">›</button>
+      <div class="media">
+        <div class="product-gallery">
+          <div class="photo-strip" id="product-photo-strip" role="group" aria-label="Ракурсы свитера"></div>
+          <button class="enlarge" type="button" id="open-photo" aria-label="Открыть фотографию крупным планом">
+            <img id="product-photo" alt="">
+            <span class="zoom-icon" aria-hidden="true"></span>
+          </button>
         </div>
-        <figcaption>Нажмите на фото для увеличения</figcaption>
-      </figure>
+      </div>
       <div class="product-info">
         <div class="product-intro">
           <p class="overline">Изготовление по вашим меркам</p>
@@ -470,6 +489,10 @@
             <div class="thumbnails" id="thumbnails"></div>
             <button type="button" id="model-next" aria-label="Следующий свитер">›</button>
           </div>
+          <fieldset class="product-size-options">
+            <legend>Российский размер · по желанию</legend>
+            <div class="product-size-buttons" id="product-size-buttons"></div>
+          </fieldset>
           <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
           <button class="policy-link" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
           <div class="product-price">
@@ -824,7 +847,8 @@
           </div>
           <label class="field order-size">
             <span>Российский размер · по желанию</span>
-            <select name="modelSize"></select>
+            <select name="modelSize" aria-describedby="manual-size-note"></select>
+            <span class="fine" id="manual-size-note" role="status" hidden>Вы указали свои мерки. Чтобы выбрать размер, очистите поля мерок.</span>
           </label>
         </div>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
@@ -1060,34 +1084,84 @@
       return item.gallery?.length ? item.gallery : [item.photo];
     }
 
-    function renderGallery(item, images, index, imageId, controlsPrefix) {
-      const image = byId(imageId);
-      image.src = images[index];
-      image.alt = item.photoLabels?.[index] ?? [item.title, item.name, "Фото " + (index + 1)].filter(Boolean).join(" · ");
-      byId(controlsPrefix + "-position").textContent = (index + 1) + " / " + images.length;
-      byId(controlsPrefix + "-prev").disabled = images.length < 2;
-      byId(controlsPrefix + "-next").disabled = images.length < 2;
+    const productImage = byId("product-photo");
+    const photoStrip = byId("product-photo-strip");
+    const zoomButton = byId("open-photo");
+    const productSizeButtons = byId("product-size-buttons");
+    let productSize = "";
+
+    for (const size of guideSizes) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.value = String(size);
+      button.textContent = size;
+      button.setAttribute("aria-pressed", "false");
+      button.addEventListener("click", () => {
+        productSize = productSize === button.value ? "" : button.value;
+        for (const option of productSizeButtons.children) {
+          option.setAttribute("aria-pressed", String(option.value === productSize));
+        }
+      });
+      productSizeButtons.append(button);
+    }
+
+    zoomButton.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const frame = zoomButton.getBoundingClientRect();
+      zoomButton.style.setProperty("--zoom-x", (event.clientX - frame.left) + "px");
+      zoomButton.style.setProperty("--zoom-y", (event.clientY - frame.top) + "px");
+    });
+
+    function photoDescription(item, index) {
+      return item.photoLabels?.[index] ?? [item.title, item.name, "Фото " + (index + 1)].filter(Boolean).join(" · ");
     }
 
     function renderPhoto() {
-      renderGallery(variant, gallery, photoIndex, "product-photo", "photo");
+      productImage.src = gallery[photoIndex];
+      productImage.alt = photoDescription(variant, photoIndex);
+      for (const [index, button] of [...photoStrip.children].entries()) {
+        button.setAttribute("aria-pressed", String(index === photoIndex));
+      }
+      const active = photoStrip.children[photoIndex];
+      if (!active) return;
+      const frame = photoStrip.getBoundingClientRect();
+      const thumb = active.getBoundingClientRect();
+      if (thumb.top < frame.top) photoStrip.scrollTop += thumb.top - frame.top - 2;
+      if (thumb.bottom > frame.bottom) photoStrip.scrollTop += thumb.bottom - frame.bottom + 2;
+      if (thumb.left < frame.left) photoStrip.scrollLeft += thumb.left - frame.left - 2;
+      if (thumb.right > frame.right) photoStrip.scrollLeft += thumb.right - frame.right + 2;
+    }
+
+    function renderPhotoStrip() {
+      photoStrip.replaceChildren(...gallery.map((source, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "photo-thumb";
+        button.setAttribute("aria-label", "Фото " + (index + 1) + " из " + gallery.length);
+        const image = document.createElement("img");
+        image.src = source;
+        image.alt = "";
+        image.loading = "lazy";
+        button.append(image);
+        button.addEventListener("click", () => {
+          photoIndex = index;
+          renderPhoto();
+        });
+        return button;
+      }));
+      photoStrip.scrollTop = 0;
+      photoStrip.scrollLeft = 0;
     }
 
     function stepPhoto(index, direction, images) {
       return (index + direction + images.length) % images.length;
     }
 
-    for (const [id, direction] of [["photo-prev", -1], ["photo-next", 1]]) {
-      byId(id).addEventListener("click", () => {
-        photoIndex = stepPhoto(photoIndex, direction, gallery);
-        renderPhoto();
-      });
-    }
-
     function selectVariant(next) {
       variant = next;
       gallery = galleryFor(variant);
       photoIndex = 0;
+      renderPhotoStrip();
       renderPhoto();
       byId("product-title").textContent = variant.title;
       byId("shade").textContent = variant.name;
@@ -1113,7 +1187,11 @@
       const measurements = byId("measurements");
       measurements.hidden = help;
       byId("measurements-note").hidden = help || !usesExampleMeasures;
-      for (const input of measurements.querySelectorAll("input")) input.disabled = help;
+      for (const input of measureInputs) input.disabled = help;
+      const hasManualMeasures = !help && !orderSize.value
+        && measureInputs.some(input => input.value !== "" || input.validity.badInput);
+      orderSize.disabled = hasManualMeasures;
+      byId("manual-size-note").hidden = !hasManualMeasures;
     }
 
     function showOrderStep(step) {
@@ -1181,7 +1259,12 @@
 
     function renderEnlargedPhoto() {
       const { item, images, index } = enlargedPhoto;
-      renderGallery(item, images, index, "full-photo", "full-photo");
+      const image = byId("full-photo");
+      image.src = images[index];
+      image.alt = photoDescription(item, index);
+      byId("full-photo-position").textContent = (index + 1) + " / " + images.length;
+      byId("full-photo-prev").disabled = images.length < 2;
+      byId("full-photo-next").disabled = images.length < 2;
     }
 
     function moveEnlargedPhoto(direction) {
@@ -1244,6 +1327,10 @@
         orderModel.add(new Option("Своя модель по фото", "reference"));
         orderModel.value = initialModel?.key ?? "";
         setOrderModel(initialModel);
+        if (initialModel && productSize) {
+          orderSize.value = productSize;
+          fillOrderMeasurements();
+        }
         registration.reset();
         byId("registration-status").hidden = true;
         syncMeasurements();
@@ -1258,6 +1345,20 @@
     const measureInputs = [...byId("measurements").querySelectorAll("input")];
     let lastFilledMeasures = [];
     let usesExampleMeasures = false;
+    for (const input of measureInputs) {
+      input.addEventListener("input", () => {
+        if (orderSize.value) {
+          orderSize.value = "";
+          for (const [index, field] of measureInputs.entries()) {
+            if (field !== input && field.value === lastFilledMeasures[index]) field.value = "";
+          }
+          lastFilledMeasures = [];
+          usesExampleMeasures = false;
+        }
+        syncMeasurements();
+      });
+    }
+
     orderSize.addEventListener("change", fillOrderMeasurements);
     function fillOrderMeasurements() {
       const values = sizeGuide[orderSize.value];
