@@ -281,7 +281,10 @@
     background:repeating-linear-gradient(45deg, transparent 0 4px, currentColor 4px 5px, transparent 5px 8px); }
   .info-view { min-height:56vh; padding-block:clamp(32px,6vw,78px); }
   .info-view h1 { color:var(--wine); font-size:clamp(42px,6vw,76px); line-height:1; letter-spacing:-.052em; }
-  .story-copy { max-width:59ch; color:var(--muted); margin-block:19px 22px; font-size:clamp(17px,1.8vw,21px); }
+  .story-sections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(18px,5vw,64px); margin-block:28px 24px; }
+  .story-sections section { border-top:1px solid var(--line); padding-top:15px; }
+  .story-sections h2 { font-size:clamp(25px,3vw,39px); line-height:1.08; letter-spacing:-.03em; }
+  .story-copy { max-width:54ch; color:var(--muted); margin-top:12px; font-size:clamp(16px,1.55vw,19px); }
   .shop-bar { display:flex; align-items:center; min-height:44px; padding-top:6px; }
   .shop-bar a { color:var(--gold); font-size:14px; }
   #product-title { color:var(--wine); min-height:1.9em; font-size:clamp(40px,5vw,72px); margin-block:10px 12px; }
@@ -314,7 +317,7 @@
     .hero h1 { font-size:clamp(41px, 10vw, 66px); }
     .hero-gallery { width:min(100%, 470px); margin-inline:auto; }
     .hero-copy { margin-block:17px 19px; }
-    .home-details { grid-template-columns:1fr; }
+    .home-details, .story-sections { grid-template-columns:1fr; }
     .product { grid-template-columns:1fr; }
     #product-title { font-size:clamp(38px,9vw,62px); }
     .catalog-track { --card-gap:10px; grid-auto-columns:minmax(140px, 46%); }
@@ -374,8 +377,8 @@
           <a class="policy-link" href="#how">Как оформить заказ</a>
         </section>
         <section aria-labelledby="story-preview-title">
-          <h2 class="serif" id="story-preview-title">Легенда об Арахне</h2>
-          <p>Имя мастерской вдохновлено мифом об искусной ткачихе Арахне.</p>
+          <h2 class="serif" id="story-preview-title">История мастерской</h2>
+          <p>Легенда об Арахне дала нам имя. А любовь к тонкой пряже и вещам, в которых удобно жить, привела нас к вязанию по меркам.</p>
           <a class="policy-link" href="#story">Читать историю</a>
         </section>
       </div>
@@ -446,8 +449,18 @@
     <section class="info-view" id="story-view" aria-labelledby="story-title" hidden>
       <div class="wrap">
         <div class="weave" aria-hidden="true"></div>
-        <h1 class="serif" id="story-title">Легенда об Арахне</h1>
-        <p class="story-copy">По древнегреческому мифу, искусная ткачиха Арахна состязалась с Афиной. В пересказе Овидия после состязания она превращается в паука и продолжает плести. Мы назвали мастерскую в честь её умения работать с тонкой нитью.</p>
+        <h1 class="serif" id="story-title">История мастерской «Арахна»</h1>
+        <div class="story-sections">
+          <section aria-labelledby="legend-title">
+            <h2 class="serif" id="legend-title">Откуда взялось имя</h2>
+            <p class="story-copy">В древнегреческой легенде искусная ткачиха Арахна состязалась с Афиной. В пересказе Овидия после состязания она превращается в паука и продолжает плести. Мы назвали мастерскую в её честь: нам близко её умение превращать тонкую нить в красивую вещь.</p>
+          </section>
+          <section aria-labelledby="craft-title">
+            <h2 class="serif" id="craft-title">Как мы вяжем</h2>
+            <p class="story-copy">Мы любим тонкую пряжу и внимательно подбираем её для каждого свитера. Вяжем из кид-мохера, в зависимости от модели выбираем сочетания с шёлком или хлопком. Мелкие пайетки добавляют фактуру и лёгкое мерцание.</p>
+            <p class="story-copy">Нам важно, чтобы свитер был приятен к телу и чтобы его хотелось носить. Поэтому уточняем мерки, согласуем длину и посадку и смотрим, как пряжа ложится в вязку. Из этих деталей и складывается наша забота о человеке, для которого мы вяжем.</p>
+          </section>
+        </div>
         <a class="btn outline" href="#collection">Смотреть коллекцию</a>
       </div>
     </section>
