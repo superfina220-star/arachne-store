@@ -1165,6 +1165,22 @@
 
     const photoDialog = byId("photo-dialog");
     let enlargedPhoto;
+    let pressedPhotoBackdrop = false;
+
+    function isPhotoBackdrop(event) {
+      if (event.target !== photoDialog) return false;
+      const { left, right, top, bottom } = photoDialog.getBoundingClientRect();
+      return event.clientX < left || event.clientX > right
+        || event.clientY < top || event.clientY > bottom;
+    }
+
+    photoDialog.addEventListener("pointerdown", (event) => {
+      pressedPhotoBackdrop = event.button === 0 && isPhotoBackdrop(event);
+    });
+    photoDialog.addEventListener("click", (event) => {
+      if (pressedPhotoBackdrop && isPhotoBackdrop(event)) photoDialog.close();
+      pressedPhotoBackdrop = false;
+    });
 
     function openPhoto(item, index = 0, syncProduct = false) {
       enlargedPhoto = { item, images: galleryFor(item), index, syncProduct };
