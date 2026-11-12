@@ -47,11 +47,11 @@
     font-size: 14px;
   }
 
-  .product { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: clamp(30px, 6.3vw, 96px); align-items: center; padding-block: clamp(28px, 4vw, 58px); }
+  .product { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: clamp(30px, 6.3vw, 96px); align-items: start; padding-block: clamp(24px, 3vw, 44px); }
   .media { min-width: 0; border: 1px solid var(--line); }
   .enlarge {
     display: block; width: 100%; background: #fff; border: 0; padding: 0;
-    height: clamp(415px, 50vw, 606px); cursor: zoom-in;
+    height: clamp(310px, 38vw, 440px); cursor: zoom-in;
   }
   .enlarge img, .photo-full { display: block; width: 100%; height: 100%; object-fit: contain; }
   .media figcaption {
@@ -59,7 +59,7 @@
     font-size: 14px; color: var(--gold); text-align: center;
   }
   .overline { color: var(--gold); text-transform: uppercase; letter-spacing: .13em; font-weight: 650; font-size: 12px; }
-  h1 { font-size: clamp(44px, 6.2vw, 86px); line-height: .99; letter-spacing: -.057em; margin: 12px 0 16px; }
+  h1 { font-size: clamp(37px, 5.2vw, 66px); line-height: 1; min-height: 2em; letter-spacing: -.057em; margin: 12px 0 16px; }
   h1 em { display: block; color: var(--gold); font-weight: inherit; }
   .intro { color: var(--muted); font-size: clamp(16px, 1.5vw, 19px); max-width: 37ch; }
   .variant-label { margin: 24px 0 10px; font-size: 15px; }
@@ -158,7 +158,7 @@
     .media { grid-row: 2; }
     .product-options { grid-row: 3; }
     h1 { font-size: clamp(42px, 9vw, 65px); margin-block: 9px 11px; }
-    .enlarge { height: clamp(328px, 92vw, 510px); }
+    .enlarge { height: clamp(265px, 72vw, 390px); }
     .variant-label { margin-top: 0; }
     .how-grid { grid-template-columns: 1fr; gap: 13px; margin-top: 15px; }
     .how { padding-block: 25px; }
@@ -195,8 +195,21 @@
   .size-options input { flex:none; }
   .order-size { max-width:275px; margin-bottom:16px; }
   @media (max-width:360px) { .catalog-filters { grid-template-columns:1fr; } }
-  .site-foot .wrap { flex-wrap:wrap; padding-block:10px; }
-  .footer-links { display:flex; flex-wrap:wrap; gap:15px; }
+  .site-foot .wrap { display:grid; gap:10px; padding-block:24px 32px; }
+  .footer-links { display:flex; align-items:center; flex-wrap:wrap; gap:2px 18px; }
+  .footer-links .policy-link { display:inline-flex; align-items:center; }
+  .media { width:min(100%, 440px); justify-self:center; }
+  .gallery-controls { display:flex; align-items:center; justify-content:center; gap:14px; border-top:1px solid var(--line); }
+  .gallery-controls button { border:0; background:transparent; min-width:48px; min-height:48px; color:var(--gold); font-size:24px; }
+  .gallery-controls button:disabled { visibility:hidden; }
+  .question { display:inline-grid; place-items:center; width:23px; height:23px; border-radius:50%; background:#f8e9e5; color:#aa2525; font-weight:750; }
+  .consult-reply { margin-top:14px; padding:14px; border:1px solid var(--line); background:var(--warm); border-radius:4px; }
+  .form-note { margin-block:8px; }
+  .product-options > .policy-link + .policy-link { margin-left:12px; }
+  .slogan { max-width:44ch; margin-bottom:8px; font-weight:650; }
+  .measure-names { display:grid; grid-template-columns:repeat(auto-fit,minmax(115px,1fr)); gap:8px; margin-top:12px; }
+  .reference-preview { display:block; width:auto; max-width:100%; height:auto; max-height:155px; margin-top:8px; border-radius:4px; }
+  #measurements-note { margin-block:6px; }
   .policy-link { border:0; background:none; color:var(--gold); padding:6px 0; min-height:44px; font:inherit; text-decoration:underline; text-underline-offset:.18em; }
   .policy-copy h3 { margin:18px 0 4px; font-size:17px; }
   .policy-copy p { margin:0 0 10px; }
@@ -231,18 +244,25 @@
         <button class="enlarge" type="button" id="open-photo" aria-label="Увеличить фото">
           <img id="product-photo" alt="">
         </button>
+        <div class="gallery-controls" aria-label="Фотографии оттенка">
+          <button type="button" id="photo-prev" aria-label="Предыдущее фото">‹</button>
+          <span class="fine" id="photo-position" aria-live="polite"></span>
+          <button type="button" id="photo-next" aria-label="Следующее фото">›</button>
+        </div>
         <figcaption>Нажмите на фото для увеличения</figcaption>
       </figure>
       <div class="product-info">
         <div class="product-intro">
           <p class="overline">Ручная вязка</p>
           <h1 class="serif" id="product-title">Ажурный свитер <em>из кид-мохера</em></h1>
-          <p class="intro">Выберите оттенок. Для заказа по вашим меркам можно подобрать пряжу и размер пайеток.</p>
+          <p class="slogan">От идеи до её воплощения — один шаг. Свяжем качественный свитер по вашим меркам.</p>
+          <p class="intro">Кид-мохер, шёлк и хлопок — подберём пряжу под модель. Мелкие пайетки добавят фактуру и лёгкое мерцание.</p>
         </div>
         <div class="product-options">
           <p class="variant-label"><strong>Цвет</strong><span id="shade" aria-live="polite"></span></p>
           <div class="thumbnails" id="thumbnails" role="group" aria-label="Цвет свитера"></div>
           <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
+          <button class="policy-link" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
           <div class="product-price">
             <p class="fine">По меркам · цена для примера</p>
             <strong id="starting-price"></strong>
@@ -289,7 +309,7 @@
           </section>
           <section>
             <h3>Изготовим свитер по заказу</h3>
-            <p>Выберите модель и оставьте заявку на сайте. Согласуем мерки, цену и бесплатную доставку, затем пришлём ссылку на предоплату через Робокассу. Обычный срок изготовления — три календарных дня после подтверждения и предоплаты.</p>
+            <p>Выберите оттенок или приложите фото своей модели к заявке. Обычно вяжем свитер около трёх дней. Свяжемся с вами и согласуем бесплатную доставку по указанному адресу.</p>
             <a class="btn" href="#catalog">Выбрать свитер</a>
           </section>
         </div>
@@ -305,7 +325,9 @@
         <button class="policy-link" type="button" data-open-dialog="returns-dialog">Возврат</button>
         <button class="policy-link" type="button" data-open-dialog="terms-dialog">Оферта</button>
         <button class="policy-link" type="button" data-open-dialog="privacy-dialog">Политика обработки данных</button>
-        <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты и реквизиты</button>
+        <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты</button>
+        <button class="policy-link" type="button" data-open-dialog="requisites-dialog">Реквизиты</button>
+        <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
       </div>
     </div>
   </footer>
@@ -346,19 +368,40 @@
 
   <dialog class="compact" id="contacts-dialog" aria-labelledby="contacts-title">
     <div class="dialog-head">
-      <h2 class="serif" id="contacts-title">Контакты и реквизиты</h2>
+      <h2 class="serif" id="contacts-title">Контакты</h2>
       <button class="close" type="button" data-close aria-label="Закрыть контакты">×</button>
     </div>
     <div class="sheet policy-copy">
-      <p class="fine">Проект для arachne.okcept.ru.</p>
-      <h3>Продавец</h3>
-      <p>Общество с ограниченной ответственностью «ОКЦЕПТ». ИНН 7810978256, КПП 781401001, ОГРН 1237800055019.</p>
-      <p>Юридический адрес: 197373, Санкт-Петербург, муниципальный округ Юнтолово, Комендантский проспект, д. 32, корп. 1, литера А, кв. 326.</p>
       <h3>Вопросы и обращения</h3>
       <p>Контакты для подтверждения перед запуском: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
       <h3>Адрес возврата</h3>
       <p>Почтовый адрес для возврата уточняется. В рабочем магазине адрес и порядок отправки сообщим покупателю при подтверждении возврата.</p>
     </div>
+  </dialog>
+
+  <dialog class="compact" id="requisites-dialog" aria-labelledby="requisites-title">
+    <div class="dialog-head">
+      <h2 class="serif" id="requisites-title">Реквизиты</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть реквизиты">×</button>
+    </div>
+    <div class="sheet policy-copy">
+      <h3>Продавец</h3>
+      <p>Общество с ограниченной ответственностью «ОКЦЕПТ». ИНН 7810978256, КПП 781401001, ОГРН 1237800055019.</p>
+      <p>Юридический адрес: 197373, Санкт-Петербург, муниципальный округ Юнтолово, Комендантский проспект, д. 32, корп. 1, литера А, кв. 326.</p>
+    </div>
+  </dialog>
+
+  <dialog class="compact" id="consult-dialog" aria-labelledby="consult-title">
+    <div class="dialog-head">
+      <h2 class="serif" id="consult-title"><span class="question" aria-hidden="true">?</span> Консультант</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть консультанта">×</button>
+    </div>
+    <form class="sheet" id="consult-form">
+      <p class="dialog-sub">Спросите о пряже, мерках, фото своей модели или доставке. В макете консультант отвечает по этим темам готовыми подсказками.</p>
+      <label class="field">Ваш вопрос<input name="question" required maxlength="400" placeholder="Например, можно ли связать по моему фото?"></label>
+      <div class="step-actions"><button class="btn" type="submit">Спросить</button></div>
+      <p class="consult-reply" id="consult-reply" role="status" hidden></p>
+    </form>
   </dialog>
 
   <dialog class="compact" id="privacy-dialog" aria-labelledby="privacy-title">
@@ -369,11 +412,11 @@
     <div class="sheet policy-copy">
       <p class="fine">Проект для arachne.okcept.ru. Оператор — ООО «ОКЦЕПТ», ИНН 7810978256, ОГРН 1237800055019. Перед запуском уточняются хостинг и подключённые сервисы.</p>
       <h3>Данные и цели</h3>
-      <p>Для ответа на заявку и оформления заказа магазин обрабатывает контактные данные, параметры свитера, мерки и пожелания, которые сообщает покупатель. Для доставки используются имя получателя, телефон и данные доставки. Для оплаты, чека и возврата используются номер заказа, сумма, статус платежа и контакт для чека.</p>
+      <p>Для ответа на заявку и оформления заказа магазин обрабатывает контактные данные, параметры свитера, мерки, пожелания и фото модели, которые покупатель добавляет к заявке. Для доставки используются имя получателя, телефон и данные доставки. Для оплаты, чека и возврата используются номер заказа, сумма, статус платежа и контакт для чека.</p>
       <h3>Основания и получатели</h3>
       <p>Данные обрабатываются для рассмотрения заявки по инициативе покупателя, исполнения договора и требований закона. Согласие, когда оно требуется, оформляется отдельно. Для исполнения заказа необходимые данные могут передаваться Робокассе и участникам расчётов для платежа и чека, перевозчику для доставки и поставщикам инфраструктуры в пределах их роли. Реквизиты карты вводятся на платёжной странице Робокассы.</p>
       <h3>Хранение и права покупателя</h3>
-      <p>Данные хранятся в течение срока, необходимого для работы с обращением, исполнения заказа и выполнения требований закона. По достижении цели данные удаляются или обезличиваются, если их дальнейшее хранение не требуется. Можно запросить сведения об обработке данных, потребовать их уточнения или удаления в предусмотренных законом случаях, а также отозвать ранее данное согласие. Канал для обращений указан в разделе «Контакты и реквизиты».</p>
+      <p>Данные хранятся в течение срока, необходимого для работы с обращением, исполнения заказа и выполнения требований закона. По достижении цели данные удаляются или обезличиваются, если их дальнейшее хранение не требуется. Можно запросить сведения об обработке данных, потребовать их уточнения или удаления в предусмотренных законом случаях, а также отозвать ранее данное согласие. Канал для обращений указан в разделе «Контакты».</p>
     </div>
   </dialog>
 
@@ -383,10 +426,10 @@
       <button class="close" type="button" data-close aria-label="Закрыть таблицу размеров">×</button>
     </div>
     <div class="sheet">
-      <p class="fine">Обхват груди измеряется по телу. Длина свитера и рукава — по изделию.</p>
+      <p class="fine">При выборе размера эти значения подставятся в форму заказа.</p>
       <p id="size-guide-empty">Мерки для таблицы пока уточняются.</p>
       <div class="size-scroll"><table class="size-table" id="size-guide-table" hidden>
-        <thead><tr><th scope="col">Размер</th><th scope="col">Обхват груди, см</th><th scope="col">Длина свитера, см</th><th scope="col">Длина рукава, см</th></tr></thead>
+        <thead><tr><th scope="col">Размер</th><th scope="col" data-measure="1">Длина 1, см</th><th scope="col" data-measure="2">Длина 2, см</th><th scope="col" data-measure="3">Длина 3, см</th></tr></thead>
         <tbody id="size-guide-rows"></tbody>
       </table></div>
     </div>
@@ -398,9 +441,14 @@
       <button class="close" type="button" data-close aria-label="Закрыть настройку размеров">×</button>
     </div>
     <form class="sheet" id="size-admin-form">
-      <p class="fine">Заполните общую таблицу. На витрине появятся строки, в которых указана хотя бы одна мерка.</p>
+      <p class="fine">Задайте названия мерок и укажите значения для каждого размера. Эти значения подставятся в форму заказа при выборе размера.</p>
+      <div class="measure-names">
+        <label class="field">Название мерки 1<input name="measure1" required maxlength="45"></label>
+        <label class="field">Название мерки 2<input name="measure2" required maxlength="45"></label>
+        <label class="field">Название мерки 3<input name="measure3" required maxlength="45"></label>
+      </div>
       <div class="size-scroll"><table class="size-table">
-        <thead><tr><th scope="col">Размер</th><th scope="col">Обхват груди, см</th><th scope="col">Длина свитера, см</th><th scope="col">Длина рукава, см</th></tr></thead>
+        <thead><tr><th scope="col">Размер</th><th scope="col" data-measure="1">Длина 1, см</th><th scope="col" data-measure="2">Длина 2, см</th><th scope="col" data-measure="3">Длина 3, см</th></tr></thead>
         <tbody id="size-admin-rows"></tbody>
       </table></div>
       <button class="btn" type="submit">Сохранить таблицу</button>
@@ -425,7 +473,7 @@
           <div class="size-options" id="model-sizes"></div>
           <p class="fine">Можно отметить несколько точных размеров или уточнить их позже.</p>
         </fieldset>
-        <label class="field">Фото свитера<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+        <label class="field">Фотографии свитера<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" multiple required></label>
       </div>
       <div class="step-actions"><button class="btn" type="submit">Добавить в коллекцию</button></div>
       <p class="fine status-text" id="catalog-error" role="alert"></p>
@@ -456,10 +504,11 @@
           <fieldset>
             <legend>Мерки</legend>
             <div id="measurements" class="fields measurements">
-              <label class="field">Длина 1, см<input name="length1" type="number" inputmode="decimal" min="1" step="any" placeholder="см" required></label>
-              <label class="field">Длина 2, см<input name="length2" type="number" inputmode="decimal" min="1" step="any" placeholder="см" required></label>
-              <label class="field">Длина 3, см<input name="length3" type="number" inputmode="decimal" min="1" step="any" placeholder="см" required></label>
+              <label class="field"><span data-measure="1">Длина 1, см</span><input name="length1" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
+              <label class="field"><span data-measure="2">Длина 2, см</span><input name="length2" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
+              <label class="field"><span data-measure="3">Длина 3, см</span><input name="length3" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
             </div>
+            <p class="fine" id="measurements-note" hidden>Для незаполненных мерок макет подставляет 1 см. Впишите свои значения или попросите помочь снять мерки.</p>
             <label class="check"><input type="checkbox" name="help" aria-controls="measurements">Помогите снять мерки</label>
           </fieldset>
           <fieldset>
@@ -485,6 +534,15 @@
         <label class="field comment">Пожелания к заказу · по желанию
           <textarea name="note" maxlength="600" rows="2" placeholder="Например, свободная посадка"></textarea>
         </label>
+        <label class="field comment">Адрес доставки и удобное время · по желанию
+          <textarea name="delivery" maxlength="500" rows="2" placeholder="Например, Санкт-Петербург, ул. …, вечером после 18:00"></textarea>
+        </label>
+        <label class="field comment">Фото своей модели · по желанию
+          <input name="reference" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="reference-note">
+        </label>
+        <p class="fine form-note" id="reference-note">Приложите фото свитера, который хотите взять за образец. JPG, PNG или WebP, до 10 МБ.</p>
+        <img class="reference-preview" id="reference-preview" alt="Фото модели для заказа" hidden>
+        <button class="policy-link fine" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
         <button class="policy-link fine" type="button" data-open-dialog="privacy-dialog">Как обрабатываются данные заявки</button>
         <p class="fine status-text" id="registration-status" role="status" hidden>Регистрация в макете завершена. Проверьте параметры и оставьте заявку.</p>
       </div>
@@ -509,6 +567,9 @@
     <div class="sheet outcome" id="order-outcome" hidden>
       <p id="request-config"></p>
       <p id="request-measurements"></p>
+      <p id="request-delivery" hidden></p>
+      <p id="request-note" hidden></p>
+      <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
       <p class="fine">В рабочем магазине заявка с этими параметрами поступит мастерской для согласования.</p>
       <div><button class="btn" type="button" data-close>К коллекции</button></div>
@@ -551,7 +612,7 @@
       { key: "micro", label: "Очень мелкие пайетки, %", value: 50 },
       { key: "small", label: "Мелкие пайетки, %", value: 90 }
     ];
-    const defaultStore = "";
+    const defaultStore = "https://www.ozon.ru/seller/oktsept/";
     const cap = 200; // Надбавки хранятся в десятых долях процента.
     const storageKey = "svitera-pricing-v2";
     const rubles = new Intl.NumberFormat("ru-RU", {
@@ -648,7 +709,7 @@
             defaults[key] = value;
           }
         }
-        if (typeof saved.store === "string") defaults.store = validateStore(saved.store);
+        if (typeof saved.store === "string") defaults.store = validateStore(saved.store) || defaultStore;
       } catch {
         // При открытии файла настройки могут храниться только до закрытия страницы.
       }
@@ -686,10 +747,31 @@
       updateQuote();
     }
 
+    let gallery = [];
+    let photoIndex = 0;
+
+    function renderPhoto() {
+      const image = byId("product-photo");
+      image.src = gallery[photoIndex];
+      image.alt = [variant.title, variant.name, "Фото " + (photoIndex + 1)].filter(Boolean).join(" · ");
+      byId("photo-position").textContent = (photoIndex + 1) + " / " + gallery.length;
+      byId("photo-prev").disabled = gallery.length < 2;
+      byId("photo-next").disabled = gallery.length < 2;
+    }
+
+    for (const [id, offset] of [["photo-prev", -1], ["photo-next", 1]]) {
+      byId(id).addEventListener("click", () => {
+        photoIndex = (photoIndex + offset + gallery.length) % gallery.length;
+        renderPhoto();
+      });
+    }
+
     function selectVariant(next) {
       variant = next;
-      byId("product-photo").src = photos[variant.key];
-      byId("product-photo").alt = [variant.title, variant.name].filter(Boolean).join(" · ");
+      const cover = photos[variant.key];
+      gallery = variant.gallery?.length ? variant.gallery : variant.example ? [cover, cover, cover] : [cover];
+      photoIndex = 0;
+      renderPhoto();
       byId("product-title").textContent = variant.title;
       byId("shade").textContent = variant.name;
       byId("shade").parentElement.hidden = !variant.name;
@@ -703,6 +785,7 @@
       const help = order.elements.help.checked;
       const measurements = byId("measurements");
       measurements.hidden = help;
+      byId("measurements-note").hidden = help || !usesExampleMeasures;
       for (const input of measurements.querySelectorAll("input")) input.disabled = help;
     }
 
@@ -736,13 +819,16 @@
 
     byId("open-photo").addEventListener("click", () => {
       byId("photo-title").textContent = variant.title;
-      byId("full-photo").src = photos[variant.key];
+      byId("full-photo").src = gallery[photoIndex];
       byId("full-photo").alt = byId("product-photo").alt;
       byId("photo-dialog").showModal();
     });
 
     byId("open-order").addEventListener("click", () => {
       order.reset();
+      updateReference();
+      usesExampleMeasures = false;
+      lastFilledMeasures = [];
       const sizes = variant.sizes ?? [];
       orderSize.replaceChildren(new Option("Указать мерки", ""));
       for (const size of sizes) orderSize.add(new Option(String(size), String(size)));
@@ -758,6 +844,50 @@
       showOrderStep("order");
       orderDialog.showModal();
     });
+    const measureInputs = [...byId("measurements").querySelectorAll("input")];
+    let lastFilledMeasures = [];
+    let usesExampleMeasures = false;
+    orderSize.addEventListener("change", () => {
+      const values = sizeGuide[orderSize.value];
+      usesExampleMeasures = Boolean(orderSize.value) && measureInputs.some((_, index) => !values?.[index]);
+      measureInputs.forEach((input, index) => {
+        if (orderSize.value) {
+          input.value = String(values?.[index] || 1);
+        } else if (input.value === lastFilledMeasures[index]) {
+          input.value = "";
+        }
+      });
+      lastFilledMeasures = orderSize.value ? measureInputs.map(input => input.value) : [];
+      syncMeasurements();
+    });
+
+    const imageTypes = ["image/jpeg", "image/png", "image/webp"];
+    const referenceInput = order.elements.reference;
+    let referenceUrl;
+    function updateReference() {
+      const preview = byId("reference-preview");
+      if (referenceUrl) URL.revokeObjectURL(referenceUrl);
+      referenceUrl = undefined;
+      preview.removeAttribute("src");
+      preview.hidden = true;
+      referenceInput.setCustomValidity("");
+      const file = referenceInput.files[0];
+      if (!file) return;
+      if (!imageTypes.includes(file.type) || file.size > 10 * 1024 * 1024) {
+        referenceInput.setCustomValidity("Выберите фото JPG, PNG или WebP до 10 МБ.");
+        referenceInput.reportValidity();
+        return;
+      }
+      referenceUrl = URL.createObjectURL(file);
+      preview.src = referenceUrl;
+      preview.hidden = false;
+    }
+    referenceInput.addEventListener("change", updateReference);
+    orderDialog.addEventListener("close", () => {
+      referenceInput.value = "";
+      updateReference();
+    });
+
     order.elements.help.addEventListener("change", syncMeasurements);
     order.elements.yarn.addEventListener("change", updateQuote);
     order.elements.sequins.addEventListener("change", updateQuote);
@@ -780,9 +910,19 @@
       ].filter(Boolean).join(" · ");
       byId("request-measurements").textContent = order.elements.help.checked
         ? "Нужна помощь с мерками"
-        : [...byId("measurements").querySelectorAll("input")]
-          .map((input, index) => "Длина " + (index + 1) + " — " + input.value.replace(".", ",") + " см")
+        : measureInputs
+          .map((input, index) => measurementsNames[index] + " — " + input.value.replace(".", ",") + " см")
           .join(" · ");
+      const details = [
+        ["request-delivery", "Доставка", order.elements.delivery.value.trim()],
+        ["request-note", "Пожелания", order.elements.note.value.trim()],
+        ["request-reference", "Фото модели", referenceInput.files[0]?.name]
+      ];
+      for (const [id, label, value] of details) {
+        const line = byId(id);
+        line.hidden = !value;
+        line.textContent = value ? label + " — " + value : "";
+      }
       byId("request-price").textContent = byId("order-price").textContent;
       showOrderStep("done");
       outcome.querySelector("button").focus();
@@ -836,7 +976,7 @@
         storeField.reportValidity();
         return;
       }
-      const saved = { store };
+      const saved = { store: store || defaultStore };
       for (const { key, base } of priceFields) {
         const value = settingsForm.elements[key].valueAsNumber;
         saved[key] = base ? value : Math.round(value * 10);
@@ -932,22 +1072,22 @@
       event.preventDefault();
       const fields = new FormData(catalogForm);
       const title = fields.get("modelName").trim();
-      const file = fields.get("photo");
-      if (!title || !["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      const files = fields.getAll("photo");
+      if (!title || !files.length || files.some(file => !imageTypes.includes(file.type))) {
         byId("catalog-error").textContent = "Укажите название и выберите фото JPG, PNG или WebP.";
         return;
       }
       const button = catalogForm.querySelector('[type="submit"]');
       button.disabled = true;
       try {
-        const photo = await new Promise((resolve, reject) => {
+        const gallery = await Promise.all(files.map(file => new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result);
           reader.onerror = () => reject(reader.error);
           reader.readAsDataURL(file);
-        });
+        })));
         const item = {
-          key: "model-" + crypto.randomUUID(), title, photo,
+          key: "model-" + crypto.randomUUID(), title, photo: gallery[0], gallery,
           name: fields.get("colorName").trim(),
           colorGroup: fields.get("colorGroup"),
           sizes: fields.getAll("modelSizes").map(Number).sort((a, b) => a - b)
@@ -983,12 +1123,20 @@
 
     const guideKey = "svitera-size-guide-v1";
     const guideSizes = sizeGroups.flat();
-    const measurementsNames = ["Обхват груди", "Длина свитера", "Длина рукава"];
+    const defaultMeasureNames = ["Длина 1", "Длина 2", "Длина 3"];
+    const sizeAdminForm = byId("size-admin-form");
+    const measureNameInputs = defaultMeasureNames.map((_, index) => sizeAdminForm.elements["measure" + (index + 1)]);
+    let measurementsNames = [...defaultMeasureNames];
     const guideInputs = new Map();
     let sizeGuide = {};
     try {
       const saved = JSON.parse(localStorage.getItem(guideKey));
-      if (saved && typeof saved === "object") sizeGuide = saved;
+      if (saved && typeof saved === "object") sizeGuide = saved.sizes ?? saved;
+      if (Array.isArray(saved?.names)) {
+        measurementsNames = defaultMeasureNames.map((name, index) => saved.names[index] || name);
+      } else if (Object.values(sizeGuide).some(values => Array.isArray(values) && values.some(Number.isFinite))) {
+        measurementsNames = ["Обхват груди", "Длина свитера", "Длина рукава"];
+      }
     } catch {}
 
     for (const size of guideSizes) {
@@ -1012,6 +1160,15 @@
     }
 
     function renderSizeGuide() {
+      for (const [index, name] of measurementsNames.entries()) {
+        measureNameInputs[index].value = name;
+        for (const label of document.querySelectorAll('[data-measure="' + (index + 1) + '"]')) {
+          label.textContent = name + ", см";
+        }
+        for (const [size, inputs] of guideInputs) {
+          inputs[index].setAttribute("aria-label", name + ", размер " + size);
+        }
+      }
       const rows = byId("size-guide-rows");
       rows.replaceChildren();
       for (const size of guideSizes) {
@@ -1026,19 +1183,36 @@
       byId("size-guide-empty").hidden = !empty;
     }
 
-    byId("size-admin-form").addEventListener("submit", (event) => {
+    sizeAdminForm.addEventListener("submit", (event) => {
       event.preventDefault();
+      measurementsNames = measureNameInputs.map((input, index) => input.value.trim() || defaultMeasureNames[index]);
       sizeGuide = Object.fromEntries([...guideInputs].map(([size, inputs]) => [
         size, inputs.map(input => input.value ? input.valueAsNumber : null)
       ]));
       renderSizeGuide();
       let message = "Таблица обновлена в этом браузере.";
       try {
-        localStorage.setItem(guideKey, JSON.stringify(sizeGuide));
+        localStorage.setItem(guideKey, JSON.stringify({ names: measurementsNames, sizes: sizeGuide }));
       } catch {
         message = "Таблица обновлена до закрытия страницы.";
       }
       byId("size-admin-status").textContent = message;
+    });
+
+    const consultTopics = [
+      [/фото|образец|свою модель|картин/u, "Откройте «Заказать по меркам» и приложите фото в поле «Фото своей модели». В пожеланиях можно указать, какие детали вы хотите повторить."],
+      [/мерк|размер|длин|обхват|посадк/u, "В заказе можно выбрать размер из списка или ввести свои мерки в сантиметрах. Если сомневаетесь, отметьте «Помогите снять мерки»."],
+      [/пряж|мохер|хлоп|ш[её]лк|пайет|состав|нит|отделк/u, "Вяжем из качественной пряжи. Варианты включают кид-мохер, сочетания с хлопком или шёлком и мелкие пайетки для фактуры. Состав зависит от модели и согласуется при заказе."],
+      [/достав|срок|дн[еяи]|когда|изготов/u, "Обычно вяжем свитер около трёх дней. Оставьте адрес и удобное время в заявке. Мы свяжемся с вами, чтобы согласовать бесплатную доставку."],
+      [/озон|ozon|готов/u, "Готовые свитеры можно посмотреть по кнопке «Магазин на Ozon». По вашим меркам свяжем свитер по заявке на сайте."]
+    ];
+    byId("consult-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const question = event.currentTarget.elements.question.value.trim().toLowerCase();
+      const reply = byId("consult-reply");
+      reply.textContent = consultTopics.find(([pattern]) => pattern.test(question))?.[1]
+        ?? "Я могу подсказать, как выбрать размер, пряжу, приложить фото или указать доставку. Другой вопрос можно оставить в пожеланиях к заказу.";
+      reply.hidden = false;
     });
 
     for (const button of document.querySelectorAll("[data-open-dialog]")) {
