@@ -74,7 +74,7 @@
   .thumbnail { border:1px solid var(--line); border-radius:3px; min-height:48px; padding:3px; background:#fff; }
   .thumbnail:focus-visible { outline-offset:-2px; }
   .thumbnail[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); }
-  .thumbnail img { display:block; width:100%; height:clamp(48px, 8vw, 88px); object-fit:cover; object-position:center 37%; }
+  .thumbnail img { display:block; width:100%; height:clamp(48px, 8vw, 88px); object-fit:contain; object-position:center; }
   .product-price { margin: 22px 0 13px; }
   .product-price strong { font-size: clamp(22px, 2.5vw, 31px); line-height: 1.2; font-variant-numeric: tabular-nums; }
   .fine { color: var(--muted); font-size: 13px; }
@@ -144,7 +144,9 @@
   .step-actions { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
   .outcome { display: grid; gap: 11px; }
   .photo-dialog { width: min(730px, calc(100% - 28px)); }
-  .photo-full { height: min(70vh, 820px); margin-bottom: 12px; }
+  .photo-dialog .sheet { padding-bottom:12px; }
+  .photo-full { height:min(66vh, 720px); height:min(66dvh, 720px); margin-bottom:8px; background:#fff; }
+  .photo-dialog .gallery-controls { margin-top:4px; }
 
   @media (max-width: 1024px) {
     .wrap { width: calc(100% - 52px); }
@@ -171,7 +173,7 @@
   }
   @media (max-width: 615px) {
     .order-grid { grid-template-columns: 1fr; }
-    .photo-full { height: min(65vh, 680px); }
+    .photo-full { height:min(62dvh, 680px); }
   }
   @media (max-width: 390px) {
     .order-footer { align-items: stretch; flex-direction: column; }
@@ -187,9 +189,9 @@
     overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:3px; padding:5px 3px 12px; margin-top:13px; }
   .catalog-card { display:grid; grid-template-rows:156px auto; gap:5px; padding:6px; width:100%;
     border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink); text-align:left; scroll-snap-align:start; }
-  .catalog-card[aria-pressed="true"] { box-shadow:inset 0 0 0 1px var(--gold); border-color:var(--gold); }
+  .catalog-card:has(.catalog-select[aria-pressed="true"]) { box-shadow:inset 0 0 0 1px var(--gold); border-color:var(--gold); }
   .catalog-card img { width:100%; height:100%; object-fit:contain; }
-  .catalog-card span { padding:4px 6px; overflow-wrap:anywhere; }
+  .catalog-select { overflow-wrap:anywhere; }
   .catalog-status { min-height:1.5em; }
   .add-fields { display:grid; gap:12px; }
   .catalog-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); max-width:510px; gap:10px; margin-top:16px; }
@@ -234,14 +236,20 @@
   .how a[aria-disabled="true"] { color:var(--muted); }
   @media (max-width:650px) { .how-grid.order-ways { grid-template-columns:1fr; } }
   .site-head { background:var(--paper); }
-  .site-head .wrap { grid-template-columns:1fr auto; min-height:76px; }
-  .wordmark { width:max-content; display:inline-grid; gap:5px; text-decoration:none; color:var(--wine); }
+  .site-head .wrap { grid-template-columns:minmax(155px,.85fr) minmax(0,1.65fr); min-height:76px; }
+  .wordmark { width:max-content; display:inline-grid; grid-template-columns:auto auto; grid-template-rows:auto auto; column-gap:9px; row-gap:3px; text-decoration:none; color:var(--wine); }
+  .wordmark strong { grid-column:1; }
+  .wordmark small { grid-column:1; grid-row:2; }
   .wordmark strong {
     display:flex; align-items:center; gap:8px;
     font:italic 500 clamp(32px,4vw,39px)/.99 "Cormorant Garamond","Noto Serif Display",Georgia,serif;
     letter-spacing:-.045em;
   }
-  .wordmark-spider { position:relative; flex:none; width:30px; height:25px; color:#876138; }
+  .wordmark-spider { --spider-scale:1; position:relative; width:30px; height:25px; color:#876138; transform:scale(var(--spider-scale)); }
+  .wordmark-icon { grid-column:2; grid-row:1 / 3; width:82px; height:62px; display:grid; place-items:center; }
+  .site-head .wordmark-spider { --spider-scale:2.75; }
+  .site-foot .wordmark-icon { width:38px; height:40px; }
+  .site-foot .wordmark-spider { --spider-scale:1.2; }
   .wordmark-spider::before, .wordmark-spider::after {
     position:absolute; left:50%; translate:-50% 0; content:""; border-radius:50%; background:currentColor;
   }
@@ -273,10 +281,14 @@
   .hero-gallery { display:grid; grid-template-columns:minmax(0,1.58fr) minmax(0,1fr); grid-template-rows:repeat(2,minmax(0,1fr)); gap:10px; aspect-ratio:1.07; }
   .hero-photo { display:block; min-height:0; overflow:hidden; border:1px solid #cfb690; background:#fff; }
   .hero-photo-main { grid-row:span 2; }
-  .hero-photo img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 37%; }
+  .hero-photo img { display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
   #shop-view { display:flex; flex-direction:column; }
-  #shop-view.catalog-first .catalog { border-top:0; padding-top:24px; padding-bottom:14px; }
-  #shop-view.catalog-first .product { border-top:1px solid var(--line); }
+  #shop-view .catalog { border-top:0; }
+  .catalog-card > button { min-width:0; padding:0; border:0; background:#fff; color:inherit; text-align:left; }
+  .catalog-card .catalog-zoom { min-height:0; cursor:zoom-in; }
+  .catalog-card .catalog-select { display:grid; align-content:start; gap:3px; min-height:48px; padding:5px 7px; }
+  .catalog-select:hover strong { text-decoration:underline; }
+  .catalog-card img { display:block; }
   .home-details { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(22px,5vw,72px); padding-block:clamp(36px,6vw,82px); }
   .home-details h2 { font-size:clamp(30px,4vw,54px); line-height:1.02; letter-spacing:-.045em; margin-bottom:15px; }
   .home-details p { max-width:47ch; color:var(--muted); }
@@ -288,6 +300,12 @@
   .story-divider { display:flex; align-items:center; gap:10px; width:min(100%, 310px); height:1px; color:#9b7548; margin-top:26px; }
   .story-divider::before, .story-divider::after { content:""; flex:1; border-top:1px solid currentColor; }
   .story-divider { background:radial-gradient(circle at center, currentColor 1px, transparent 2px) center / 10px 6px no-repeat; height:6px; }
+  #order-dialog { inset:0; margin:auto; scrollbar-gutter:stable both-edges; }
+  #order-dialog > .dialog-head { display:grid; grid-template-columns:48px minmax(0,1fr) 48px; align-items:start; gap:6px; }
+  #order-title { grid-column:2; text-align:center; align-self:center; }
+  #order-dialog > .dialog-head .close { grid-column:3; }
+  .order-model-preview { display:flex; align-items:center; gap:10px; margin-top:8px; color:var(--muted); font-size:14px; }
+  .order-model-preview img { display:block; width:58px; height:66px; object-fit:contain; background:#fff; border:1px solid var(--line); border-radius:3px; }
   .order-model-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr)); align-items:start; gap:12px; }
   .order-model-fields .order-size { margin:0; max-width:none; }
   .chat-launcher { position:fixed; z-index:3; inset:auto max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) auto; border-radius:24px; box-shadow:0 5px 16px #49202b28; }
@@ -296,10 +314,22 @@
   dialog.consult-chat { margin:auto 14px 14px auto; width:min(390px,calc(100% - 28px)); }
   dialog.consult-chat::backdrop { background:#2a211e25; }
   .site-foot { padding-bottom:48px; }
-  .story-sections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(18px,5vw,64px); margin-block:28px 24px; }
-  .story-sections section { border-top:1px solid var(--line); padding-top:15px; }
-  .story-sections h2 { font-size:clamp(25px,3vw,39px); line-height:1.08; letter-spacing:-.03em; }
-  .story-copy { max-width:54ch; color:var(--muted); margin-top:12px; font-size:clamp(16px,1.55vw,19px); }
+  .story-legend { display:grid; grid-template-columns:minmax(0,1fr) minmax(220px,.78fr); align-items:center; gap:clamp(25px,7vw,100px); margin-top:28px; }
+  .story-legend h2, .story-craft > h2 { color:var(--wine); font-size:clamp(33px,4.5vw,59px); line-height:1.04; letter-spacing:-.045em; }
+  .story-copy { max-width:52ch; color:var(--muted); margin-top:14px; font-size:clamp(16px,1.55vw,19px); }
+  .athena-portrait { display:block; width:min(100%,370px); height:auto; justify-self:center; aspect-ratio:1; }
+  .story-craft { border-top:1px solid var(--line); margin-top:clamp(30px,5vw,65px); padding-top:clamp(26px,4vw,55px); }
+  .craft-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(14px,2.4vw,32px); margin-top:24px; }
+  .craft-grid section { min-width:0; }
+  .craft-grid h3 { color:var(--wine); font-size:clamp(23px,2.6vw,35px); line-height:1.08; margin-block:14px 8px; }
+  .craft-grid p { color:var(--muted); }
+  .craft-photo { width:100%; display:block; aspect-ratio:1.42; object-fit:cover; object-position:center; background:var(--warm); }
+  .craft-colors { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px; }
+  .craft-colors img { display:block; width:100%; height:100%; object-fit:cover; }
+  .craft-colors img:first-child { object-position:center 60%; }
+  .story-finish { border-top:1px solid var(--line); margin-top:clamp(24px,4vw,50px); padding-top:18px; }
+  .story-finish h3 { font-size:clamp(24px,3vw,37px); color:var(--wine); }
+  .story-finish .btn { margin-top:15px; }
   .shop-bar { display:flex; align-items:center; min-height:44px; padding-top:6px; }
   .shop-bar a { color:var(--gold); font-size:14px; }
   #product-title { color:var(--wine); min-height:1.9em; font-size:clamp(40px,5vw,72px); margin-block:10px 12px; }
@@ -309,7 +339,7 @@
   .product-info .overline { letter-spacing:.11em; }
   .product .media { outline:1px solid var(--line); outline-offset:4px; }
   .thumbnail { border-radius:2px; }
-  .thumbnail[aria-pressed="true"], .catalog-card[aria-pressed="true"] { border-color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
+  .thumbnail[aria-pressed="true"], .catalog-card:has(.catalog-select[aria-pressed="true"]) { border-color:var(--wine); box-shadow:inset 0 0 0 1px var(--wine); }
   .catalog { border-top:1px solid var(--line); padding-block:24px 44px; }
   .catalog-track { --card-gap:16px; grid-auto-columns:calc((100% - 3 * var(--card-gap))/4); gap:var(--card-gap); }
   .catalog-card { grid-template-rows:clamp(130px,19vw,234px) auto; padding:6px; background:#fff; border-radius:2px; }
@@ -332,7 +362,11 @@
     .hero h1 { font-size:clamp(41px, 10vw, 66px); }
     .hero-gallery { width:min(100%, 470px); margin-inline:auto; }
     .hero-copy { margin-block:17px 19px; }
-    .home-details, .story-sections { grid-template-columns:1fr; }
+    .home-details, .story-legend, .craft-grid { grid-template-columns:1fr; }
+    .athena-portrait { width:min(100%, 245px); }
+    .craft-photo { max-height:265px; }
+    .wordmark-icon { width:53px; height:50px; }
+    .site-head .wordmark-spider { --spider-scale:1.7; }
     .product { grid-template-columns:1fr; }
     #product-title { font-size:clamp(38px,9vw,62px); }
     .catalog-track { --card-gap:10px; grid-auto-columns:minmax(140px, 46%); }
@@ -347,12 +381,13 @@
   <header class="site-head">
     <div class="wrap">
       <a class="wordmark" href="#top" aria-label="Арахна, главная">
-        <strong>Арахна<span class="wordmark-spider" aria-hidden="true"><i></i><i></i><i></i><i></i></span></strong>
+        <strong>Арахна</strong>
         <small>Свитера с характером</small>
+        <span class="wordmark-icon" aria-hidden="true"><span class="wordmark-spider"><i></i><i></i><i></i><i></i></span></span>
       </a>
       <nav class="nav" aria-label="Навигация">
         <a href="#story" id="nav-story">История</a>
-        <button class="policy-link" type="button" data-open-order aria-haspopup="dialog">Заказать</button>
+        <a href="#order" id="nav-order">Заказать</a>
         <a href="#collection" id="nav-collection">Коллекция</a>
         <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
       </nav>
@@ -368,19 +403,19 @@
             <h1 class="serif" id="home-title">Свитера с характером<em>по вашим меркам</em></h1>
             <p class="hero-copy">Свяжем ажурный свитер с той посадкой и длиной, которые вам удобны. Выберите модель из коллекции или пришлите фото своего образца.</p>
             <div class="hero-actions">
-              <button class="btn" type="button" data-open-order aria-haspopup="dialog">Заказать</button>
+              <a class="btn" href="#order">Заказать</a>
               <a class="btn outline" href="#catalog">Коллекция</a>
               <a class="btn outline" id="home-ozon-link" target="_blank" rel="noopener noreferrer">Перейти в магазин на Ozon</a>
             </div>
           </div>
           <div class="hero-gallery" aria-label="Свитера из коллекции">
-            <a class="hero-photo hero-photo-main" href="#collection" data-home-model="lilac">
+            <a class="hero-photo hero-photo-main" href="#order" data-home-model="lilac">
               <img alt="Сиреневый туман">
             </a>
-            <a class="hero-photo" href="#collection" data-home-model="milk">
+            <a class="hero-photo" href="#order" data-home-model="milk">
               <img alt="Молочный свет">
             </a>
-            <a class="hero-photo" href="#collection" data-home-model="burgundy">
+            <a class="hero-photo" href="#order" data-home-model="burgundy">
               <img alt="Бургунди">
             </a>
           </div>
@@ -449,6 +484,7 @@
           <button class="btn outline arrow" type="button" id="catalog-prev" aria-label="Листать влево">‹</button>
           <button class="btn outline arrow" type="button" id="catalog-next" aria-label="Листать вправо">›</button>
           <button class="btn outline" type="button" id="catalog-add" hidden>Добавить свитер</button>
+          <a class="btn outline" id="catalog-ozon-link" target="_blank" rel="noopener noreferrer">Перейти на Ozon</a>
         </div>
       </div>
       <div class="catalog-filters">
@@ -471,18 +507,43 @@
         <div class="weave" aria-hidden="true"></div>
         <h1 class="serif" id="story-title">История мастерской «Арахна»</h1>
         <div class="story-divider" aria-hidden="true"></div>
-        <div class="story-sections">
-          <section aria-labelledby="legend-title">
+        <section class="story-legend" aria-labelledby="legend-title">
+          <div>
             <h2 class="serif" id="legend-title">Откуда взялось имя</h2>
-            <p class="story-copy">В древнегреческой легенде искусная ткачиха Арахна состязалась с Афиной. В пересказе Овидия после состязания она превращается в паука и продолжает плести. Мы назвали мастерскую в её честь: нам близко её умение превращать тонкую нить в красивую вещь.</p>
-          </section>
-          <section aria-labelledby="craft-title">
-            <h2 class="serif" id="craft-title">Как мы вяжем</h2>
-            <p class="story-copy">Мы любим тонкую пряжу и внимательно подбираем её для каждого свитера. Вяжем из кид-мохера, в зависимости от модели выбираем сочетания с шёлком или хлопком. Мелкие пайетки добавляют фактуру и лёгкое мерцание.</p>
-            <p class="story-copy">Нам важно, чтобы свитер был приятен к телу и чтобы его хотелось носить. Поэтому уточняем мерки, согласуем длину и посадку и смотрим, как пряжа ложится в вязку. Из этих деталей и складывается наша забота о человеке, для которого мы вяжем.</p>
-          </section>
-        </div>
-        <a class="btn outline" href="#collection">Смотреть коллекцию</a>
+            <p class="story-copy">В древнегреческой легенде ткачиха Арахна бросила вызов Афине. В пересказе Овидия обе садятся за ткацкий станок и создают свои полотна. После состязания Арахна превращается в паука и продолжает плести.</p>
+            <p class="story-copy">Мы назвали мастерскую в честь Арахны. В этой истории нам ближе всего её мастерство и то, сколько можно сделать с одной тонкой нитью.</p>
+          </div>
+          <canvas id="athena-portrait" class="athena-portrait" width="640" height="640" role="img" aria-label="Тонкий контур Афины в шлеме с гребнем"></canvas>
+        </section>
+        <section class="story-craft" aria-labelledby="craft-title">
+          <h2 class="serif" id="craft-title">Как мы вяжем</h2>
+          <div class="craft-grid">
+            <section aria-labelledby="mohair-title">
+              <div class="craft-photo craft-colors" aria-label="Три оттенка ажурной вязки">
+                <img src="assets/sweaters/milk-2.webp" loading="lazy" alt="Молочно-белая вязка крупным планом">
+                <img src="assets/sweaters/blue-6.webp" loading="lazy" alt="Синяя вязка крупным планом">
+                <img src="assets/sweaters/green-7.webp" loading="lazy" alt="Зелёная вязка крупным планом">
+              </div>
+              <h3 class="serif" id="mohair-title">Кид-мохер и оттенки</h3>
+              <p>Тонкий кид-мохер даёт лёгкое ажурное полотно. Нам нравится, как одна и та же вязка по-разному выглядит в молочном, синем или зелёном оттенке.</p>
+            </section>
+            <section aria-labelledby="silk-title">
+              <img class="craft-photo" src="assets/sweaters/blue-7.webp" loading="lazy" alt="Переплетение тонких нитей в синем свитере">
+              <h3 class="serif" id="silk-title">Шёлк и хлопок</h3>
+              <p>В зависимости от модели сочетаем кид-мохер с тонкой шёлковой или хлопковой нитью. Подбираем состав под фактуру, которую хотим получить.</p>
+            </section>
+            <section aria-labelledby="sequins-title">
+              <img class="craft-photo" src="assets/sweaters/midnight-8.webp" loading="lazy" alt="Мелкие круглые пайетки в тёмно-синей вязке">
+              <h3 class="serif" id="sequins-title">Мелкие пайетки</h3>
+              <p>Для мягкого мерцания добавляем к пряже тонкую нить с крошечными круглыми пайетками. Есть два варианта размера, и оба дают деликатный блеск.</p>
+            </section>
+          </div>
+          <div class="story-finish">
+            <h3 class="serif">Посадка по вашим меркам</h3>
+            <p class="story-copy">Уточняем мерки, длину и посадку перед тем, как вязать. Нам важно, чтобы свитер был приятен к телу и его хотелось носить.</p>
+            <a class="btn outline" href="#collection">Смотреть коллекцию</a>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -493,7 +554,7 @@
           <section>
             <h3>Изготовим свитер по заказу</h3>
             <p>Выберите оттенок или приложите фото своей модели к заявке. Обычно вяжем свитер около трёх дней. Свяжемся с вами и согласуем бесплатную доставку по указанному адресу.</p>
-            <a class="btn" href="#collection">Выбрать свитер</a>
+            <a class="btn" href="#order">Выбрать свитер</a>
           </section>
           <section>
             <h3>Готовые свитеры на Ozon</h3>
@@ -508,8 +569,9 @@
   <footer class="site-foot">
     <div class="wrap">
       <a class="wordmark" href="#top" aria-label="Арахна, главная">
-        <strong>Арахна<span class="wordmark-spider" aria-hidden="true"><i></i><i></i><i></i><i></i></span></strong>
+        <strong>Арахна</strong>
         <small>Свитера с характером</small>
+        <span class="wordmark-icon" aria-hidden="true"><span class="wordmark-spider"><i></i><i></i><i></i><i></i></span></span>
       </a>
       <div class="footer-links">
         <a href="#collection" class="policy-link">Коллекция</a>
@@ -698,7 +760,14 @@
       <h2 class="serif" id="photo-title"></h2>
       <button class="close" type="button" data-close aria-label="Закрыть фотографию">×</button>
     </div>
-    <div class="sheet"><img class="photo-full" id="full-photo" alt=""></div>
+    <div class="sheet">
+      <img class="photo-full" id="full-photo" alt="">
+      <div class="gallery-controls" aria-label="Фотографии в увеличенном виде">
+        <button type="button" id="full-photo-prev" aria-label="Предыдущее фото">‹</button>
+        <span class="fine" id="full-photo-position" aria-live="polite"></span>
+        <button type="button" id="full-photo-next" aria-label="Следующее фото">›</button>
+      </div>
+    </div>
   </dialog>
 
   <dialog id="order-dialog" aria-labelledby="order-title">
@@ -709,9 +778,15 @@
     <form id="order-form">
       <div class="sheet">
         <div class="order-model-fields">
-          <label class="field">Свитер<select name="model" required></select></label>
+          <div>
+            <label class="field">Свитер<select name="model" required></select></label>
+            <figure class="order-model-preview" id="order-model-preview" hidden>
+              <img id="order-model-photo" width="58" height="66" alt="">
+              <figcaption id="order-model-color" aria-live="polite"></figcaption>
+            </figure>
+          </div>
           <label class="field order-size" id="order-size-field" hidden>
-          <span id="order-size-label">Ориентир по размеру · по желанию</span>
+            <span id="order-size-label">Ориентир по размеру · по желанию</span>
             <select name="modelSize"></select>
           </label>
         </div>
@@ -951,7 +1026,7 @@
 
     function updateStorefront() {
       byId("starting-price").textContent = "от " + rubles.format(quote("standard", "plain").amount);
-      for (const id of ["home-ozon-link", "ozon-link", "how-ozon-link"]) {
+      for (const id of ["home-ozon-link", "ozon-link", "catalog-ozon-link", "how-ozon-link"]) {
         const link = byId(id);
         if (settings.store) {
           link.href = settings.store;
@@ -968,31 +1043,43 @@
     let gallery = [];
     let photoIndex = 0;
 
-    function renderPhoto() {
-      const image = byId("product-photo");
-      image.src = gallery[photoIndex];
-      image.alt = [variant.title, variant.name, "Фото " + (photoIndex + 1)].filter(Boolean).join(" · ");
-      byId("photo-position").textContent = (photoIndex + 1) + " / " + gallery.length;
-      byId("photo-prev").disabled = gallery.length < 2;
-      byId("photo-next").disabled = gallery.length < 2;
+    function galleryFor(item) {
+      return item.gallery?.length ? item.gallery : [item.photo];
     }
 
-    for (const [id, offset] of [["photo-prev", -1], ["photo-next", 1]]) {
+    function renderGallery(item, images, index, imageId, controlsPrefix) {
+      const image = byId(imageId);
+      image.src = images[index];
+      image.alt = [item.title, item.name, "Фото " + (index + 1)].filter(Boolean).join(" · ");
+      byId(controlsPrefix + "-position").textContent = (index + 1) + " / " + images.length;
+      byId(controlsPrefix + "-prev").disabled = images.length < 2;
+      byId(controlsPrefix + "-next").disabled = images.length < 2;
+    }
+
+    function renderPhoto() {
+      renderGallery(variant, gallery, photoIndex, "product-photo", "photo");
+    }
+
+    function stepPhoto(index, direction, images) {
+      return (index + direction + images.length) % images.length;
+    }
+
+    for (const [id, direction] of [["photo-prev", -1], ["photo-next", 1]]) {
       byId(id).addEventListener("click", () => {
-        photoIndex = (photoIndex + offset + gallery.length) % gallery.length;
+        photoIndex = stepPhoto(photoIndex, direction, gallery);
         renderPhoto();
       });
     }
 
     function selectVariant(next) {
       variant = next;
-      gallery = variant.gallery?.length ? variant.gallery : [variant.photo];
+      gallery = galleryFor(variant);
       photoIndex = 0;
       renderPhoto();
       byId("product-title").textContent = variant.title;
       byId("shade").textContent = variant.name;
       byId("shade").parentElement.hidden = !variant.name;
-      for (const button of document.querySelectorAll(".thumbnail, .catalog-card")) {
+      for (const button of document.querySelectorAll(".thumbnail, .catalog-select")) {
         button.setAttribute("aria-pressed", String(button.dataset.key === variant.key));
       }
       revealThumbnail();
@@ -1053,11 +1140,38 @@
       });
     }
 
-    byId("open-photo").addEventListener("click", () => {
-      byId("photo-title").textContent = variant.title;
-      byId("full-photo").src = gallery[photoIndex];
-      byId("full-photo").alt = byId("product-photo").alt;
-      byId("photo-dialog").showModal();
+    const photoDialog = byId("photo-dialog");
+    let enlargedPhoto;
+
+    function openPhoto(item, index = 0, syncProduct = false) {
+      enlargedPhoto = { item, images: galleryFor(item), index, syncProduct };
+      byId("photo-title").textContent = item.title;
+      renderEnlargedPhoto();
+      photoDialog.showModal();
+    }
+
+    function renderEnlargedPhoto() {
+      const { item, images, index } = enlargedPhoto;
+      renderGallery(item, images, index, "full-photo", "full-photo");
+    }
+
+    function moveEnlargedPhoto(direction) {
+      const { images, index, syncProduct } = enlargedPhoto;
+      enlargedPhoto.index = stepPhoto(index, direction, images);
+      renderEnlargedPhoto();
+      if (syncProduct) {
+        photoIndex = enlargedPhoto.index;
+        renderPhoto();
+      }
+    }
+
+    byId("open-photo").addEventListener("click", () => openPhoto(variant, photoIndex, true));
+    byId("full-photo-prev").addEventListener("click", () => moveEnlargedPhoto(-1));
+    byId("full-photo-next").addEventListener("click", () => moveEnlargedPhoto(1));
+    photoDialog.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      moveEnlargedPhoto(event.key === "ArrowLeft" ? -1 : 1);
     });
 
     const orderModel = order.elements.model;
@@ -1065,6 +1179,18 @@
 
     function setOrderModel(item) {
       orderVariant = item;
+      const photo = byId("order-model-photo");
+      const preview = byId("order-model-preview");
+      const source = item?.preview || item?.photo;
+      if (source) {
+        photo.src = source;
+        photo.alt = item.title;
+      } else {
+        photo.removeAttribute("src");
+        photo.alt = "";
+      }
+      byId("order-model-color").textContent = item?.name ? "Цвет — " + item.name : "";
+      preview.hidden = !source;
       const sizes = item?.sizes ?? [];
       orderSize.replaceChildren(new Option("Указать мерки", ""));
       for (const size of sizes) orderSize.add(new Option(String(size), String(size)));
@@ -1251,16 +1377,23 @@
 
     function addCatalogCard(item) {
       addThumbnail(item);
+      const card = document.createElement("article");
+      card.className = "catalog-card";
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "catalog-card";
+      button.className = "catalog-select";
       button.dataset.key = item.key;
       button.setAttribute("aria-pressed", String(variant.key === item.key));
       const photo = document.createElement("img");
       photo.src = item.preview || item.photo;
       photo.alt = "";
       photo.loading = "lazy";
-      const caption = document.createElement("span");
+      const zoom = document.createElement("button");
+      zoom.type = "button";
+      zoom.className = "catalog-zoom";
+      zoom.setAttribute("aria-label", "Увеличить фото: " + item.title);
+      zoom.append(photo);
+      zoom.addEventListener("click", () => openPhoto(item));
       const title = document.createElement("strong");
       title.textContent = item.title;
       const details = document.createElement("small");
@@ -1269,20 +1402,15 @@
         ? (item.example ? "Пример размеров " : "Размеры ") + sizes.join(", ")
         : "Размер уточняется";
       details.textContent = [item.name, sizeLabel].filter(Boolean).join(" · ");
-      caption.append(title, details);
-      button.dataset.colorGroup = item.colorGroup ?? (item.name ? "other" : "");
-      button.dataset.sizes = sizes.join(",");
-      button.append(photo, caption);
+      card.dataset.colorGroup = item.colorGroup ?? (item.name ? "other" : "");
+      card.dataset.sizes = sizes.join(",");
+      button.append(title, details);
       button.addEventListener("click", () => {
         selectVariant(item);
-        if (window.location.hash === "#catalog") {
-          window.location.hash = "#collection";
-        } else {
-          byId("open-order").focus({ preventScroll: true });
-          window.scrollTo(0, 0);
-        }
+        window.location.hash = "#order";
       });
-      catalogTrack.append(button);
+      card.append(zoom, button);
+      catalogTrack.append(card);
       return button;
     }
 
@@ -1476,14 +1604,38 @@
     for (const button of document.querySelectorAll("[data-open-dialog]")) {
       button.addEventListener("click", () => byId(button.dataset.openDialog).showModal());
     }
+    const portrait = byId("athena-portrait").getContext("2d");
+    if (portrait) {
+      portrait.scale(2, 2);
+      portrait.strokeStyle = "#a47b4d";
+      portrait.lineWidth = .8;
+      portrait.lineCap = "round";
+      portrait.lineJoin = "round";
+      const contours = [
+        "M 160,22 A 138,138 0 1,1 159.9,22",
+        "M 74,162 C 51,113 68,63 109,45 C 141,31 180,37 210,55 C 172,45 138,53 116,73 C 92,94 84,118 87,141",
+        "M 80,139 C 69,103 85,65 114,53 M 84,125 C 82,92 101,62 136,49 M 94,107 C 107,77 131,60 158,52 M 105,91 C 124,72 143,63 178,57",
+        "M 84,153 C 87,112 114,83 151,75 C 181,69 209,82 222,104 C 229,114 233,127 234,140 C 221,140 211,142 199,146 C 174,152 156,160 141,173 L 94,189 C 87,178 84,165 84,153 Z",
+        "M 91,178 C 124,171 143,159 164,148 C 188,136 208,132 231,133 M 102,147 C 115,116 137,99 163,96 C 184,94 200,101 213,112",
+        "M 207,145 C 211,153 215,157 217,163 L 232,179 Q 236,184 224,187 L 219,188 Q 224,194 218,198 Q 223,202 217,206 L 216,218 C 214,228 203,227 185,222 C 181,233 181,244 194,250 L 224,265",
+        "M 179,170 Q 190,163 202,168 M 184,174 Q 193,177 199,172 M 200,203 Q 207,205 214,203",
+        "M 141,173 C 131,183 129,200 143,205 C 151,208 155,201 155,194 M 143,198 Q 137,189 145,185",
+        "M 140,202 C 137,217 131,235 118,246 L 90,262 M 149,207 C 148,222 141,239 129,247 M 112,253 Q 152,271 184,252 M 103,260 Q 152,281 191,258",
+        "M 80,269 Q 155,292 230,270"
+      ];
+      for (const path of contours) portrait.stroke(new Path2D(path));
+    }
+
     const pages = {
       home: { view: byId("home-view"), heading: byId("home-title") },
-      collection: { view: byId("shop-view"), heading: byId("product-title"), nav: byId("nav-collection") },
+      order: { view: byId("shop-view"), heading: byId("product-title"), nav: byId("nav-order") },
+      collection: { view: byId("shop-view"), heading: byId("catalog-title"), nav: byId("nav-collection") },
       story: { view: byId("story-view"), heading: byId("story-title"), nav: byId("nav-story") },
       how: { view: byId("how-view"), heading: byId("how-title") }
     };
     const routes = new Map([
       ["#top", pages.home],
+      ["#order", pages.order],
       ["#collection", pages.collection],
       ["#catalog", pages.collection],
       ["#story", pages.story],
@@ -1496,23 +1648,20 @@
     function renderPage(focusHeading = false) {
       const hash = window.location.hash;
       const page = routes.get(hash) ?? pages.home;
-      const catalogFirst = hash === "#catalog";
-      const shop = pages.collection.view;
-      if (catalogFirst !== shop.classList.contains("catalog-first")) {
-        shop.classList.toggle("catalog-first", catalogFirst);
-        shop.insertBefore(catalogSection, catalogFirst ? productSection : null);
+      productSection.hidden = page !== pages.order;
+      catalogSection.hidden = page !== pages.collection;
+      for (const view of new Set(Object.values(pages).map(item => item.view))) {
+        view.hidden = view !== page.view;
       }
       for (const item of Object.values(pages)) {
-        item.view.hidden = item !== page;
         if (!item.nav) continue;
         if (item === page) item.nav.setAttribute("aria-current", "page");
         else item.nav.removeAttribute("aria-current");
       }
-      if (page === pages.collection && !catalogFirst) revealThumbnail();
+      if (page === pages.order) revealThumbnail();
       if (focusHeading) {
-        const heading = catalogFirst ? byId("catalog-title") : page.heading;
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
+        page.heading.tabIndex = -1;
+        page.heading.focus({ preventScroll: true });
       }
       window.scrollTo(0, 0);
     }
