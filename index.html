@@ -729,7 +729,7 @@
         <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты</button>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
       </div>
-      <button type="button" class="text-button" id="open-settings">Настройки макета</button>
+      <button type="button" class="text-button" id="open-settings" hidden>Настройки макета</button>
     </div>
   </footer>
 
@@ -1963,6 +1963,7 @@
     function renderPage(focusHeading = false) {
       const hash = window.location.hash;
       const page = routes.get(hash) ?? pages.home;
+      byId("open-settings").hidden = page === pages.home;
       productSection.hidden = page !== pages.order;
       catalogSection.hidden = page !== pages.collection;
       for (const view of new Set(Object.values(pages).map(item => item.view))) {
