@@ -461,7 +461,7 @@
       </figure>
       <div class="product-info">
         <div class="product-intro">
-          <p class="overline">Ручная вязка</p>
+          <p class="overline">Изготовление по вашим меркам</p>
           <h1 class="serif" id="product-title">Ажурный свитер</h1>
           <p class="intro">Выберите оттенок и укажите свои мерки. Пряжу и отделку можно выбрать в форме заказа.</p>
         </div>
@@ -724,12 +724,35 @@
       <button class="close" type="button" data-close aria-label="Закрыть таблицу размеров">×</button>
     </div>
     <div class="sheet">
-      <p class="fine">При выборе размера эти значения подставятся в форму заказа.</p>
-      <p id="size-guide-empty">Мерки для таблицы пока уточняются.</p>
-      <div class="size-scroll"><table class="size-table" id="size-guide-table" hidden>
-        <thead><tr><th scope="col">Размер</th><th scope="col" data-measure="1">Длина 1, см</th><th scope="col" data-measure="2">Длина 2, см</th><th scope="col" data-measure="3">Длина 3, см</th></tr></thead>
-        <tbody id="size-guide-rows"></tbody>
+      <p>Российские женские размеры. Сверьте свои обхваты с таблицей. Для свитера начните с обхвата груди.</p>
+      <div class="size-scroll"><table class="size-table" aria-label="Ориентиры по обхватам тела">
+        <thead><tr><th scope="col">Размер РФ</th><th scope="col">Грудь, см</th><th scope="col">Талия, см</th><th scope="col">Бёдра, см</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">38</th><td>76</td><td>58</td><td>82</td></tr>
+            <tr><th scope="row">40</th><td>80</td><td>62</td><td>86</td></tr>
+            <tr><th scope="row">42</th><td>84</td><td>66</td><td>92</td></tr>
+            <tr><th scope="row">44</th><td>88</td><td>70</td><td>96</td></tr>
+            <tr><th scope="row">46</th><td>92</td><td>74</td><td>100</td></tr>
+            <tr><th scope="row">48</th><td>96</td><td>78</td><td>104</td></tr>
+            <tr><th scope="row">50</th><td>100</td><td>82</td><td>108</td></tr>
+            <tr><th scope="row">52</th><td>104</td><td>86</td><td>112</td></tr>
+            <tr><th scope="row">54</th><td>108</td><td>90</td><td>116</td></tr>
+            <tr><th scope="row">56</th><td>112</td><td>94</td><td>120</td></tr>
+            <tr><th scope="row">58</th><td>116</td><td>98</td><td>124</td></tr>
+            <tr><th scope="row">60</th><td>120</td><td>100</td><td>128</td></tr>
+            <tr><th scope="row">62</th><td>124</td><td>104</td><td>132</td></tr>
+            <tr><th scope="row">64</th><td>128</td><td>108</td><td>136</td></tr>
+        </tbody>
       </table></div>
+      <p class="fine">В таблице указаны мерки тела. Длину и посадку свитера согласуем отдельно. <a href="https://mass-top.ru/pages/size_table.php" target="_blank" rel="noopener noreferrer">Источник размерной сетки</a>.</p>
+      <section class="size-scroll" id="size-guide-custom" aria-labelledby="size-custom-title" hidden>
+        <h3 id="size-custom-title">Мерки мастерской для заказа</h3>
+        <p class="fine">Эти значения подставляются в форму при выборе размера.</p>
+        <table class="size-table" id="size-guide-table">
+          <thead><tr><th scope="col">Размер</th><th scope="col" data-measure="1">Длина 1, см</th><th scope="col" data-measure="2">Длина 2, см</th><th scope="col" data-measure="3">Длина 3, см</th></tr></thead>
+          <tbody id="size-guide-rows"></tbody>
+        </table>
+      </section>
     </div>
   </dialog>
 
@@ -1613,9 +1636,7 @@
         row.insertCell().textContent = size;
         for (const value of values) row.insertCell().textContent = value ? decimal.format(value) : "—";
       }
-      const empty = rows.children.length === 0;
-      byId("size-guide-table").hidden = empty;
-      byId("size-guide-empty").hidden = !empty;
+      byId("size-guide-custom").hidden = rows.children.length === 0;
     }
 
     sizeAdminForm.addEventListener("submit", (event) => {
