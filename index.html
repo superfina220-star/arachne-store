@@ -212,6 +212,11 @@
   .reference-preview { display:block; width:auto; max-width:100%; height:auto; max-height:155px; margin-top:8px; border-radius:4px; }
   #measurements-note { margin-block:6px; }
   .policy-link { border:0; background:none; color:var(--gold); padding:6px 0; min-height:44px; font:inherit; text-decoration:underline; text-underline-offset:.18em; }
+  .document-list { list-style:none; margin:0; }
+  .document-list li + li { border-top:1px solid var(--line); }
+  .document-list button { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:50px; padding:8px 0; border:0; background:none; text-align:left; color:var(--wine); }
+  .document-list button::after { content:"›" / ""; font-size:21px; }
+  .document-list button:hover { text-decoration:underline; }
   .policy-copy h3 { margin:18px 0 4px; font-size:17px; }
   .policy-copy p { margin:0 0 10px; }
   .policy-copy .fine { margin-bottom:14px; }
@@ -305,7 +310,7 @@
         <a href="#collection" id="nav-collection">Коллекция</a>
         <a href="#story" id="nav-story">История</a>
         <a href="#how">Как заказать</a>
-        <button class="policy-link" type="button" data-open-dialog="returns-dialog">Возврат</button>
+        <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
       </nav>
     </div>
   </header>
@@ -429,16 +434,26 @@
       <a class="wordmark" href="#top" aria-label="Arachne, главная"><strong>ARACHNE</strong><small>Свитера с характером</small></a>
       <div class="footer-links">
         <a href="#catalog" class="policy-link">Коллекция</a>
-        <button class="policy-link" type="button" data-open-dialog="returns-dialog">Возврат</button>
-        <button class="policy-link" type="button" data-open-dialog="terms-dialog">Оферта</button>
-        <button class="policy-link" type="button" data-open-dialog="privacy-dialog">Политика обработки данных</button>
+        <button class="policy-link" type="button" data-open-dialog="documents-dialog" aria-haspopup="dialog">Документы</button>
         <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты</button>
-        <button class="policy-link" type="button" data-open-dialog="requisites-dialog">Реквизиты</button>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
       </div>
       <button type="button" class="text-button" id="open-settings">Настройки макета</button>
     </div>
   </footer>
+
+  <dialog class="compact" id="documents-dialog" aria-labelledby="documents-title">
+    <div class="dialog-head">
+      <h2 class="serif" id="documents-title">Документы</h2>
+      <button class="close" type="button" data-close aria-label="Закрыть меню документов">×</button>
+    </div>
+    <ul class="sheet document-list" aria-label="Документы магазина">
+      <li><button type="button" data-open-dialog="returns-dialog" aria-haspopup="dialog">Возврат</button></li>
+      <li><button type="button" data-open-dialog="terms-dialog" aria-haspopup="dialog">Оферта</button></li>
+      <li><button type="button" data-open-dialog="privacy-dialog" aria-haspopup="dialog">Политика обработки данных</button></li>
+      <li><button type="button" data-open-dialog="requisites-dialog" aria-haspopup="dialog">Реквизиты</button></li>
+    </ul>
+  </dialog>
 
   <dialog class="compact" id="returns-dialog" aria-labelledby="returns-title">
     <div class="dialog-head">
