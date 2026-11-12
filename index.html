@@ -194,15 +194,12 @@
   .catalog-select { overflow-wrap:anywhere; }
   .catalog-status { min-height:1.5em; }
   .add-fields { display:grid; gap:12px; }
-  .catalog-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); max-width:510px; gap:10px; margin-top:16px; }
-  .catalog-filters select { padding-inline:7px; }
   .catalog-card strong { display:block; font-weight:650; }
   .catalog-card small { display:block; color:var(--muted); margin-top:2px; }
   .size-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(59px,1fr)); gap:5px; }
   .size-options .check { justify-content:center; border:1px solid var(--line); border-radius:4px; }
   .size-options input { flex:none; }
   .order-size { max-width:275px; margin-bottom:16px; }
-  @media (max-width:360px) { .catalog-filters { grid-template-columns:1fr; } }
   .site-foot .wrap { display:grid; gap:10px; padding-block:24px 32px; }
   .footer-links { display:flex; align-items:center; flex-wrap:wrap; gap:2px 18px; }
   .footer-links .policy-link { display:inline-flex; align-items:center; }
@@ -497,16 +494,7 @@
           <a class="btn ozon-link" id="catalog-ozon-link" target="_blank" rel="noopener noreferrer"><span>Магазин на <strong>Ozon</strong></span><span class="external-arrow" aria-hidden="true">↗</span></a>
         </div>
       </div>
-      <div class="catalog-filters">
-        <label class="field">Цвет
-          <select id="catalog-color"><option value="">Все цвета</option></select>
-        </label>
-        <label class="field">Группа размеров
-          <select id="catalog-size"><option value="">Все размеры</option></select>
-        </label>
-      </div>
       <div class="catalog-track" id="catalog-track" aria-label="Модели свитеров"></div>
-      <p class="fine" id="catalog-empty" role="status" hidden>Для этого сочетания цвета и размера моделей пока нет.</p>
       <p class="fine catalog-status" id="catalog-status" role="status"></p>
     </section>
 
@@ -831,8 +819,8 @@
               <figcaption id="order-model-color" aria-live="polite"></figcaption>
             </figure>
           </div>
-          <label class="field order-size" id="order-size-field" hidden>
-            <span id="order-size-label">Ориентир по размеру · по желанию</span>
+          <label class="field order-size">
+            <span>Российский размер · по желанию</span>
             <select name="modelSize"></select>
           </label>
         </div>
@@ -968,54 +956,30 @@
     const thumbs = byId("thumbnails");
     const models = new Map();
     const catalogTrack = byId("catalog-track");
-    const catalogColor = byId("catalog-color");
-    const catalogSize = byId("catalog-size");
     const colorGroups = {
       light: "Белые и светлые", blue: "Синие и фиолетовые",
       red: "Красные и бордовые", green: "Зелёные", dark: "Серые и чёрные", other: "Другие цвета"
     };
-    const sizeGroups = [[38, 40], [42, 44], [46, 48], [50, 52], [54, 56], [58, 60], [62, 64]];
+    const guideSizes = Array.from({ length: 14 }, (_, index) => 38 + index * 2);
     const colorOptions = Object.entries(colorGroups);
     const orderSize = order.elements.modelSize;
 
     for (const [key, label] of colorOptions) {
-      catalogColor.add(new Option(label, key));
       byId("model-color-group").add(new Option(label, key));
     }
-    for (const [from, to] of sizeGroups) {
-      catalogSize.add(new Option(from + "–" + to, String(from)));
-      for (const size of [from, to]) {
-        const label = document.createElement("label");
-        label.className = "check";
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.name = "modelSizes";
-        input.value = String(size);
-        label.append(input, String(size));
-        byId("model-sizes").append(label);
-      }
+    orderSize.add(new Option("Указать мерки", "", true));
+    for (const size of guideSizes) {
+      orderSize.add(new Option(String(size), String(size)));
+      const label = document.createElement("label");
+      label.className = "check";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "modelSizes";
+      input.value = String(size);
+      label.append(input, String(size));
+      byId("model-sizes").append(label);
     }
 
-    function applyCatalogFilters() {
-      const from = Number(catalogSize.value);
-      const sizes = sizeGroups.find(pair => pair[0] === from);
-      let visible = 0;
-      for (const card of catalogTrack.children) {
-        const colorMatches = !catalogColor.value || card.dataset.colorGroup === catalogColor.value;
-        const sizeMatches = !sizes || sizes.some(size => card.dataset.sizes.split(",").includes(String(size)));
-        card.hidden = !(colorMatches && sizeMatches);
-        if (!card.hidden) visible++;
-      }
-      byId("catalog-empty").hidden = visible > 0;
-      for (const id of ["catalog-prev", "catalog-next"]) byId(id).disabled = visible < 2;
-    }
-
-    for (const filter of [catalogColor, catalogSize]) {
-      filter.addEventListener("change", () => {
-        applyCatalogFilters();
-        catalogTrack.scrollLeft = 0;
-      });
-    }
     const catalogForm = byId("catalog-form");
     const catalogDialog = byId("catalog-dialog");
     let variant = variants[0];
@@ -1263,13 +1227,6 @@
       }
       byId("order-model-color").textContent = item?.name ? "Цвет — " + item.name : "";
       preview.hidden = !source;
-      const sizes = item?.sizes ?? [];
-      orderSize.replaceChildren(new Option("Указать мерки", ""));
-      for (const size of sizes) orderSize.add(new Option(String(size), String(size)));
-      byId("order-size-field").hidden = sizes.length === 0;
-      byId("order-size-label").textContent = item?.example
-        ? "Ориентир по размеру · примеры"
-        : "Ориентир по размеру · по желанию";
     }
 
     for (const button of document.querySelectorAll("[data-open-order]")) {
@@ -1294,7 +1251,6 @@
     }
     orderModel.addEventListener("change", () => {
       setOrderModel(models.get(orderModel.value)?.item ?? null);
-      fillOrderMeasurements();
     });
     const measureInputs = [...byId("measurements").querySelectorAll("input")];
     let lastFilledMeasures = [];
@@ -1469,13 +1425,7 @@
       const title = document.createElement("strong");
       title.textContent = item.title;
       const details = document.createElement("small");
-      const sizes = item.sizes ?? [];
-      const sizeLabel = sizes.length
-        ? (item.example ? "Пример размеров " : "Размеры ") + sizes.join(", ")
-        : "Размер уточняется";
-      details.textContent = [item.name, sizeLabel].filter(Boolean).join(" · ");
-      card.dataset.colorGroup = item.colorGroup ?? (item.name ? "other" : "");
-      card.dataset.sizes = sizes.join(",");
+      details.textContent = [item.name, "По вашим меркам"].filter(Boolean).join(" · ");
       button.append(title, details);
       button.addEventListener("click", () => {
         selectVariant(item);
@@ -1497,14 +1447,12 @@
 
     const catalogStorage = openCatalogStorage();
     variants.forEach(addCatalogCard);
-    applyCatalogFilters();
     catalogStorage.then(db => {
       const request = db.transaction("models").objectStore("models").getAll();
       request.onsuccess = () => {
         for (const item of request.result) {
           addCatalogCard(item);
         }
-        applyCatalogFilters();
       };
     }).catch(() => {
       byId("catalog-status").textContent = "В этом режиме модели доступны до закрытия страницы.";
@@ -1512,7 +1460,7 @@
 
     for (const [id, direction] of [["catalog-prev", -1], ["catalog-next", 1]]) {
       byId(id).addEventListener("click", () => {
-        const first = catalogTrack.querySelector(".catalog-card:not([hidden])");
+        const first = catalogTrack.querySelector(".catalog-card");
         if (!first) return;
         const step = first.offsetWidth + parseFloat(getComputedStyle(catalogTrack).columnGap);
         const next = catalogTrack.scrollLeft + step * direction;
@@ -1564,9 +1512,6 @@
           saved = false;
         }
         const card = addCatalogCard(item);
-        catalogColor.value = "";
-        catalogSize.value = "";
-        applyCatalogFilters();
         selectVariant(item);
         catalogDialog.close();
         card.focus({ preventScroll: true });
@@ -1580,7 +1525,6 @@
     });
 
     const guideKey = "svitera-size-guide-v1";
-    const guideSizes = sizeGroups.flat();
     const defaultMeasureNames = ["Длина 1", "Длина 2", "Длина 3"];
     const sizeAdminForm = byId("size-admin-form");
     const measureNameInputs = defaultMeasureNames.map((_, index) => sizeAdminForm.elements["measure" + (index + 1)]);
