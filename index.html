@@ -329,6 +329,9 @@
   .craft-colors { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2px; }
   .craft-colors img { display:block; width:100%; height:100%; object-fit:cover; }
   .craft-colors img:first-child { object-position:center 60%; }
+  .sequin-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+  .sequin-pair img { width:100%; display:block; aspect-ratio:.71; max-height:265px; object-fit:cover; background:var(--warm); }
+  .sequin-pair figcaption { color:var(--muted); font-size:13px; margin-top:5px; }
   .story-finish { border-top:1px solid var(--line); margin-top:clamp(24px,4vw,50px); padding-top:18px; }
   .story-finish h3 { font-size:clamp(24px,3vw,37px); color:var(--wine); }
   .story-finish .btn { margin-top:15px; }
@@ -539,9 +542,18 @@
               <p>В зависимости от модели сочетаем кид-мохер с тонкой шёлковой или хлопковой нитью. Подбираем состав под фактуру, которую хотим получить.</p>
             </section>
             <section aria-labelledby="sequins-title">
-              <img class="craft-photo" src="assets/sweaters/milk-small-sequins.webp" loading="lazy" alt="Мелкие пайетки на белом свитере крупным планом">
-              <h3 class="serif" id="sequins-title">Мелкие пайетки</h3>
-              <p>Для мягкого мерцания добавляем к пряже тонкую нить с крошечными круглыми пайетками. Есть два варианта размера, и оба дают деликатный блеск.</p>
+              <div class="sequin-pair">
+                <figure>
+                  <img src="assets/sweaters/milk-small-sequins.webp" loading="lazy" alt="Мелкие пайетки на белом свитере крупным планом">
+                  <figcaption>Мелкие</figcaption>
+                </figure>
+                <figure>
+                  <img src="assets/sweaters/midnight-8.webp" loading="lazy" alt="Крупные пайетки на тёмно-синем свитере крупным планом">
+                  <figcaption>Крупные</figcaption>
+                </figure>
+              </div>
+              <h3 class="serif" id="sequins-title">Пайетки</h3>
+              <p>Добавляем к пряже тонкую нить с круглыми пайетками. Мелкие дают лёгкое мерцание, а крупные заметнее в вязке.</p>
             </section>
           </div>
           <div class="story-finish">
