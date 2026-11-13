@@ -995,7 +995,7 @@
         <div aria-live="polite">
           <p class="fine">Стоимость свитера</p>
           <strong id="order-price"></strong>
-          <p class="fine" id="payment-note">Сумма платежа будет указана на странице Робокассы.</p>
+          <p class="fine" id="payment-note">Для проверки оплаты Робокасса сейчас выставляет счёт на 1 ₽.</p>
           <p class="fine status-text" id="order-status" role="status" hidden></p>
         </div>
         <div class="order-footer-actions">
@@ -1422,6 +1422,7 @@
     const requestButton = byId("request-button");
     const payButton = byId("pay-button");
     const paymentLink = byId("order-payment-link");
+    paymentLink.href = orderPaymentUrl;
     let submittingOrder = false;
     orderDialog.addEventListener("cancel", (event) => {
       if (submittingOrder) event.preventDefault();
@@ -1484,17 +1485,10 @@
         }
         byId("request-price").textContent = rubles.format(sweaterPrice);
         byId("request-confirmation").textContent = "Заявка № " + result.orderId + " передана мастерской.";
-        const paymentUrl = wantsPayment && !result.paymentUnavailable
-          ? result.payment?.url ?? orderPaymentUrl : "";
-        paymentLink.hidden = !paymentUrl;
-        if (paymentUrl) paymentLink.href = paymentUrl;
-        else paymentLink.removeAttribute("href");
-        if (wantsPayment && !paymentUrl) {
-          byId("request-confirmation").textContent += " Не удалось выставить счёт. Мастерская свяжется с вами для оплаты.";
-        }
+        paymentLink.hidden = !wantsPayment;
         showOrderStep("done");
         byId("request-confirmation").focus();
-        if (paymentUrl) window.location.assign(paymentUrl);
+        if (wantsPayment) window.location.assign(orderPaymentUrl);
       } catch {
         status.textContent = "Не удалось подтвердить отправку. Проверьте соединение или свяжитесь с мастерской.";
       } finally {

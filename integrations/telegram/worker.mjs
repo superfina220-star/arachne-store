@@ -1,6 +1,3 @@
-import { createPayment, paymentConfigured, receivePayment } from "./robokassa.mjs";
-export { PaymentNotice } from "./robokassa.mjs";
-
 const storefrontOrigin = "https://arachne.okcept.ru";
 const corsHeaders = {
   "Access-Control-Allow-Origin": storefrontOrigin,
@@ -78,13 +75,9 @@ async function sendOrder(request, env) {
     || photo.size > 10 * 1024 * 1024 || !photoTypes.has(photo.type))) return response(400);
 
   const orderId = crypto.randomUUID().split("-")[0].toUpperCase();
-  const linkedPayment = wantsPayment && paymentConfigured(env);
   const text = [
     "Арахна · заявка № " + orderId,
-    linkedPayment ? "Выбрана оплата через Робокассу · ожидаем подтверждения"
-      : wantsPayment && env.ROBOKASSA_ENABLED === "1" ? "Онлайн-оплата недоступна · связаться с покупателем"
-      : wantsPayment ? "Выбрана оплата по общей ссылке · платёж нужно сверить вручную"
-      : "Без оплаты · связаться с покупателем",
+    wantsPayment ? "Выбрана оплата через Робокассу · платёж 1 ₽ нужно сверить" : "Без оплаты · связаться с покупателем",
     "Модель: " + configuration,
     "Мерки: " + measures,
     "Получение: " + delivery,
@@ -110,28 +103,12 @@ async function sendOrder(request, env) {
       // Заявка уже доставлена. Сообщаем отдельно о результате отправки фото.
     }
   }
-  let payment;
-  if (wantsPayment && env.ROBOKASSA_ENABLED === "1") {
-    if (!linkedPayment) return response(200, { ok: true, orderId, photoSent, paymentUnavailable: true });
-    try {
-      payment = await createPayment(env, orderId, sent.message_id);
-    } catch {
-      return response(200, { ok: true, orderId, photoSent, paymentUnavailable: true });
-    }
-  }
-  return response(200, { ok: true, orderId, photoSent, payment });
+  return response(200, { ok: true, orderId, photoSent });
 }
 
 export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
-    if (pathname === "/api/robokassa/result") {
-      try {
-        return await receivePayment(request, env);
-      } catch {
-        return new Response(null, { status: 502 });
-      }
-    }
     if (pathname !== "/api/consult" && pathname !== "/api/order") return response(404);
     if (request.headers.get("Origin") !== storefrontOrigin) return response(403);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders });
@@ -151,3 +128,10 @@ export default {
     }
   },
 };
+
+// Keep the existing Cloudflare storage namespace intact during the rollback.
+export class PaymentNotice {
+  fetch() {
+    return new Response(null, { status: 404 });
+  }
+}
