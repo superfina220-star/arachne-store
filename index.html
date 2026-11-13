@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; connect-src 'self' https://arachne-telegram.superfina220.workers.dev; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
-<meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель и оттенок или покажите нам свой образец.">
+<meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель и оттенок.">
 <title>Арахна — свитера с характером по вашим меркам</title>
 <script>
   const themeStorageKey = "arachne-theme";
@@ -262,7 +262,6 @@
   .consult-reply { margin-top:14px; padding:14px; border:1px solid var(--line); background:var(--subtle); border-radius:4px; }
   .form-note { margin-block:8px; }
   .product-options > .policy-link + .policy-link { margin-left:12px; }
-  .reference-preview { display:block; width:auto; max-width:100%; height:auto; max-height:155px; margin-top:8px; border-radius:4px; }
   #measurements-note { margin-block:6px; }
   .policy-link { border:0; background:none; color:var(--accent); padding:6px 0; min-height:44px; font:inherit; text-decoration:underline; text-underline-offset:.18em; }
   .document-list { list-style:none; margin:0; }
@@ -783,7 +782,7 @@
       <p>Если свитер изготавливается для вас по индивидуальному заданию, заказ оформляется как бытовой подряд. До начала работы в письменном подтверждении заказа согласуем модель, мерки и особенности изделия, описание и стоимость материалов, цену работы, сроки и порядок оплаты.</p>
       <p>Для изделий, изготовленных по индивидуальным заказам населения, обязательное подтверждение соответствия по ТР ТС 017/2011 не требуется (пункт 4 статьи 1). При выполнении работы по индивидуальному изготовлению в рамках бытового подряда код маркировки «Честный знак» и GTIN для этой маркировки не оформляются. При продаже свитеров как товара применяются требования к подтверждению соответствия и маркировке для соответствующей категории продукции.</p>
       <h3>Оплата</h3>
-      <p>Стоимость свитера по меркам — 7 700 ₽. Заявка отправляется без оплаты. Размер предоплаты и порядок расчётов согласуем при письменном подтверждении заказа.</p>
+      <p>Стоимость свитера по меркам — 7 700 ₽. Заявку можно отправить без оплаты или перейти в Робокассу после её отправки. Размер предоплаты за изготовление и порядок расчётов согласуем при письменном подтверждении заказа.</p>
       <h3>Изготовление и передача</h3>
       <p>Обычно изготовление занимает три календарных дня после согласования заказа и выполнения согласованных условий оплаты. Для заказов на сайте доставка бесплатная. Способ и сроки передачи подтверждаем с покупателем до оплаты изделия. Доступны самовывоз, личная передача, Почта России, доставка через Авито по согласованию и иной предложенный способ.</p>
       <h3>Отказ от заказа и возврат</h3>
@@ -987,11 +986,6 @@
             <textarea name="delivery" maxlength="350" rows="2" autocomplete="street-address"></textarea>
           </label>
         </fieldset>
-        <label class="field comment">Фото своей модели · по желанию
-          <input name="reference" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="reference-note">
-        </label>
-        <p class="fine form-note" id="reference-note">Приложите фото свитера, который хотите взять за образец. JPG, PNG или WebP, до 10 МБ.</p>
-        <img class="reference-preview" id="reference-preview" alt="Фото модели для заказа" hidden>
         <button class="policy-link fine" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
         <button class="policy-link fine" type="button" data-open-dialog="privacy-dialog">Как обрабатываются данные заявки</button>
         <p class="fine">Перед отправкой можно ознакомиться с <button class="policy-link fine" type="button" data-open-dialog="terms-dialog">офертой</button>.</p>
@@ -1001,10 +995,12 @@
         <div aria-live="polite">
           <p class="fine">Стоимость свитера</p>
           <strong id="order-price"></strong>
+          <p class="fine" id="payment-note">Для проверки оплаты Робокасса сейчас выставляет счёт на 1 ₽.</p>
           <p class="fine status-text" id="order-status" role="status" hidden></p>
         </div>
         <div class="order-footer-actions">
-          <button class="btn" type="submit" id="request-button">Отправить заявку</button>
+          <button class="btn outline" type="submit" id="request-button">Отправить без оплаты</button>
+          <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note">Оплатить</button>
         </div>
       </div>
     </form>
@@ -1014,10 +1010,9 @@
       <p id="request-measurements"></p>
       <p id="request-delivery" hidden></p>
       <p id="request-note" hidden></p>
-      <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
       <p id="request-confirmation" role="status" tabindex="-1"></p>
-      <div class="step-actions"><button class="btn outline" type="button" data-close>Закрыть</button></div>
+      <div class="step-actions"><a class="btn" id="order-payment-link" hidden>Перейти в Робокассу</a><button class="btn outline" type="button" data-close>Закрыть</button></div>
     </div>
   </dialog>
 
@@ -1033,6 +1028,7 @@
     const orderEndpoint = "https://arachne-telegram.superfina220.workers.dev/api/order";
     const defaultStore = "https://www.ozon.ru/seller/oktsept/";
     const sweaterPrice = 7700;
+    const orderPaymentUrl = "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ";
     const storageKey = "svitera-pricing-v2";
     const rubles = new Intl.NumberFormat("ru-RU", {
       style: "currency", currency: "RUB", minimumFractionDigits: 0, maximumFractionDigits: 0
@@ -1347,13 +1343,11 @@
     function openOrder(initialModel = null) {
       if (orderDialog.open) return;
       order.reset();
-      updateReference();
       updateDelivery();
       usesExampleMeasures = false;
       lastFilledMeasures = [];
       orderModel.replaceChildren(new Option("Выберите свитер", ""));
       for (const { item } of models.values()) orderModel.add(new Option(item.title, item.key));
-      orderModel.add(new Option("Своя модель по фото", "reference"));
       orderModel.value = initialModel?.key ?? "";
       setOrderModel(initialModel);
       if (initialModel?.key === variant.key && productSize) {
@@ -1408,32 +1402,6 @@
     }
 
     const imageTypes = ["image/jpeg", "image/png", "image/webp"];
-    const referenceInput = order.elements.reference;
-    let referenceUrl;
-    function updateReference() {
-      const preview = byId("reference-preview");
-      if (referenceUrl) URL.revokeObjectURL(referenceUrl);
-      referenceUrl = undefined;
-      preview.removeAttribute("src");
-      preview.hidden = true;
-      referenceInput.setCustomValidity("");
-      const file = referenceInput.files[0];
-      if (!file) return;
-      if (!imageTypes.includes(file.type) || file.size > 10 * 1024 * 1024) {
-        referenceInput.setCustomValidity("Выберите фото JPG, PNG или WebP до 10 МБ.");
-        referenceInput.reportValidity();
-        return;
-      }
-      referenceUrl = URL.createObjectURL(file);
-      preview.src = referenceUrl;
-      preview.hidden = false;
-    }
-    referenceInput.addEventListener("change", updateReference);
-    orderDialog.addEventListener("close", () => {
-      referenceInput.value = "";
-      updateReference();
-    });
-
     order.elements.help.addEventListener("change", syncMeasurements);
 
     const deliveryMethod = order.elements.deliveryMethod;
@@ -1452,6 +1420,9 @@
     deliveryMethod.addEventListener("change", updateDelivery);
 
     const requestButton = byId("request-button");
+    const payButton = byId("pay-button");
+    const paymentLink = byId("order-payment-link");
+    paymentLink.href = orderPaymentUrl;
     let submittingOrder = false;
     orderDialog.addEventListener("cancel", (event) => {
       if (submittingOrder) event.preventDefault();
@@ -1460,17 +1431,18 @@
       event.preventDefault();
       if (submittingOrder) return;
       const fields = order.elements;
+      const wantsPayment = event.submitter === payButton;
       const status = byId("order-status");
       const phone = fields.phone.value.trim();
       status.hidden = false;
-      if (!fields.customer.value.trim() || phone.replace(/[^0-9]/g, "").length < 7
+      if (!orderVariant || !fields.customer.value.trim() || phone.replace(/[^0-9]/g, "").length < 7
         || (deliveryMethod.value === "other" && !fields.deliveryOther.value.trim())
         || (deliveryMethod.value === "post" && !fields.delivery.value.trim())) {
-        status.textContent = "Проверьте имя, телефон и данные доставки.";
+        status.textContent = "Проверьте выбранную модель, имя, телефон и данные доставки.";
         return;
       }
       const configuration = [
-        orderVariant?.title ?? "Своя модель по фото",
+        orderVariant.title,
         orderVariant?.name,
         orderSize.value && ("Размер " + orderSize.value)
       ].filter(Boolean).join(" · ");
@@ -1484,16 +1456,14 @@
       ].filter(Boolean).join(" · ");
       const data = new FormData();
       const payload = {
-        configuration, measures, delivery, wantsPayment: false, phone,
+        configuration, measures, delivery, wantsPayment, phone,
         customer: fields.customer.value.trim(),
         email: fields.email.value.trim(),
         note: fields.note.value.trim()
       };
       data.set("order", JSON.stringify(payload));
-      const photo = referenceInput.files[0];
-      if (photo) data.set("photo", photo);
       const close = orderDialog.querySelector(".close");
-      submittingOrder = requestButton.disabled = close.disabled = true;
+      submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = true;
       status.textContent = "Отправляем заявку…";
       try {
         const response = await fetch(orderEndpoint, { method: "POST", body: data, signal: AbortSignal.timeout(35000) });
@@ -1507,8 +1477,7 @@
         byId("request-measurements").textContent = measures;
         for (const [id, label, value] of [
           ["request-delivery", "Получение", delivery],
-          ["request-note", "Пожелания", payload.note],
-          ["request-reference", "Фото", photo ? (result.photoSent ? photo.name : "не доставлено, передайте при подтверждении заказа") : ""]
+          ["request-note", "Пожелания", payload.note]
         ]) {
           const line = byId(id);
           line.hidden = !value;
@@ -1516,12 +1485,14 @@
         }
         byId("request-price").textContent = rubles.format(sweaterPrice);
         byId("request-confirmation").textContent = "Заявка № " + result.orderId + " передана мастерской.";
+        paymentLink.hidden = !wantsPayment;
         showOrderStep("done");
         byId("request-confirmation").focus();
+        if (wantsPayment) window.location.assign(orderPaymentUrl);
       } catch {
         status.textContent = "Не удалось подтвердить отправку. Проверьте соединение или свяжитесь с мастерской.";
       } finally {
-        submittingOrder = requestButton.disabled = close.disabled = false;
+        submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = false;
       }
     });
 
@@ -1704,7 +1675,7 @@
     }
 
     const consultTopics = [
-      [/фото|образец|свою модель|картин/u, "Нажмите «Заказать» и приложите фото в поле «Фото своей модели». В пожеланиях можно указать, какие детали вы хотите повторить."],
+      [/фото|образец|свою модель|картин/u, "Укажите нужные детали в пожеланиях к заказу или обсудите их с мастерской."],
       [/мерк|размер|длин|обхват|посадк/u, "В заказе можно выбрать размер из списка или ввести свои мерки в сантиметрах. Если сомневаетесь, отметьте «Помогите снять мерки»."],
       [/пряж|мохер|хлоп|ш[её]лк|пайет|состав|нит|отделк/u, "Вяжем из качественной пряжи. Варианты включают кид-мохер, сочетания с хлопком или шёлком и мелкие пайетки для фактуры. Состав зависит от модели и согласуется при заказе."],
       [/достав|срок|дн[еяи]|когда|изготов/u, "Обычно вяжем свитер около трёх дней. Оставьте адрес и удобное время в заявке. Мы свяжемся с вами, чтобы согласовать бесплатную доставку."],
