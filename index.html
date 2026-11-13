@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; connect-src 'self' https://arachne-telegram.superfina220.workers.dev; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
-<meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель, оттенок и пряжу или покажите нам свой образец.">
+<meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель и оттенок или покажите нам свой образец.">
 <title>Арахна — свитера с характером по вашим меркам</title>
 <script>
   const themeStorageKey = "arachne-theme";
@@ -169,7 +169,6 @@
   .close:hover { background: var(--subtle); }
   .sheet { padding-block: 14px 25px; }
   .dialog-sub { color: var(--muted); margin-bottom: 18px; }
-  .order-grid { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, 1fr); gap: clamp(15px, 4vw, 37px); }
   fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
   legend { padding: 0; margin-bottom: 9px; font-weight: 650; }
   .fields { display: grid; gap: 11px; }
@@ -223,7 +222,6 @@
     .how { padding-block: 25px; }
   }
   @media (max-width: 615px) {
-    .order-grid { grid-template-columns: 1fr; }
     .photo-full { height:min(62dvh, 680px); }
   }
   @media (max-width: 390px) {
@@ -585,7 +583,7 @@
         <div class="product-intro">
           <p class="overline">Изготовление по вашим меркам</p>
           <h1 class="serif" id="product-title">Ажурный свитер</h1>
-          <p class="intro">Выберите оттенок и укажите свои мерки. Пряжу и отделку можно выбрать в форме заказа.</p>
+          <p class="intro">Выберите оттенок и укажите свои мерки.</p>
         </div>
         <div class="product-options">
           <p class="variant-label"><strong>Цвет</strong><span id="shade" aria-live="polite"></span></p>
@@ -596,7 +594,7 @@
           </div>
           <div class="product-purchase">
             <div class="product-price">
-              <p class="fine">Пример цены по меркам</p>
+              <p class="fine">Стоимость свитера</p>
               <button type="button" class="product-price-link" id="starting-price" data-open-order aria-label="Открыть форму заказа" aria-haspopup="dialog"></button>
             </div>
             <div class="product-actions">
@@ -781,7 +779,7 @@
       <p>Если свитер изготавливается для вас по индивидуальному заданию, заказ оформляется как бытовой подряд. До начала работы в письменном подтверждении заказа согласуем модель, мерки и особенности изделия, описание и стоимость материалов, цену работы, сроки и порядок оплаты.</p>
       <p>Для изделий, изготовленных по индивидуальным заказам населения, обязательное подтверждение соответствия по ТР ТС 017/2011 не требуется (пункт 4 статьи 1). При выполнении работы по индивидуальному изготовлению в рамках бытового подряда код маркировки «Честный знак» и GTIN для этой маркировки не оформляются. При продаже свитеров как товара применяются требования к подтверждению соответствия и маркировке для соответствующей категории продукции.</p>
       <h3>Оплата</h3>
-      <p>Оплата в рублях проходит через Робокассу. Можно отправить заявку без оплаты и дождаться ответа. Стоимость свитера и условия изготовления согласуем по заявке. Через Робокассу доступен отдельный платёж 1 ₽. После оплаты сообщите продавцу номер заявки и номер платежа из Робокассы для сверки.</p>
+      <p>Стоимость свитера по меркам — 7 700 ₽. Заявка отправляется без оплаты. Порядок оплаты согласуем при подтверждении заказа.</p>
       <h3>Изготовление и передача</h3>
       <p>Обычно изготовление занимает три календарных дня после согласования заказа и выполнения согласованных условий оплаты. Для заказов на сайте доставка бесплатная. Способ и сроки передачи подтверждаем с покупателем до оплаты изделия. Доступны самовывоз, личная передача, Почта России, доставка через Авито по согласованию и иной предложенный способ.</p>
       <h3>Возврат</h3>
@@ -948,37 +946,16 @@
           </label>
         </div>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
-        <div class="order-grid">
-          <fieldset>
-            <legend>Мерки</legend>
-            <div id="measurements" class="fields measurements">
-              <label class="field"><span data-measure="1">Длина 1, см</span><input name="length1" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
-              <label class="field"><span data-measure="2">Длина 2, см</span><input name="length2" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
-              <label class="field"><span data-measure="3">Длина 3, см</span><input name="length3" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
-            </div>
-            <p class="fine" id="measurements-note" hidden>Для незаполненных мерок макет подставляет 1 см. Впишите свои значения или попросите помочь снять мерки.</p>
-            <label class="check"><input type="checkbox" name="help" aria-controls="measurements">Помогите снять мерки</label>
-          </fieldset>
-          <fieldset>
-            <legend>Пряжа и отделка</legend>
-            <div class="fields">
-              <label class="field">Пряжа
-                <select name="yarn">
-                  <option value="standard">Кид-мохер</option>
-                  <option value="cotton">Кид-мохер с хлопком</option>
-                  <option value="silk">Кид-мохер с шёлком</option>
-                </select>
-              </label>
-              <label class="field">Пайетки
-                <select name="sequins">
-                  <option value="plain">Без пайеток</option>
-                  <option value="micro">Очень мелкие</option>
-                  <option value="small">Мелкие</option>
-                </select>
-              </label>
-            </div>
-          </fieldset>
-        </div>
+        <fieldset>
+          <legend>Мерки</legend>
+          <div id="measurements" class="fields measurements">
+            <label class="field"><span data-measure="1">Длина 1, см</span><input name="length1" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
+            <label class="field"><span data-measure="2">Длина 2, см</span><input name="length2" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
+            <label class="field"><span data-measure="3">Длина 3, см</span><input name="length3" type="number" inputmode="decimal" min="0.1" step="any" placeholder="см" required></label>
+          </div>
+          <p class="fine" id="measurements-note" hidden>Для незаполненных мерок макет подставляет 1 см. Впишите свои значения или попросите помочь снять мерки.</p>
+          <label class="check"><input type="checkbox" name="help" aria-controls="measurements">Помогите снять мерки</label>
+        </fieldset>
         <label class="field comment">Пожелания к заказу · по желанию
           <textarea name="note" maxlength="600" rows="2" placeholder="Например, свободная посадка"></textarea>
         </label>
@@ -1016,14 +993,12 @@
       </div>
       <div class="order-footer">
         <div aria-live="polite">
-          <p class="fine" id="price-caption">Предварительная стоимость</p>
+          <p class="fine">Стоимость свитера</p>
           <strong id="order-price"></strong>
           <p class="fine status-text" id="order-status" role="status" hidden></p>
-          <p class="fine" id="payment-note">Платёж через Робокассу — 1 ₽. Стоимость свитера согласуем по заявке. В Робокассе магазин отображается как hack-fin.</p>
         </div>
         <div class="order-footer-actions">
-          <button class="btn outline" type="submit" id="request-button">Оставить без оплаты</button>
-          <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note">Оплатить 1 ₽</button>
+          <button class="btn" type="submit" id="request-button">Отправить заявку</button>
         </div>
       </div>
     </form>
@@ -1036,8 +1011,7 @@
       <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
       <p id="request-confirmation" role="status" tabindex="-1"></p>
-      <p class="fine" id="payment-followup" hidden>Для сверки платежа сообщите мастерской номер заявки и номер платежа из Робокассы.</p>
-      <div class="step-actions"><a class="btn" id="order-payment-link" hidden>Перейти в Робокассу</a><button class="btn outline" type="button" data-close>Закрыть</button></div>
+      <div class="step-actions"><button class="btn outline" type="button" data-close>Закрыть</button></div>
     </div>
   </dialog>
 
@@ -1050,18 +1024,9 @@
       {"key": "midnight", "title": "Ночное небо", "name": "Тёмно-синий", "colorGroup": "blue", "sizes": [], "example": false, "photo": "assets/sweaters/midnight-1.webp", "preview": "assets/sweaters/midnight-cover.webp", "gallery": ["assets/sweaters/midnight-1.webp", "assets/sweaters/midnight-2.webp", "assets/sweaters/midnight-3.webp", "assets/sweaters/midnight-4.webp", "assets/sweaters/midnight-5.webp", "assets/sweaters/midnight-6.webp", "assets/sweaters/midnight-7.webp", "assets/sweaters/midnight-8.webp", "assets/sweaters/midnight-9.webp", "assets/sweaters/midnight-10.webp"]},
       {"key": "green", "title": "Лесной мох", "name": "Зелёный", "colorGroup": "green", "sizes": [], "example": false, "photo": "assets/sweaters/green-1.webp", "preview": "assets/sweaters/green-cover.webp", "gallery": ["assets/sweaters/green-1.webp", "assets/sweaters/green-2.webp", "assets/sweaters/green-3.webp", "assets/sweaters/green-4.webp", "assets/sweaters/green-5.webp", "assets/sweaters/green-6.webp", "assets/sweaters/green-7.webp", "assets/sweaters/green-8.webp", "assets/sweaters/green-9.webp"]}
     ];
-    const priceFields = [
-      { key: "base", value: 8000, base: true },
-      { key: "measurements", value: 0 },
-      { key: "cotton", value: 40 },
-      { key: "silk", value: 120 },
-      { key: "micro", value: 50 },
-      { key: "small", value: 90 }
-    ];
-    const orderPayment = { amount: 1, link: "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ" };
     const orderEndpoint = "https://arachne-telegram.superfina220.workers.dev/api/order";
     const defaultStore = "https://www.ozon.ru/seller/oktsept/";
-    const cap = 200; // Надбавки хранятся в десятых долях процента.
+    const sweaterPrice = 7700;
     const storageKey = "svitera-pricing-v2";
     const rubles = new Intl.NumberFormat("ru-RU", {
       style: "currency", currency: "RUB", minimumFractionDigits: 0, maximumFractionDigits: 0
@@ -1071,7 +1036,6 @@
     const orderDialog = byId("order-dialog");
     const order = byId("order-form");
     const outcome = byId("order-outcome");
-    const payButton = byId("pay-button");
     const thumbs = byId("thumbnails");
     const models = new Map();
     const catalogTrack = byId("catalog-track");
@@ -1102,7 +1066,7 @@
     const catalogForm = byId("catalog-form");
     const catalogDialog = byId("catalog-dialog");
     let variant = variants[0];
-    const settings = loadSettings();
+    const ozonStore = loadOzonStore();
 
     function validateStore(value) {
       if (!value) return "";
@@ -1118,53 +1082,24 @@
       return "";
     }
 
-    function loadSettings() {
-      const defaults = Object.fromEntries(priceFields.map(({ key, value }) => [key, value]));
-      defaults.store = defaultStore;
+    function loadOzonStore() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
-        if (!saved) return defaults;
-        for (const { key, base } of priceFields) {
-          const value = saved[key];
-          if (Number.isSafeInteger(value) && value >= (base ? 1 : 0) && (base || value <= cap)) {
-            defaults[key] = value;
-          }
-        }
-        if (typeof saved.store === "string") defaults.store = validateStore(saved.store) || defaultStore;
+        return validateStore(saved?.store) || defaultStore;
       } catch {
-        // При открытии файла настройки могут храниться только до закрытия страницы.
+        return defaultStore;
       }
-      return defaults;
-    }
-
-    function quote(yarn, sequins) {
-      const requested = settings.measurements + (settings[yarn] ?? 0) + (settings[sequins] ?? 0);
-      const applied = Math.min(cap, requested);
-      const amount = Math.floor(settings.base * (1000 + applied) / 1000);
-      return { requested, applied, amount };
-    }
-
-    function updateQuote() {
-      const { requested, applied, amount } = quote(order.elements.yarn.value, order.elements.sequins.value);
-      byId("order-price").textContent = rubles.format(amount);
-      byId("price-caption").textContent = requested > cap
-        ? "Предварительная стоимость · предел +20%"
-        : "Предварительная стоимость" + (applied ? " · +" + decimal.format(applied / 10) + "%" : "");
     }
 
     function updateStorefront() {
-      byId("starting-price").textContent = "от " + rubles.format(quote("standard", "plain").amount);
+      const price = rubles.format(sweaterPrice);
+      byId("starting-price").textContent = price;
+      byId("order-price").textContent = price;
       for (const id of ["home-ozon-link", "ozon-link", "catalog-ozon-link", "how-ozon-link"]) {
         const link = byId(id);
-        if (settings.store) {
-          link.href = settings.store;
-          link.removeAttribute("aria-disabled");
-        } else {
-          link.removeAttribute("href");
-          link.setAttribute("aria-disabled", "true");
-        }
+        link.href = ozonStore;
+        link.removeAttribute("aria-disabled");
       }
-      updateQuote();
     }
 
     let gallery = [];
@@ -1421,7 +1356,6 @@
       }
       byId("order-status").hidden = true;
       syncMeasurements();
-      updateQuote();
       showOrderStep("order");
       orderDialog.showModal();
     }
@@ -1495,8 +1429,6 @@
     });
 
     order.elements.help.addEventListener("change", syncMeasurements);
-    order.elements.yarn.addEventListener("change", updateQuote);
-    order.elements.sequins.addEventListener("change", updateQuote);
 
     const deliveryMethod = order.elements.deliveryMethod;
     function updateDelivery() {
@@ -1522,7 +1454,6 @@
       event.preventDefault();
       if (submittingOrder) return;
       const fields = order.elements;
-      const wantsPayment = event.submitter === payButton;
       const status = byId("order-status");
       const phone = fields.phone.value.trim();
       status.hidden = false;
@@ -1535,9 +1466,7 @@
       const configuration = [
         orderVariant?.title ?? "Своя модель по фото",
         orderVariant?.name,
-        orderSize.value && ("Размер " + orderSize.value),
-        fields.yarn.selectedOptions[0].textContent,
-        fields.sequins.selectedOptions[0].textContent
+        orderSize.value && ("Размер " + orderSize.value)
       ].filter(Boolean).join(" · ");
       const measures = fields.help.checked ? "Нужна помощь с мерками"
         : measureInputs.map((input, index) => measurementsNames[index] + " — "
@@ -1549,7 +1478,7 @@
       ].filter(Boolean).join(" · ");
       const data = new FormData();
       const payload = {
-        configuration, measures, delivery, wantsPayment, phone,
+        configuration, measures, delivery, wantsPayment: false, phone,
         customer: fields.customer.value.trim(),
         email: fields.email.value.trim(),
         note: fields.note.value.trim()
@@ -1558,7 +1487,7 @@
       const photo = referenceInput.files[0];
       if (photo) data.set("photo", photo);
       const close = orderDialog.querySelector(".close");
-      submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = true;
+      submittingOrder = requestButton.disabled = close.disabled = true;
       status.textContent = "Отправляем заявку…";
       try {
         const response = await fetch(orderEndpoint, { method: "POST", body: data, signal: AbortSignal.timeout(35000) });
@@ -1579,19 +1508,14 @@
           line.hidden = !value;
           line.textContent = value ? label + " — " + value : "";
         }
-        byId("request-price").textContent = wantsPayment ? "К оплате через Робокассу — " + rubles.format(orderPayment.amount) : "";
+        byId("request-price").textContent = rubles.format(sweaterPrice);
         byId("request-confirmation").textContent = "Заявка № " + result.orderId + " передана мастерской.";
-        byId("payment-followup").hidden = !wantsPayment;
-        const paymentLink = byId("order-payment-link");
-        paymentLink.hidden = !wantsPayment;
-        paymentLink.href = orderPayment.link;
         showOrderStep("done");
         byId("request-confirmation").focus();
-        if (wantsPayment) window.location.assign(orderPayment.link);
       } catch {
         status.textContent = "Не удалось подтвердить отправку. Проверьте соединение или свяжитесь с мастерской.";
       } finally {
-        submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = false;
+        submittingOrder = requestButton.disabled = close.disabled = false;
       }
     });
 
