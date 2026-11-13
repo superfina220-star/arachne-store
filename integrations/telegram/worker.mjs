@@ -38,10 +38,13 @@ async function sendConsultation(request, env) {
   }
   const question = typeof data?.question === "string" ? data.question.trim() : "";
   const contact = typeof data?.contact === "string" ? data.contact.trim() : "";
-  if (!question || question.length > 400 || (contact && !/^@[A-Za-z0-9_]{5,32}$/.test(contact))) {
+  const isTelegram = /^@[A-Za-z0-9_]{5,32}$/.test(contact);
+  const isPhone = contact.length <= 33 && /^[+]?[0-9 ()-]+$/.test(contact)
+    && /^[0-9]{7,15}$/.test(contact.replace(/[^0-9]/g, ""));
+  if (!question || question.length > 400 || (!isTelegram && !isPhone)) {
     return response(400);
   }
-  const text = ["Арахна · вопрос с сайта", question, contact && "Ответить: " + contact]
+  const text = ["Арахна · вопрос с сайта", question, (isTelegram ? "Telegram: " : "Телефон: ") + contact]
     .filter(Boolean).join("\n\n");
   const sent = await telegram(env, "sendMessage", {
     chat_id: env.TELEGRAM_CHAT_ID, text, link_preview_options: { is_disabled: true },
@@ -74,7 +77,7 @@ async function sendOrder(request, env) {
   const orderId = crypto.randomUUID().split("-")[0].toUpperCase();
   const text = [
     "Арахна · заявка № " + orderId,
-    wantsPayment ? "Выбран тестовый платёж 1 ₽ · оплату нужно сверить" : "Без оплаты · связаться с покупателем",
+    wantsPayment ? "Выбрана оплата через Робокассу · платёж 1 ₽ нужно сверить" : "Без оплаты · связаться с покупателем",
     "Модель: " + configuration,
     "Мерки: " + measures,
     "Получение: " + delivery,

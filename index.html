@@ -602,7 +602,7 @@
           </div>
           <div class="product-purchase">
             <div class="product-price">
-              <p class="fine" id="starting-price-caption">Тестовая цена</p>
+              <p class="fine">Пример цены по меркам</p>
               <button type="button" class="product-price-link" id="starting-price" data-open-order aria-label="Открыть форму заказа" aria-haspopup="dialog"></button>
             </div>
             <div class="product-actions">
@@ -786,7 +786,7 @@
       <h3>Заказ</h3>
       <p>Выберите модель, укажите мерки или запросите помощь и оставьте контакты. После заявки продавец связывается с покупателем и подтверждает модель, мерки, материал, итоговую цену и срок. Для серийных и индивидуальных заказов применяются согласованные условия.</p>
       <h3>Оплата</h3>
-      <p>Оплата в рублях проходит через Робокассу. Можно отправить заявку без оплаты и дождаться ответа. На время проверки на сайте доступен отдельный тестовый платёж 1 ₽. Он не является ценой свитера или подтверждением начала изготовления. После оплаты сообщите продавцу номер заявки и номер платежа из Робокассы для сверки.</p>
+      <p>Оплата в рублях проходит через Робокассу. Можно отправить заявку без оплаты и дождаться ответа. Стоимость свитера и условия изготовления согласуем по заявке. Через Робокассу доступен отдельный платёж 1 ₽. После оплаты сообщите продавцу номер заявки и номер платежа из Робокассы для сверки.</p>
       <h3>Изготовление и передача</h3>
       <p>Обычно изготовление занимает три календарных дня после согласования заказа и выполнения согласованных условий оплаты. Для заказов на сайте доставка бесплатная. Способ и сроки передачи подтверждаем с покупателем до оплаты изделия. Доступны самовывоз, личная передача, Почта России, доставка через Авито по согласованию и иной предложенный способ.</p>
       <h3>Возврат</h3>
@@ -827,10 +827,11 @@
       <button class="close" type="button" data-close aria-label="Закрыть консультанта">×</button>
     </div>
     <form class="sheet" id="consult-form">
-      <p class="dialog-sub">Спросите о пряже, мерках или доставке. Вопрос и указанный Telegram-ник будут переданы мастерской через Telegram.</p>
-      <label class="field">Ваш вопрос<input name="question" required maxlength="400" placeholder="Например, можно ли связать по моему фото?"></label>
-      <label class="field comment">Ваш @ник в Telegram · для ответа
-        <input name="contact" maxlength="33" pattern="@[A-Za-z0-9_]{5,32}" placeholder="@username" autocomplete="off">
+      <p class="dialog-sub">Спросите о пряже, мерках или доставке. Вопрос и контакт получит мастерская.</p>
+      <p class="fine">* Обязательные поля</p>
+      <label class="field"><span>Ваш вопрос <span aria-hidden="true">*</span></span><input name="question" required maxlength="400" placeholder="Например, можно ли связать по моему фото?"></label>
+      <label class="field comment"><span>Telegram или телефон <span aria-hidden="true">*</span></span>
+        <input name="contact" required maxlength="33" placeholder="@username или +7 900 123-45-67" autocomplete="off" autocapitalize="off" spellcheck="false">
       </label>
       <div class="step-actions"><button class="btn" type="submit">Отправить вопрос</button></div>
       <p class="consult-reply" id="consult-reply" role="status" hidden></p>
@@ -958,7 +959,6 @@
     </div>
     <form id="order-form">
       <div class="sheet">
-        <p class="dialog-sub"><strong>Тестовый заказ.</strong> Для проверки укажите вымышленные имя, телефон и адрес. Для реального заказа <button class="policy-link fine" type="button" data-open-dialog="contacts-dialog">свяжитесь с мастерской</button>.</p>
         <div class="order-model-fields">
           <div>
             <label class="field">Свитер<select name="model" required></select></label>
@@ -1037,19 +1037,19 @@
         <img class="reference-preview" id="reference-preview" alt="Фото модели для заказа" hidden>
         <button class="policy-link fine" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
         <button class="policy-link fine" type="button" data-open-dialog="privacy-dialog">Как обрабатываются данные заявки</button>
-        <p class="fine">Тестовую заявку передадим мастерской через Telegram. Используйте только вымышленные контакты и адрес. Перед отправкой можно ознакомиться с <button class="policy-link fine" type="button" data-open-dialog="terms-dialog">офертой</button>.</p>
+        <p class="fine">Перед отправкой можно ознакомиться с <button class="policy-link fine" type="button" data-open-dialog="terms-dialog">офертой</button>.</p>
 
       </div>
       <div class="order-footer">
         <div aria-live="polite">
-          <p class="fine" id="price-caption">Тестовая цена</p>
+          <p class="fine" id="price-caption">Предварительная стоимость</p>
           <strong id="order-price"></strong>
           <p class="fine status-text" id="order-status" role="status" hidden></p>
-          <p class="fine" id="payment-note">Проверочный платёж 1 ₽. В Робокассе магазин отображается как hack-fin.</p>
+          <p class="fine" id="payment-note">Платёж через Робокассу — 1 ₽. Стоимость свитера согласуем по заявке. В Робокассе магазин отображается как hack-fin.</p>
         </div>
         <div class="order-footer-actions">
           <button class="btn outline" type="submit" id="request-button">Оставить без оплаты</button>
-          <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note">Оплатить</button>
+          <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note">Оплатить 1 ₽</button>
         </div>
       </div>
     </form>
@@ -1062,7 +1062,7 @@
       <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
       <p id="request-confirmation" role="status" tabindex="-1"></p>
-      <p class="fine" id="payment-followup" hidden>Для сверки тестового платежа сообщите мастерской номер заявки и номер платежа из Робокассы.</p>
+      <p class="fine" id="payment-followup" hidden>Для сверки платежа сообщите мастерской номер заявки и номер платежа из Робокассы.</p>
       <div class="step-actions"><a class="btn" id="order-payment-link" hidden>Перейти в Робокассу</a><button class="btn outline" type="button" data-close>Закрыть</button></div>
     </div>
   </dialog>
@@ -1074,7 +1074,7 @@
     </div>
     <div class="dialog-head"><button class="policy-link" type="button" data-open-dialog="size-admin-dialog">Таблица размеров</button></div>
     <form class="sheet" id="settings-form">
-      <p class="dialog-sub">Меняйте базовую цену и надбавки. Общая надбавка за мерки, пряжу и пайетки ограничена 20%. Во время теста цена заказа фиксирована.</p>
+      <p class="dialog-sub">Меняйте базовую цену и надбавки. Общая надбавка за мерки, пряжу и пайетки ограничена 20%.</p>
       <div class="fields pricing-fields" id="price-fields"></div>
       <label class="field">Ссылка на магазин Ozon
         <input type="url" name="store" placeholder="https://www.ozon.ru/seller/…" autocomplete="off">
@@ -1104,7 +1104,7 @@
       { key: "micro", label: "Очень мелкие пайетки, %", value: 50 },
       { key: "small", label: "Мелкие пайетки, %", value: 90 }
     ];
-    const pilotPayment = { amount: 1, link: "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ" };
+    const orderPayment = { amount: 1, link: "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ" };
     const orderEndpoint = "https://arachne-telegram.superfina220.workers.dev/api/order";
     const defaultStore = "https://www.ozon.ru/seller/oktsept/";
     const cap = 200; // Надбавки хранятся в десятых долях процента.
@@ -1195,21 +1195,14 @@
 
     function updateQuote() {
       const { requested, applied, amount } = quote(order.elements.yarn.value, order.elements.sequins.value);
-      byId("order-price").textContent = rubles.format(pilotPayment.amount ?? amount);
-      if (pilotPayment.amount !== null) {
-        byId("price-caption").textContent = "Тестовая цена";
-        return;
-      }
+      byId("order-price").textContent = rubles.format(amount);
       byId("price-caption").textContent = requested > cap
-        ? "Расчёт в макете · предел +20%"
-        : "Расчёт в макете" + (applied ? " · +" + decimal.format(applied / 10) + "%" : "");
+        ? "Предварительная стоимость · предел +20%"
+        : "Предварительная стоимость" + (applied ? " · +" + decimal.format(applied / 10) + "%" : "");
     }
 
     function updateStorefront() {
-      byId("starting-price").textContent = pilotPayment.amount === null
-        ? "от " + rubles.format(quote("standard", "plain").amount)
-        : rubles.format(pilotPayment.amount);
-      byId("starting-price-caption").textContent = pilotPayment.amount === null ? "Пример цены по меркам" : "Тестовая цена";
+      byId("starting-price").textContent = "от " + rubles.format(quote("standard", "plain").amount);
       for (const id of ["home-ozon-link", "ozon-link", "catalog-ozon-link", "how-ozon-link"]) {
         const link = byId(id);
         if (settings.store) {
@@ -1636,15 +1629,15 @@
           line.hidden = !value;
           line.textContent = value ? label + " — " + value : "";
         }
-        byId("request-price").textContent = wantsPayment ? "Тестовый платёж: " + rubles.format(pilotPayment.amount) : "";
+        byId("request-price").textContent = wantsPayment ? "К оплате через Робокассу — " + rubles.format(orderPayment.amount) : "";
         byId("request-confirmation").textContent = "Заявка № " + result.orderId + " передана мастерской.";
         byId("payment-followup").hidden = !wantsPayment;
         const paymentLink = byId("order-payment-link");
         paymentLink.hidden = !wantsPayment;
-        paymentLink.href = pilotPayment.link;
+        paymentLink.href = orderPayment.link;
         showOrderStep("done");
         byId("request-confirmation").focus();
-        if (wantsPayment) window.location.assign(pilotPayment.link);
+        if (wantsPayment) window.location.assign(orderPayment.link);
       } catch {
         status.textContent = "Не удалось подтвердить отправку. Проверьте соединение или свяжитесь с мастерской.";
       } finally {
@@ -1936,6 +1929,13 @@
         reply.textContent = "Введите вопрос.";
         return;
       }
+      const isTelegram = /^@[A-Za-z0-9_]{5,32}$/.test(contact);
+      const isPhone = /^[+]?[0-9 ()-]+$/.test(contact) && /^[0-9]{7,15}$/.test(contact.replace(/[^0-9]/g, ""));
+      if (!isTelegram && !isPhone) {
+        reply.textContent = "Укажите @ник в Telegram или номер телефона.";
+        form.elements.contact.focus();
+        return;
+      }
       button.disabled = true;
       reply.textContent = "Отправляем вопрос…";
       try {
@@ -1950,7 +1950,7 @@
           return;
         }
         if (!response.ok || (await response.json()).ok !== true) throw new Error("Delivery failed");
-        reply.textContent = contact ? "Вопрос отправлен. Ответим вам в Telegram." : "Вопрос отправлен.";
+        reply.textContent = isTelegram ? "Вопрос отправлен. Ответим вам в Telegram." : "Вопрос отправлен. Свяжемся с вами по телефону.";
         if (form.elements.question.value.trim() === question && form.elements.contact.value.trim() === contact) form.reset();
       } catch {
         const tip = consultTopics.find(([pattern]) => pattern.test(question.toLowerCase()))?.[1];
