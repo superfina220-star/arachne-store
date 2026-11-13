@@ -133,7 +133,7 @@
   .thumbnail img { display:block; width:100%; height:clamp(48px, 8vw, 88px); object-fit:contain; object-position:center; }
   .product-purchase { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-top:14px; }
   .product-price { flex:none; }
-  .product-price strong { font-size: clamp(22px, 2.5vw, 31px); line-height: 1.2; font-variant-numeric: tabular-nums; }
+  .product-price-link { display:block; border:0; padding:0; color:inherit; background:none; text-decoration:underline; text-underline-offset:.17em; font-weight:700; font-size: clamp(22px, 2.5vw, 31px); line-height: 1.2; font-variant-numeric: tabular-nums; }
   .fine { color: var(--muted); font-size: 13px; }
   .product-actions { display:flex; flex-wrap:wrap; gap:7px; }
   .btn {
@@ -529,7 +529,7 @@
         <small>Свитера с характером</small>
         <span class="wordmark-icon" aria-hidden="true"><span class="wordmark-spider"><i></i><i></i><i></i><i></i></span></span>
       </a>
-      <a class="btn header-order" href="#order" id="nav-order">Заказать</a>
+      <a class="btn header-order" href="#order" id="nav-order" data-open-order aria-haspopup="dialog">Заказать</a>
       <nav class="nav" aria-label="Навигация">
         <a href="#story" id="nav-story">История</a>
         <a href="#collection" id="nav-collection">Коллекция</a>
@@ -554,7 +554,7 @@
             <h1 class="serif" id="home-title">Свитера<em>по вашим меркам</em></h1>
             <p class="hero-copy">Свяжем ажурный свитер с той посадкой и длиной, которые вам удобны. Выберите модель из коллекции или пришлите фото своего образца.</p>
             <div class="hero-actions">
-              <a class="btn" href="#order">Заказать</a>
+              <a class="btn" href="#order" data-open-order aria-haspopup="dialog">Заказать</a>
               <a class="policy-link" href="#collection">Коллекция</a>
             </div>
           </div>
@@ -603,7 +603,7 @@
           <div class="product-purchase">
             <div class="product-price">
               <p class="fine" id="starting-price-caption">Тестовая цена</p>
-              <strong id="starting-price"></strong>
+              <button type="button" class="product-price-link" id="starting-price" data-open-order aria-label="Открыть форму заказа" aria-haspopup="dialog"></button>
             </div>
             <div class="product-actions">
               <button class="btn" type="button" id="open-order" data-open-order aria-haspopup="dialog">Заказать</button>
@@ -704,7 +704,7 @@
           <section>
             <h3>Изготовим свитер по заказу</h3>
             <p>Выберите оттенок или приложите фото своей модели к заявке. Обычно вяжем свитер около трёх дней. Свяжемся с вами и согласуем бесплатную доставку по указанному адресу.</p>
-            <a class="btn" href="#order">Выбрать свитер</a>
+            <a class="btn" href="#order" data-open-order aria-haspopup="dialog">Выбрать свитер</a>
           </section>
           <section>
             <h3>Готовые свитеры на Ozon</h3>
@@ -752,7 +752,13 @@
       <h2 class="serif" id="certificates-title">Сертификаты</h2>
       <button class="close" type="button" data-close aria-label="Закрыть сертификаты">×</button>
     </div>
-    <div class="sheet policy-copy"><p>Документы на изделия появятся в этом разделе.</p></div>
+    <div class="sheet policy-copy">
+      <h3>Декларация о соответствии</h3>
+      <p>ЕАЭС N RU Д-RU.РА09.В.64407/26. Зарегистрирована 15.10.2026. Срок действия по документу — до 14.10.2029 включительно.</p>
+      <p>Заявитель и изготовитель — ООО «ОКЦЕПТ». Декларация относится к указанным в ней трикотажным изделиям из полушерстяной пряжи. Продавец на сайте — ИП Кашаева А. К.</p>
+      <p><a href="assets/documents/declaration-knitwear.pdf" target="_blank" rel="noopener noreferrer">Посмотреть копию декларации (PDF)</a></p>
+      <p><a href="https://pub.fsa.gov.ru/rds/declaration/view/22037766/common" target="_blank" rel="noopener noreferrer">Открыть декларацию в реестре Росаккредитации</a></p>
+    </div>
   </dialog>
 
   <dialog class="compact" id="returns-dialog" aria-labelledby="returns-title">
@@ -761,31 +767,30 @@
       <button class="close" type="button" data-close aria-label="Закрыть условия возврата">×</button>
     </div>
     <div class="sheet policy-copy">
-      <p>Если свитер не подошёл, напишите нам в течение 7 дней после получения. Мы принимаем возвраты по посадке и для свитеров, изготовленных по согласованным меркам, при сохранении товарного вида и потребительских свойств. Права покупателя, предусмотренные законом, действуют в полном объёме. Если при доставке не предоставили письменную информацию о порядке и сроках возврата, в случаях, предусмотренных законом, срок отказа составляет три месяца с получения.</p>
-      <h3>Примерка и бирки</h3>
-      <p>Свитер можно примерить дома. Для возврата по посадке сохраните товарный вид: свитер должен быть без следов носки, стирки или переделки. Если бирки на месте и свитер в таком состоянии, причину возврата объяснять не нужно.</p>
-      <p>Если бирки срезаны, осмотрим свитер при получении и сообщим решение по его фактическому состоянию.</p>
-      <h3>Как вернуть</h3>
-      <p>Свяжитесь с нами по контактам из подтверждения заказа и укажите его номер. Сообщим адрес и согласуем способ передачи, включая отправку перевозчиком. При возврате качественного товара обратная пересылка может оплачиваться покупателем в случаях, предусмотренных законом. Деньги возвращаем в срок до 10 дней со дня предъявления требования в применимых случаях.</p>
-      <p>Если есть недостаток или изделие не соответствует согласованному заказу, сообщите об этом. Такие обращения рассматриваем по закону независимо от состояния бирок. По покупкам через Ozon возврат можно оформить в заказе на площадке.</p>
+      <p>При дистанционной покупке можно отказаться от товара до передачи, а после получения — в течение 7 дней. Если письменные условия возврата не предоставлены при доставке, срок составляет 3 месяца.</p>
+      <p>Для возврата качественного товара сохраните товарный вид и потребительские свойства. Факт покупки можно подтвердить чеком или другими доказательствами. Свитер можно примерить. Сохраните бирки, если планируете возврат.</p>
+      <p>Мы также принимаем возврат свитера, изготовленного по согласованным меркам, если он не подошёл по посадке и сохранил товарный вид и потребительские свойства. Если есть недостаток или изделие не соответствует заказу, действуют права покупателя по закону.</p>
+      <h3>Как оформить возврат</h3>
+      <p>Сообщите номер заказа и причину обращения, если речь о недостатке: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>. Мы сообщим адрес для отправки. Вернуть товар можно дистанционно, в том числе почтой или перевозчиком, если способ позволяет проверить состояние товара при получении.</p>
+      <p>При отказе от товара деньги возвращаем в срок до 10 дней со дня предъявления требования. Из суммы могут вычитаться расходы продавца на доставку возвращённого качественного товара от покупателя в случаях, предусмотренных законом. По покупкам через Ozon можно оформить возврат в заказе на площадке.</p>
     </div>
   </dialog>
 
   <dialog class="compact" id="terms-dialog" aria-labelledby="terms-title">
     <div class="dialog-head">
-      <h2 class="serif" id="terms-title">Проект оферты</h2>
+      <h2 class="serif" id="terms-title">Оферта</h2>
       <button class="close" type="button" data-close aria-label="Закрыть условия заказа">×</button>
     </div>
     <div class="sheet policy-copy">
-      <p class="fine">Проект для arachne.okcept.ru. Продавец — ООО «ОКЦЕПТ», ИНН 7810978256, ОГРН 1237800055019. Реквизиты и порядок связи указаны в разделе «Контакты и реквизиты».</p>
-      <h3>Заявка и подтверждение</h3>
-      <p>Покупатель оставляет заявку с моделью и пожеланиями. До оплаты магазин направляет подтверждение с номером заказа, согласованными мерками и материалами, итоговой ценой, размером предоплаты, датой готовности, способом и сроком передачи. В подтверждении направляем ссылку на действующую оферту. Предоплата по подтверждённому заказу означает согласие с офертой и условиями этого заказа.</p>
-      <h3>Изготовление и сроки</h3>
-      <p>Стандартный срок изготовления — три календарных дня после подтверждения заказа и получения согласованной предоплаты. Конкретную дату готовности и срок передачи указываем в подтверждении. При задержке сообщаем покупателю и предлагаем новый срок. Изменение срока согласовываем с покупателем. При отказе и возврате предоплаты действуют права покупателя по закону.</p>
-      <h3>Оплата и доставка</h3>
-      <p>Оплата в рублях через Робокассу по ссылке из подтверждения. НДС не предъявляется. Для заказов на сайте доставка бесплатная. Подходящий способ и срок передачи согласуем с покупателем до оплаты. При передаче заказа предоставляем письменную информацию о порядке и сроках возврата.</p>
-      <h3>Примерка и возврат</h3>
-      <p>Если свитер не подошёл, обратитесь к нам в течение 7 дней после получения. Подробности в разделе «Возврат». Условия заказа на сайте относятся к покупкам непосредственно у магазина.</p>
+      <p>Продавец — Индивидуальный предприниматель Кашаева Александра Константиновна, ИНН 782511669638, ОГРНИП 325784700313532. Место регистрации: Санкт-Петербург. Обращения по заказам: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
+      <h3>Заказ</h3>
+      <p>Выберите модель, укажите мерки или запросите помощь и оставьте контакты. После заявки продавец связывается с покупателем и подтверждает модель, мерки, материал, итоговую цену и срок. Для серийных и индивидуальных заказов применяются согласованные условия.</p>
+      <h3>Оплата</h3>
+      <p>Оплата в рублях проходит через Робокассу. Можно отправить заявку без оплаты и дождаться ответа. На время проверки на сайте доступен отдельный тестовый платёж 1 ₽. Он не является ценой свитера или подтверждением начала изготовления. После оплаты сообщите продавцу номер заявки и номер платежа из Робокассы для сверки.</p>
+      <h3>Изготовление и передача</h3>
+      <p>Обычно изготовление занимает три календарных дня после согласования заказа и выполнения согласованных условий оплаты. Для заказов на сайте доставка бесплатная. Способ и сроки передачи подтверждаем с покупателем до оплаты изделия. Доступны самовывоз, личная передача, Почта России, доставка через Авито по согласованию и иной предложенный способ.</p>
+      <h3>Возврат</h3>
+      <p>Отказ от заказа, возврат товара и денежных средств оформляются по законодательству РФ. Порядок и сроки приведены в разделе «Возврат». При передаче товара предоставляем письменную информацию о порядке возврата.</p>
     </div>
   </dialog>
 
@@ -796,9 +801,9 @@
     </div>
     <div class="sheet policy-copy">
       <h3>Вопросы и обращения</h3>
-      <p>Контакты для подтверждения перед запуском: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
+      <p>Вопросы по заказам, претензии и возвраты: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
       <h3>Адрес возврата</h3>
-      <p>Почтовый адрес для возврата уточняется. В рабочем магазине адрес и порядок отправки сообщим покупателю при подтверждении возврата.</p>
+      <p>Почтовый адрес для возврата сообщаем по запросу покупателя.</p>
     </div>
   </dialog>
 
@@ -809,8 +814,8 @@
     </div>
     <div class="sheet policy-copy">
       <h3>Продавец</h3>
-      <p>Общество с ограниченной ответственностью «ОКЦЕПТ». ИНН 7810978256, КПП 781401001, ОГРН 1237800055019.</p>
-      <p>Юридический адрес: 197373, Санкт-Петербург, муниципальный округ Юнтолово, Комендантский проспект, д. 32, корп. 1, литера А, кв. 326.</p>
+      <p>Индивидуальный предприниматель Кашаева Александра Константиновна, ИНН 782511669638, ОГРНИП 325784700313532.</p>
+      <p>Место регистрации: Санкт-Петербург. Контакты для заказов, претензий и возвратов: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
     </div>
   </dialog>
 
@@ -838,11 +843,11 @@
       <button class="close" type="button" data-close aria-label="Закрыть политику обработки данных">×</button>
     </div>
     <div class="sheet policy-copy">
-      <p class="fine">Проект для arachne.okcept.ru. Оператор — ООО «ОКЦЕПТ», ИНН 7810978256, ОГРН 1237800055019. Перед запуском уточняются хостинг и подключённые сервисы.</p>
+      <p class="fine">Оператор данных на arachne.okcept.ru — Индивидуальный предприниматель Кашаева Александра Константиновна, ИНН 782511669638, ОГРНИП 325784700313532. Обращения: <a href="mailto:helper@okcept.ru">helper@okcept.ru</a>, <a href="tel:+79312681293">+7 931 268-12-93</a>.</p>
       <h3>Данные и цели</h3>
       <p>Для ответа на заявку и оформления заказа магазин обрабатывает контактные данные, параметры свитера, мерки, пожелания и фото модели, которые покупатель добавляет к заявке. Для доставки используются имя получателя, телефон и данные доставки. Для оплаты, чека и возврата используются номер заказа, сумма, статус платежа и контакт для чека.</p>
       <h3>Основания и получатели</h3>
-      <p>Данные обрабатываются для рассмотрения заявки по инициативе покупателя, исполнения договора и требований закона. Согласие, когда оно требуется, оформляется отдельно. Для исполнения заказа необходимые данные могут передаваться Робокассе и участникам расчётов для платежа и чека, перевозчику для доставки и поставщикам инфраструктуры в пределах их роли. Реквизиты карты вводятся на платёжной странице Робокассы.</p>
+      <p>Данные обрабатываются для рассмотрения заявки по инициативе покупателя, исполнения договора и требований закона. Согласие, когда оно требуется, оформляется отдельно. Для исполнения заказа необходимые данные могут передаваться Робокассе и участникам расчётов для платежа и чека, перевозчику для доставки и поставщикам инфраструктуры в пределах их роли. Заявки и вопросы передаются мастерской в закрытую группу Telegram. Реквизиты карты вводятся на платёжной странице Робокассы.</p>
       <h3>Хранение и права покупателя</h3>
       <p>Данные хранятся в течение срока, необходимого для работы с обращением, исполнения заказа и выполнения требований закона. По достижении цели данные удаляются или обезличиваются, если их дальнейшее хранение не требуется. Можно запросить сведения об обработке данных, потребовать их уточнения или удаления в предусмотренных законом случаях, а также отозвать ранее данное согласие. Канал для обращений указан в разделе «Контакты».</p>
     </div>
@@ -953,6 +958,7 @@
     </div>
     <form id="order-form">
       <div class="sheet">
+        <p class="dialog-sub"><strong>Тестовый заказ.</strong> Для проверки укажите вымышленные имя, телефон и адрес. Для реального заказа <button class="policy-link fine" type="button" data-open-dialog="contacts-dialog">свяжитесь с мастерской</button>.</p>
         <div class="order-model-fields">
           <div>
             <label class="field">Свитер<select name="model" required></select></label>
@@ -1002,9 +1008,28 @@
         <label class="field comment">Пожелания к заказу · по желанию
           <textarea name="note" maxlength="600" rows="2" placeholder="Например, свободная посадка"></textarea>
         </label>
-        <label class="field comment">Адрес доставки и удобное время · по желанию
-          <textarea name="delivery" maxlength="500" rows="2" placeholder="Например, Санкт-Петербург, ул. …, вечером после 18:00"></textarea>
-        </label>
+        <fieldset class="fields comment">
+          <legend>Контакты и доставка</legend>
+          <div class="order-model-fields">
+            <label class="field">Имя получателя<input name="customer" autocomplete="name" maxlength="100" required></label>
+            <label class="field">Телефон<input name="phone" type="tel" autocomplete="tel" maxlength="24" required></label>
+          </div>
+          <label class="field">Email · по желанию<input name="email" type="email" autocomplete="email" maxlength="150"></label>
+          <label class="field">Способ получения
+            <select name="deliveryMethod" required>
+              <option value="">Выберите способ</option>
+              <option value="pickup">Самовывоз</option>
+              <option value="personal">Личная передача</option>
+              <option value="post">Почта России</option>
+              <option value="avito">Авито</option>
+              <option value="other">Иной способ</option>
+            </select>
+          </label>
+          <label class="field" id="delivery-other" hidden>Укажите свой способ<input name="deliveryOther" maxlength="100" disabled></label>
+          <label class="field"><span id="delivery-label">Адрес или комментарий к получению</span>
+            <textarea name="delivery" maxlength="350" rows="2" autocomplete="street-address"></textarea>
+          </label>
+        </fieldset>
         <label class="field comment">Фото своей модели · по желанию
           <input name="reference" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="reference-note">
         </label>
@@ -1012,27 +1037,20 @@
         <img class="reference-preview" id="reference-preview" alt="Фото модели для заказа" hidden>
         <button class="policy-link fine" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
         <button class="policy-link fine" type="button" data-open-dialog="privacy-dialog">Как обрабатываются данные заявки</button>
-        <p class="fine status-text" id="registration-status" role="status" hidden>Регистрация в макете завершена. Проверьте параметры и нажмите «Оставить без оплаты».</p>
+        <p class="fine">Тестовую заявку передадим мастерской через Telegram. Используйте только вымышленные контакты и адрес. Перед отправкой можно ознакомиться с <button class="policy-link fine" type="button" data-open-dialog="terms-dialog">офертой</button>.</p>
+
       </div>
       <div class="order-footer">
         <div aria-live="polite">
           <p class="fine" id="price-caption">Тестовая цена</p>
           <strong id="order-price"></strong>
-          <p class="fine" id="payment-note" hidden>Подключаем Робокассу</p>
+          <p class="fine status-text" id="order-status" role="status" hidden></p>
+          <p class="fine" id="payment-note">Проверочный платёж 1 ₽. В Робокассе магазин отображается как hack-fin.</p>
         </div>
         <div class="order-footer-actions">
           <button class="btn outline" type="submit" id="request-button">Оставить без оплаты</button>
           <button class="btn" type="submit" id="pay-button" aria-describedby="payment-note" disabled>Оплатить</button>
         </div>
-      </div>
-    </form>
-
-    <form class="sheet" id="registration-form" hidden>
-      <p class="dialog-sub">После регистрации вы вернётесь к заполненной форме. Для пробы укажите вымышленный email.</p>
-      <label class="field">Email<input type="email" name="email" maxlength="180" placeholder="buyer@example.com" required autocomplete="off"></label>
-      <div class="step-actions">
-        <button class="btn" type="submit">Зарегистрироваться</button>
-        <button class="btn outline" type="button" id="back-to-order">Назад к меркам</button>
       </div>
     </form>
 
@@ -1043,8 +1061,9 @@
       <p id="request-note" hidden></p>
       <p id="request-reference" hidden></p>
       <p class="request-price" id="request-price"></p>
-      <p class="fine">Заявка собрана в макете. Отправка в мастерскую пока не подключена.</p>
-      <div><button class="btn" type="button" data-close>К коллекции</button></div>
+      <p id="request-confirmation" role="status" tabindex="-1"></p>
+      <p class="fine" id="payment-followup" hidden>Для сверки тестового платежа сообщите мастерской номер заявки и номер платежа из Робокассы.</p>
+      <div class="step-actions"><a class="btn" id="order-payment-link" hidden>Перейти в Робокассу</a><button class="btn outline" type="button" data-close>Закрыть</button></div>
     </div>
   </dialog>
 
@@ -1060,10 +1079,6 @@
       <label class="field">Ссылка на магазин Ozon
         <input type="url" name="store" placeholder="https://www.ozon.ru/seller/…" autocomplete="off">
       </label>
-      <label class="field comment">Ссылка на оплату Робокассы
-        <input type="url" name="paymentLink" placeholder="https://…" autocomplete="off" aria-describedby="payment-settings-note">
-      </label>
-      <p class="fine form-note" id="payment-settings-note">Вставьте готовую ссылку виджета на 1 ₽. Эта настройка действует в текущем браузере.</p>
       <div class="step-actions">
         <button class="btn" type="submit">Сохранить настройки</button>
         <button class="btn outline" type="button" data-close>К витрине</button>
@@ -1089,7 +1104,8 @@
       { key: "micro", label: "Очень мелкие пайетки, %", value: 50 },
       { key: "small", label: "Мелкие пайетки, %", value: 90 }
     ];
-    const pilotPayment = { amount: 1, link: "" };
+    const pilotPayment = { amount: 1, link: "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ" };
+    const orderEndpoint = "https://arachne-telegram.superfina220.workers.dev/api/order";
     const defaultStore = "https://www.ozon.ru/seller/oktsept/";
     const cap = 200; // Надбавки хранятся в десятых долях процента.
     const storageKey = "svitera-pricing-v2";
@@ -1100,12 +1116,10 @@
     const byId = (id) => document.getElementById(id);
     const orderDialog = byId("order-dialog");
     const order = byId("order-form");
-    const registration = byId("registration-form");
     const outcome = byId("order-outcome");
     const settingsForm = byId("settings-form");
     const settingsDialog = byId("settings-dialog");
     const storeField = settingsForm.elements.store;
-    const paymentField = settingsForm.elements.paymentLink;
     const payButton = byId("pay-button");
     const thumbs = byId("thumbnails");
     const models = new Map();
@@ -1137,7 +1151,6 @@
     const catalogForm = byId("catalog-form");
     const catalogDialog = byId("catalog-dialog");
     let variant = variants[0];
-    let registered = false;
     let settings = loadSettings();
 
     function validateStore(value) {
@@ -1154,22 +1167,9 @@
       return "";
     }
 
-    function validatePaymentLink(value) {
-      try {
-        const url = new URL(value);
-        const host = url.hostname;
-        const robokassa = ["robokassa.ru", "robokassa.com", "robo.market"].some(
-          domain => host === domain || host.endsWith("." + domain)
-        );
-        if (url.protocol === "https:" && robokassa && !url.username && !url.password && !url.port) return url.href;
-      } catch {}
-      return "";
-    }
-
     function loadSettings() {
       const defaults = Object.fromEntries(priceFields.map(({ key, value }) => [key, value]));
       defaults.store = defaultStore;
-      defaults.paymentLink = pilotPayment.link;
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
         if (!saved) return defaults;
@@ -1179,7 +1179,6 @@
             defaults[key] = value;
           }
         }
-        if (!pilotPayment.link && typeof saved.paymentLink === "string") defaults.paymentLink = validatePaymentLink(saved.paymentLink);
         if (typeof saved.store === "string") defaults.store = validateStore(saved.store) || defaultStore;
       } catch {
         // При открытии файла настройки могут храниться только до закрытия страницы.
@@ -1211,8 +1210,6 @@
         ? "от " + rubles.format(quote("standard", "plain").amount)
         : rubles.format(pilotPayment.amount);
       byId("starting-price-caption").textContent = pilotPayment.amount === null ? "Пример цены по меркам" : "Тестовая цена";
-      payButton.disabled = !settings.paymentLink;
-      byId("payment-note").hidden = Boolean(settings.paymentLink);
       for (const id of ["home-ozon-link", "ozon-link", "catalog-ozon-link", "how-ozon-link"]) {
         const link = byId(id);
         if (settings.store) {
@@ -1346,12 +1343,10 @@
 
     function showOrderStep(step) {
       order.hidden = step !== "order";
-      registration.hidden = step !== "registration";
       outcome.hidden = step !== "done";
       byId("order-title").textContent = {
         order: "Заказ по меркам",
-        registration: "Регистрация для заявки",
-        done: "Заявка в макете"
+        done: "Заявка отправлена"
       }[step];
       orderDialog.scrollTop = 0;
     }
@@ -1465,28 +1460,33 @@
       preview.hidden = !source;
     }
 
+    function openOrder(initialModel = null) {
+      if (orderDialog.open) return;
+      order.reset();
+      updateReference();
+      updateDelivery();
+      usesExampleMeasures = false;
+      lastFilledMeasures = [];
+      orderModel.replaceChildren(new Option("Выберите свитер", ""));
+      for (const { item } of models.values()) orderModel.add(new Option(item.title, item.key));
+      orderModel.add(new Option("Своя модель по фото", "reference"));
+      orderModel.value = initialModel?.key ?? "";
+      setOrderModel(initialModel);
+      if (initialModel?.key === variant.key && productSize) {
+        orderSize.value = productSize;
+        fillOrderMeasurements();
+      }
+      byId("order-status").hidden = true;
+      syncMeasurements();
+      updateQuote();
+      showOrderStep("order");
+      orderDialog.showModal();
+    }
+
     for (const button of document.querySelectorAll("[data-open-order]")) {
-      button.addEventListener("click", () => {
-        order.reset();
-        updateReference();
-        usesExampleMeasures = false;
-        lastFilledMeasures = [];
-        const initialModel = button.id === "open-order" ? variant : null;
-        orderModel.replaceChildren(new Option("Выберите свитер", ""));
-        for (const { item } of models.values()) orderModel.add(new Option(item.title, item.key));
-        orderModel.add(new Option("Своя модель по фото", "reference"));
-        orderModel.value = initialModel?.key ?? "";
-        setOrderModel(initialModel);
-        if (initialModel && productSize) {
-          orderSize.value = productSize;
-          fillOrderMeasurements();
-        }
-        registration.reset();
-        byId("registration-status").hidden = true;
-        syncMeasurements();
-        updateQuote();
-        showOrderStep("order");
-        orderDialog.showModal();
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        openOrder(button.closest(".product") || location.hash === "#order" ? variant : null);
       });
     }
     orderModel.addEventListener("change", () => {
@@ -1555,57 +1555,101 @@
     order.elements.yarn.addEventListener("change", updateQuote);
     order.elements.sequins.addEventListener("change", updateQuote);
 
-    order.addEventListener("submit", (event) => {
+    const deliveryMethod = order.elements.deliveryMethod;
+    function updateDelivery() {
+      const other = deliveryMethod.value === "other";
+      const postal = deliveryMethod.value === "post";
+      const otherInput = order.elements.deliveryOther;
+      byId("delivery-other").hidden = !other;
+      otherInput.disabled = !other;
+      otherInput.required = other;
+      order.elements.delivery.required = postal;
+      byId("delivery-label").textContent = postal
+        ? "Индекс и почтовый адрес"
+        : "Адрес или комментарий к получению · по желанию";
+    }
+    deliveryMethod.addEventListener("change", updateDelivery);
+
+    const requestButton = byId("request-button");
+    let submittingOrder = false;
+    orderDialog.addEventListener("cancel", (event) => {
+      if (submittingOrder) event.preventDefault();
+    });
+    order.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (event.submitter === payButton) {
-        if (settings.paymentLink) window.location.assign(settings.paymentLink);
+      if (submittingOrder) return;
+      const fields = order.elements;
+      const wantsPayment = event.submitter === payButton;
+      const status = byId("order-status");
+      const phone = fields.phone.value.trim();
+      status.hidden = false;
+      if (!fields.customer.value.trim() || phone.replace(/[^0-9]/g, "").length < 7
+        || (deliveryMethod.value === "other" && !fields.deliveryOther.value.trim())
+        || (deliveryMethod.value === "post" && !fields.delivery.value.trim())) {
+        status.textContent = "Проверьте имя, телефон и данные доставки.";
         return;
       }
-      if (!registered) {
-        showOrderStep("registration");
-        registration.elements.email.focus();
-        return;
-      }
-      const sequins = order.elements.sequins;
-      const finish = sequins.selectedOptions[0].textContent + (sequins.value === "plain" ? "" : " пайетки");
-      byId("request-config").textContent = [
+      const configuration = [
         orderVariant?.title ?? "Своя модель по фото",
         orderVariant?.name,
         orderSize.value && ("Размер " + orderSize.value),
-        order.elements.yarn.selectedOptions[0].textContent,
-        finish
+        fields.yarn.selectedOptions[0].textContent,
+        fields.sequins.selectedOptions[0].textContent
       ].filter(Boolean).join(" · ");
-      byId("request-measurements").textContent = order.elements.help.checked
-        ? "Нужна помощь с мерками"
-        : measureInputs
-          .map((input, index) => measurementsNames[index] + " — " + input.value.replace(".", ",") + " см")
-          .join(" · ");
-      const details = [
-        ["request-delivery", "Доставка", order.elements.delivery.value.trim()],
-        ["request-note", "Пожелания", order.elements.note.value.trim()],
-        ["request-reference", "Фото модели", referenceInput.files[0]?.name]
-      ];
-      for (const [id, label, value] of details) {
-        const line = byId(id);
-        line.hidden = !value;
-        line.textContent = value ? label + " — " + value : "";
+      const measures = fields.help.checked ? "Нужна помощь с мерками"
+        : measureInputs.map((input, index) => measurementsNames[index] + " — "
+          + (usesExampleMeasures && !sizeGuide[orderSize.value]?.[index] ? "уточнить" : input.value + " см")).join(" · ");
+      const delivery = [
+        deliveryMethod.selectedOptions[0].textContent,
+        deliveryMethod.value === "other" && fields.deliveryOther.value.trim(),
+        fields.delivery.value.trim()
+      ].filter(Boolean).join(" · ");
+      const data = new FormData();
+      const payload = {
+        configuration, measures, delivery, wantsPayment, phone,
+        customer: fields.customer.value.trim(),
+        email: fields.email.value.trim(),
+        note: fields.note.value.trim()
+      };
+      data.set("order", JSON.stringify(payload));
+      const photo = referenceInput.files[0];
+      if (photo) data.set("photo", photo);
+      const close = orderDialog.querySelector(".close");
+      submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = true;
+      status.textContent = "Отправляем заявку…";
+      try {
+        const response = await fetch(orderEndpoint, { method: "POST", body: data, signal: AbortSignal.timeout(35000) });
+        if (response.status === 429) {
+          status.textContent = "Слишком много заявок. Попробуйте через минуту.";
+          return;
+        }
+        const result = await response.json();
+        if (!response.ok || result.ok !== true || typeof result.orderId !== "string") throw new Error("Order not delivered");
+        byId("request-config").textContent = configuration;
+        byId("request-measurements").textContent = measures;
+        for (const [id, label, value] of [
+          ["request-delivery", "Получение", delivery],
+          ["request-note", "Пожелания", payload.note],
+          ["request-reference", "Фото", photo ? (result.photoSent ? photo.name : "не доставлено, передайте при подтверждении заказа") : ""]
+        ]) {
+          const line = byId(id);
+          line.hidden = !value;
+          line.textContent = value ? label + " — " + value : "";
+        }
+        byId("request-price").textContent = wantsPayment ? "Тестовый платёж: " + rubles.format(pilotPayment.amount) : "";
+        byId("request-confirmation").textContent = "Заявка № " + result.orderId + " передана мастерской.";
+        byId("payment-followup").hidden = !wantsPayment;
+        const paymentLink = byId("order-payment-link");
+        paymentLink.hidden = !wantsPayment;
+        paymentLink.href = pilotPayment.link;
+        showOrderStep("done");
+        byId("request-confirmation").focus();
+        if (wantsPayment) window.location.assign(pilotPayment.link);
+      } catch {
+        status.textContent = "Не удалось подтвердить отправку. Проверьте соединение или свяжитесь с мастерской.";
+      } finally {
+        submittingOrder = requestButton.disabled = payButton.disabled = close.disabled = false;
       }
-      byId("request-price").textContent = byId("order-price").textContent;
-      showOrderStep("done");
-      outcome.querySelector("button").focus();
-    });
-    registration.addEventListener("submit", (event) => {
-      event.preventDefault();
-      registered = true;
-      registration.reset();
-      byId("registration-status").hidden = false;
-      showOrderStep("order");
-      byId("registration-status").scrollIntoView({ block: "nearest" });
-      byId("request-button").focus();
-    });
-    byId("back-to-order").addEventListener("click", () => {
-      showOrderStep("order");
-      byId("request-button").focus();
     });
 
     for (const { key, label, base } of priceFields) {
@@ -1629,14 +1673,11 @@
         settingsForm.elements[key].value = base ? settings[key] : settings[key] / 10;
       }
       storeField.value = settings.store;
-      paymentField.value = settings.paymentLink;
-      paymentField.setCustomValidity("");
       storeField.setCustomValidity("");
       byId("settings-status").textContent = "";
       settingsDialog.showModal();
     });
     storeField.addEventListener("input", () => storeField.setCustomValidity(""));
-    paymentField.addEventListener("input", () => paymentField.setCustomValidity(""));
     settingsForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const enteredStore = storeField.value.trim();
@@ -1646,14 +1687,7 @@
         storeField.reportValidity();
         return;
       }
-      const enteredPaymentLink = paymentField.value.trim();
-      const paymentLink = validatePaymentLink(enteredPaymentLink);
-      if (enteredPaymentLink && !paymentLink) {
-        paymentField.setCustomValidity("Укажите HTTPS-ссылку на оплату из Робокассы.");
-        paymentField.reportValidity();
-        return;
-      }
-      const saved = { store: store || defaultStore, paymentLink: pilotPayment.link || paymentLink };
+      const saved = { store: store || defaultStore };
       for (const { key, base } of priceFields) {
         const value = settingsForm.elements[key].valueAsNumber;
         saved[key] = base ? value : Math.round(value * 10);
@@ -1697,7 +1731,7 @@
       button.append(title, details);
       button.addEventListener("click", () => {
         selectVariant(item);
-        window.location.hash = "#order";
+        openOrder(item);
       });
       card.append(zoom, button);
       catalogTrack.append(card);
@@ -2028,7 +2062,11 @@
     for (const link of document.querySelectorAll("[data-home-model]")) {
       const item = variants.find(variant => variant.key === link.dataset.homeModel);
       link.querySelector("img").src = item.photo;
-      link.addEventListener("click", () => selectVariant(item));
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectVariant(item);
+        openOrder(item);
+      });
     }
     window.addEventListener("hashchange", () => renderPage(true));
     renderPage();
