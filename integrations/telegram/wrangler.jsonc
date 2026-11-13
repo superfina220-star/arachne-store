@@ -15,5 +15,24 @@
       }
     }
   ],
-  "keep_vars": true
+  "keep_vars": true,
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PAYMENT_NOTICES",
+        "class_name": "PaymentNotice"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "payments-v1",
+      "new_sqlite_classes": [
+        "PaymentNotice"
+      ]
+    }
+  ]
 }
