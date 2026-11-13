@@ -374,9 +374,14 @@
   #shop-view { display:flex; flex-direction:column; }
   #shop-view .catalog { border-top:0; }
   .catalog-card > button { min-width:0; padding:0; border:0; background:transparent; color:inherit; text-align:left; }
-  .catalog-card .catalog-zoom { min-height:0; cursor:zoom-in; }
-  .catalog-card .catalog-select { display:grid; align-content:start; gap:3px; min-height:48px; padding:5px 7px; }
-  .catalog-select:hover strong { text-decoration:underline; }
+  .catalog-card .catalog-zoom { position:relative; min-height:0; cursor:zoom-in; }
+  .catalog-zoom .zoom-icon { right:6px; bottom:6px; width:34px; height:34px; }
+  .catalog-zoom .zoom-icon::after { top:20px; left:19px; }
+  .catalog-zoom:is(:hover,:focus-visible) .zoom-icon { border-color:var(--accent); background:var(--accent); color:var(--on-accent); }
+  .catalog-card .catalog-select { display:grid; align-content:start; gap:3px; min-height:48px; padding:5px 7px; border-radius:3px; }
+  .catalog-select strong { text-decoration:underline; text-underline-offset:.15em; text-decoration-thickness:1px; }
+  .catalog-card .catalog-select:is(:hover,:focus-visible) { background:var(--subtle); }
+  .catalog-select:is(:hover,:focus-visible) strong { text-decoration-thickness:2px; }
   .catalog-card img { display:block; }
   .home-details { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(22px,5vw,72px); padding-block:clamp(36px,6vw,82px); }
   .home-details h2 { font-size:clamp(30px,4vw,54px); line-height:1.02; letter-spacing:-.045em; margin-bottom:15px; }
@@ -1598,6 +1603,8 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = "catalog-select";
+      button.setAttribute("aria-label", item.title + " — оформить заявку");
+      button.setAttribute("aria-haspopup", "dialog");
       button.dataset.key = item.key;
       button.setAttribute("aria-pressed", String(variant.key === item.key));
       const photo = document.createElement("img");
@@ -1608,7 +1615,11 @@
       zoom.type = "button";
       zoom.className = "catalog-zoom";
       zoom.setAttribute("aria-label", "Увеличить фото: " + item.title);
-      zoom.append(photo);
+      zoom.setAttribute("aria-haspopup", "dialog");
+      const zoomIcon = document.createElement("span");
+      zoomIcon.className = "zoom-icon";
+      zoomIcon.setAttribute("aria-hidden", "true");
+      zoom.append(photo, zoomIcon);
       zoom.addEventListener("click", () => openPhoto(item));
       const title = document.createElement("strong");
       title.textContent = item.title;
