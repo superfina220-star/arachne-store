@@ -4,7 +4,12 @@ const route = "/api/consult";
 function response(status, ok = false) {
   return Response.json({ ok }, {
     status,
-    headers: { "Cache-Control": "no-store" },
+    headers: {
+      "Cache-Control": "no-store",
+      "Access-Control-Allow-Origin": storefrontOrigin,
+      "Access-Control-Allow-Methods": "POST",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
   });
 }
 
@@ -12,10 +17,18 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname !== route) return response(404);
-    if (request.method !== "POST") return response(405);
-    if (url.origin !== storefrontOrigin || request.headers.get("Origin") !== storefrontOrigin) {
-      return response(403);
+    if (request.headers.get("Origin") !== storefrontOrigin) return response(403);
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": storefrontOrigin,
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+      });
     }
+    if (request.method !== "POST") return response(405);
     if (request.headers.get("Content-Type")?.split(";")[0] !== "application/json") {
       return response(415);
     }
