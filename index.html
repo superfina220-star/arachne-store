@@ -79,12 +79,7 @@
   .brand { text-decoration: none; font-size: clamp(20px, 2.4vw, 28px); letter-spacing: -.045em; line-height: 1.12; }
   .nav { display: flex; align-items: center; gap: 24px; }
   .nav a { display: inline-flex; align-items: center; min-height: 48px; text-decoration: none; font-size: 14px; }
-  .nav a:hover, .text-button:hover { text-decoration: underline; }
-  .text-button {
-    justify-self: end; min-height: 48px; border: 0; background: transparent;
-    color: var(--accent); padding: 5px 0; font-weight: 650; text-underline-offset: .22em;
-    font-size: 14px;
-  }
+  .nav a:hover { text-decoration: underline; }
 
   .product { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); gap: clamp(30px, 6.3vw, 96px); align-items: start; padding-block: clamp(24px, 3vw, 44px); }
   .media { min-width:0; --product-photo-height:clamp(230px, min(38vw, 62svh), 440px); }
@@ -146,7 +141,6 @@
   .btn.outline { background: var(--paper); color: var(--accent); border-color: var(--accent); }
   .btn.outline:hover { background: var(--subtle); }
   .btn[aria-disabled="true"] { border-color: var(--line); color: var(--muted); background: var(--paper); }
-  .store-note { margin-top: 8px; }
 
   .how { background: var(--subtle); border-block: 1px solid var(--line); padding-block: 32px 36px; }
   .how h2 { font-size: clamp(30px, 4vw, 52px); line-height: 1.04; letter-spacing: -.045em; }
@@ -180,7 +174,6 @@
   legend { padding: 0; margin-bottom: 9px; font-weight: 650; }
   .fields { display: grid; gap: 11px; }
   .measurements { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .pricing-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block: 14px 20px; }
   .field { display: grid; gap: 5px; font-size: 14px; font-weight: 620; }
   .field input, .field select, .field textarea {
     min-width: 0; width: 100%; min-height: 48px; padding: 9px 10px;
@@ -215,7 +208,6 @@
     .wrap { width: calc(100% - 34px); }
     .site-head .wrap { grid-template-columns: 1fr auto; gap: 0 13px; padding-top: 8px; }
     .nav { grid-row: 2; grid-column: 1 / -1; }
-    .text-button { grid-column: 2; grid-row: 1; }
     .product { grid-template-columns: 1fr; gap: 24px; padding-block: 21px 34px; }
     .product-info { display: contents; }
     .product-intro { grid-row: 1; }
@@ -237,7 +229,6 @@
   @media (max-width: 390px) {
     .order-footer { align-items: stretch; flex-direction: column; }
     dialog { scroll-padding-block-end: 155px; }
-    .pricing-fields { grid-template-columns: 1fr; }
   }
   .catalog { padding-block: 8px 44px; }
   .catalog-head { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; }
@@ -273,7 +264,6 @@
   .consult-reply { margin-top:14px; padding:14px; border:1px solid var(--line); background:var(--subtle); border-radius:4px; }
   .form-note { margin-block:8px; }
   .product-options > .policy-link + .policy-link { margin-left:12px; }
-  .measure-names { display:grid; grid-template-columns:repeat(auto-fit,minmax(115px,1fr)); gap:8px; margin-top:12px; }
   .reference-preview { display:block; width:auto; max-width:100%; height:auto; max-height:155px; margin-top:8px; border-radius:4px; }
   #measurements-note { margin-block:6px; }
   .policy-link { border:0; background:none; color:var(--accent); padding:6px 0; min-height:44px; font:inherit; text-decoration:underline; text-underline-offset:.18em; }
@@ -453,7 +443,6 @@
   .catalog-card img { background:var(--photo-paper); }
   .site-foot { border-top:1px solid var(--line); }
   .site-foot .wrap { justify-content:stretch; }
-  .site-foot .text-button { justify-self:start; font-size:13px; }
   @media (max-width:950px) {
     .catalog-track { grid-template-columns:repeat(3,minmax(0,1fr)); }
   }
@@ -616,7 +605,6 @@
           </fieldset>
           <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
           <button class="policy-link" type="button" data-open-dialog="consult-dialog"><span class="question" aria-hidden="true">?</span> Спросить консультанта</button>
-          <p class="fine store-note" id="store-note">Ссылку на магазин можно указать в настройках макета.</p>
         </div>
       </div>
     </section>
@@ -729,7 +717,6 @@
         <button class="policy-link" type="button" data-open-dialog="contacts-dialog">Контакты</button>
         <button class="policy-link" type="button" data-open-dialog="size-guide-dialog">Таблица размеров</button>
       </div>
-      <button type="button" class="text-button" id="open-settings" hidden>Настройки макета</button>
     </div>
   </footer>
 
@@ -892,27 +879,6 @@
     </div>
   </dialog>
 
-  <dialog class="compact" id="size-admin-dialog" aria-labelledby="size-admin-title">
-    <div class="dialog-head">
-      <h2 class="serif" id="size-admin-title">Настроить размеры</h2>
-      <button class="close" type="button" data-close aria-label="Закрыть настройку размеров">×</button>
-    </div>
-    <form class="sheet" id="size-admin-form">
-      <p class="fine">Задайте названия мерок и укажите значения для каждого размера. Эти значения подставятся в форму заказа при выборе размера.</p>
-      <div class="measure-names">
-        <label class="field">Название мерки 1<input name="measure1" required maxlength="45"></label>
-        <label class="field">Название мерки 2<input name="measure2" required maxlength="45"></label>
-        <label class="field">Название мерки 3<input name="measure3" required maxlength="45"></label>
-      </div>
-      <div class="size-scroll"><table class="size-table">
-        <thead><tr><th scope="col">Размер</th><th scope="col" data-measure="1">Длина 1, см</th><th scope="col" data-measure="2">Длина 2, см</th><th scope="col" data-measure="3">Длина 3, см</th></tr></thead>
-        <tbody id="size-admin-rows"></tbody>
-      </table></div>
-      <button class="btn" type="submit">Сохранить таблицу</button>
-      <p class="fine" id="size-admin-status" role="status"></p>
-    </form>
-  </dialog>
-
   <dialog class="compact" id="catalog-dialog" aria-labelledby="catalog-dialog-title">
     <div class="dialog-head">
       <h2 class="serif" id="catalog-dialog-title">Добавить свитер</h2>
@@ -1067,26 +1033,6 @@
     </div>
   </dialog>
 
-  <dialog class="compact" id="settings-dialog" aria-labelledby="settings-title">
-    <div class="dialog-head">
-      <h2 class="serif" id="settings-title">Настройки макета</h2>
-      <button class="close" type="button" data-close aria-label="Закрыть настройки">×</button>
-    </div>
-    <div class="dialog-head"><button class="policy-link" type="button" data-open-dialog="size-admin-dialog">Таблица размеров</button></div>
-    <form class="sheet" id="settings-form">
-      <p class="dialog-sub">Меняйте базовую цену и надбавки. Общая надбавка за мерки, пряжу и пайетки ограничена 20%.</p>
-      <div class="fields pricing-fields" id="price-fields"></div>
-      <label class="field">Ссылка на магазин Ozon
-        <input type="url" name="store" placeholder="https://www.ozon.ru/seller/…" autocomplete="off">
-      </label>
-      <div class="step-actions">
-        <button class="btn" type="submit">Сохранить настройки</button>
-        <button class="btn outline" type="button" data-close>К витрине</button>
-      </div>
-      <p class="fine status-text" id="settings-status" role="status"></p>
-    </form>
-  </dialog>
-
   <script>
     const variants = [
       {"key": "milk", "title": "Молочный свет", "name": "Молочно-белый", "colorGroup": "light", "sizes": [42, 44], "example": true, "photo": "assets/sweaters/milk-1.webp", "preview": "assets/sweaters/milk-cover.webp", "gallery": ["assets/sweaters/milk-1.webp", "assets/sweaters/milk-2.webp", "assets/sweaters/milk-3.webp", "assets/sweaters/milk-4.webp", "assets/sweaters/milk-5.webp"]},
@@ -1097,12 +1043,12 @@
       {"key": "green", "title": "Лесной мох", "name": "Зелёный", "colorGroup": "green", "sizes": [], "example": false, "photo": "assets/sweaters/green-1.webp", "preview": "assets/sweaters/green-cover.webp", "gallery": ["assets/sweaters/green-1.webp", "assets/sweaters/green-2.webp", "assets/sweaters/green-3.webp", "assets/sweaters/green-4.webp", "assets/sweaters/green-5.webp", "assets/sweaters/green-6.webp", "assets/sweaters/green-7.webp", "assets/sweaters/green-8.webp", "assets/sweaters/green-9.webp"]}
     ];
     const priceFields = [
-      { key: "base", label: "Базовая цена, ₽", value: 8000, base: true },
-      { key: "measurements", label: "Заказ по меркам, %", value: 0 },
-      { key: "cotton", label: "Пряжа с хлопком, %", value: 40 },
-      { key: "silk", label: "Пряжа с шёлком, %", value: 120 },
-      { key: "micro", label: "Очень мелкие пайетки, %", value: 50 },
-      { key: "small", label: "Мелкие пайетки, %", value: 90 }
+      { key: "base", value: 8000, base: true },
+      { key: "measurements", value: 0 },
+      { key: "cotton", value: 40 },
+      { key: "silk", value: 120 },
+      { key: "micro", value: 50 },
+      { key: "small", value: 90 }
     ];
     const orderPayment = { amount: 1, link: "https://auth.robokassa.ru/merchant/Invoice/12EwitXSLE6Fkc2ytyqOdQ" };
     const orderEndpoint = "https://arachne-telegram.superfina220.workers.dev/api/order";
@@ -1117,9 +1063,6 @@
     const orderDialog = byId("order-dialog");
     const order = byId("order-form");
     const outcome = byId("order-outcome");
-    const settingsForm = byId("settings-form");
-    const settingsDialog = byId("settings-dialog");
-    const storeField = settingsForm.elements.store;
     const payButton = byId("pay-button");
     const thumbs = byId("thumbnails");
     const models = new Map();
@@ -1151,7 +1094,7 @@
     const catalogForm = byId("catalog-form");
     const catalogDialog = byId("catalog-dialog");
     let variant = variants[0];
-    let settings = loadSettings();
+    const settings = loadSettings();
 
     function validateStore(value) {
       if (!value) return "";
@@ -1213,7 +1156,6 @@
           link.setAttribute("aria-disabled", "true");
         }
       }
-      byId("store-note").hidden = Boolean(settings.store);
       updateQuote();
     }
 
@@ -1645,55 +1587,6 @@
       }
     });
 
-    for (const { key, label, base } of priceFields) {
-      const field = document.createElement("label");
-      field.className = "field";
-      field.textContent = label;
-      const input = document.createElement("input");
-      input.name = key;
-      input.type = "number";
-      input.inputMode = base ? "numeric" : "decimal";
-      input.min = base ? "1" : "0";
-      input.step = base ? "1" : "0.1";
-      if (!base) input.max = "20";
-      input.required = true;
-      field.append(input);
-      byId("price-fields").append(field);
-    }
-
-    byId("open-settings").addEventListener("click", () => {
-      for (const { key, base } of priceFields) {
-        settingsForm.elements[key].value = base ? settings[key] : settings[key] / 10;
-      }
-      storeField.value = settings.store;
-      storeField.setCustomValidity("");
-      byId("settings-status").textContent = "";
-      settingsDialog.showModal();
-    });
-    storeField.addEventListener("input", () => storeField.setCustomValidity(""));
-    settingsForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const enteredStore = storeField.value.trim();
-      const store = validateStore(enteredStore);
-      if (enteredStore && !store) {
-        storeField.setCustomValidity("Укажите ссылку на магазин продавца на Ozon.");
-        storeField.reportValidity();
-        return;
-      }
-      const saved = { store: store || defaultStore };
-      for (const { key, base } of priceFields) {
-        const value = settingsForm.elements[key].valueAsNumber;
-        saved[key] = base ? value : Math.round(value * 10);
-      }
-      settings = saved;
-      updateStorefront();
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(saved));
-        byId("settings-status").textContent = "Настройки сохранены в этом браузере.";
-      } catch {
-        byId("settings-status").textContent = "Настройки применены до закрытия страницы.";
-      }
-    });
     for (const button of document.querySelectorAll("[data-close]")) {
       button.addEventListener("click", () => button.closest("dialog").close());
     }
@@ -1836,10 +1729,7 @@
 
     const guideKey = "svitera-size-guide-v1";
     const defaultMeasureNames = ["Длина 1", "Длина 2", "Длина 3"];
-    const sizeAdminForm = byId("size-admin-form");
-    const measureNameInputs = defaultMeasureNames.map((_, index) => sizeAdminForm.elements["measure" + (index + 1)]);
     let measurementsNames = [...defaultMeasureNames];
-    const guideInputs = new Map();
     let sizeGuide = {};
     try {
       const saved = JSON.parse(localStorage.getItem(guideKey));
@@ -1851,34 +1741,10 @@
       }
     } catch {}
 
-    for (const size of guideSizes) {
-      const row = byId("size-admin-rows").insertRow();
-      const cell = document.createElement("th");
-      cell.scope = "row";
-      cell.textContent = size;
-      row.append(cell);
-      const inputs = measurementsNames.map((name, index) => {
-        const input = document.createElement("input");
-        input.type = "number";
-        input.min = "0.1";
-        input.step = "0.1";
-        input.inputMode = "decimal";
-        input.setAttribute("aria-label", name + ", размер " + size);
-        input.value = sizeGuide[size]?.[index] ?? "";
-        row.insertCell().append(input);
-        return input;
-      });
-      guideInputs.set(size, inputs);
-    }
-
     function renderSizeGuide() {
       for (const [index, name] of measurementsNames.entries()) {
-        measureNameInputs[index].value = name;
         for (const label of document.querySelectorAll('[data-measure="' + (index + 1) + '"]')) {
           label.textContent = name + ", см";
-        }
-        for (const [size, inputs] of guideInputs) {
-          inputs[index].setAttribute("aria-label", name + ", размер " + size);
         }
       }
       const rows = byId("size-guide-rows");
@@ -1892,22 +1758,6 @@
       }
       byId("size-guide-custom").hidden = rows.children.length === 0;
     }
-
-    sizeAdminForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      measurementsNames = measureNameInputs.map((input, index) => input.value.trim() || defaultMeasureNames[index]);
-      sizeGuide = Object.fromEntries([...guideInputs].map(([size, inputs]) => [
-        size, inputs.map(input => input.value ? input.valueAsNumber : null)
-      ]));
-      renderSizeGuide();
-      let message = "Таблица обновлена в этом браузере.";
-      try {
-        localStorage.setItem(guideKey, JSON.stringify({ names: measurementsNames, sizes: sizeGuide }));
-      } catch {
-        message = "Таблица обновлена до закрытия страницы.";
-      }
-      byId("size-admin-status").textContent = message;
-    });
 
     const consultTopics = [
       [/фото|образец|свою модель|картин/u, "Нажмите «Заказать» и приложите фото в поле «Фото своей модели». В пожеланиях можно указать, какие детали вы хотите повторить."],
@@ -2029,7 +1879,6 @@
     function renderPage(focusHeading = false) {
       const hash = window.location.hash;
       const page = routes.get(hash) ?? pages.home;
-      byId("open-settings").hidden = page === pages.home;
       productSection.hidden = page !== pages.order;
       catalogSection.hidden = page !== pages.collection;
       for (const view of new Set(Object.values(pages).map(item => item.view))) {
