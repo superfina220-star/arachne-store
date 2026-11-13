@@ -3,12 +3,16 @@
   "name": "arachne-telegram",
   "main": "worker.mjs",
   "compatibility_date": "2026-11-12",
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": false,
-  "routes": [
-    { "pattern": "arachne.okcept.ru/api/consult", "zone_name": "okcept.ru" }
-  ],
   "ratelimits": [
-    { "name": "CONSULT_LIMIT", "namespace_id": "18051", "simple": { "limit": 5, "period": 60 } }
+    {
+      "name": "CONSULT_LIMIT",
+      "namespace_id": "18051",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
   ]
 }
