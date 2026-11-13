@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; connect-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; connect-src 'self' https://arachne-telegram.superfina220.workers.dev; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
 <meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель, оттенок и пряжу или покажите нам свой образец.">
 <title>Арахна — свитера с характером по вашим меркам</title>
 <script>
@@ -1905,7 +1905,7 @@
       button.disabled = true;
       reply.textContent = "Отправляем вопрос…";
       try {
-        const response = await fetch("/api/consult", {
+        const response = await fetch("https://arachne-telegram.superfina220.workers.dev/api/consult", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ question, contact }),
