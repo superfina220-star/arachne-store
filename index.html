@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: blob:; connect-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
 <meta name="description" content="Арахна — ажурные свитера по вашим меркам. Выберите модель, оттенок и пряжу или покажите нам свой образец.">
 <title>Арахна — свитера с характером по вашим меркам</title>
 <script>
@@ -822,9 +822,12 @@
       <button class="close" type="button" data-close aria-label="Закрыть консультанта">×</button>
     </div>
     <form class="sheet" id="consult-form">
-      <p class="dialog-sub">Спросите о пряже, мерках, фото своей модели или доставке. В макете консультант отвечает по этим темам готовыми подсказками.</p>
+      <p class="dialog-sub">Спросите о пряже, мерках или доставке. Вопрос и указанный Telegram-ник будут переданы мастерской через Telegram.</p>
       <label class="field">Ваш вопрос<input name="question" required maxlength="400" placeholder="Например, можно ли связать по моему фото?"></label>
-      <div class="step-actions"><button class="btn" type="submit">Спросить</button></div>
+      <label class="field comment">Ваш @ник в Telegram · для ответа
+        <input name="contact" maxlength="33" pattern="@[A-Za-z0-9_]{5,32}" placeholder="@username" autocomplete="off">
+      </label>
+      <div class="step-actions"><button class="btn" type="submit">Отправить вопрос</button></div>
       <p class="consult-reply" id="consult-reply" role="status" hidden></p>
     </form>
   </dialog>
@@ -1886,13 +1889,42 @@
       [/достав|срок|дн[еяи]|когда|изготов/u, "Обычно вяжем свитер около трёх дней. Оставьте адрес и удобное время в заявке. Мы свяжемся с вами, чтобы согласовать бесплатную доставку."],
       [/озон|ozon|готов/u, "Готовые свитеры можно посмотреть по кнопке «Магазин на Ozon». По вашим меркам свяжем свитер по заявке на сайте."]
     ];
-    byId("consult-form").addEventListener("submit", (event) => {
+    byId("consult-form").addEventListener("submit", async (event) => {
       event.preventDefault();
-      const question = event.currentTarget.elements.question.value.trim().toLowerCase();
+      const form = event.currentTarget;
+      const button = form.querySelector('[type="submit"]');
+      if (button.disabled) return;
+      const question = form.elements.question.value.trim();
+      const contact = form.elements.contact.value.trim();
       const reply = byId("consult-reply");
-      reply.textContent = consultTopics.find(([pattern]) => pattern.test(question))?.[1]
-        ?? "Я могу подсказать, как выбрать размер, пряжу, приложить фото или указать доставку. Другой вопрос можно оставить в пожеланиях к заказу.";
       reply.hidden = false;
+      if (!question) {
+        reply.textContent = "Введите вопрос.";
+        return;
+      }
+      button.disabled = true;
+      reply.textContent = "Отправляем вопрос…";
+      try {
+        const response = await fetch("/api/consult", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question, contact }),
+          signal: AbortSignal.timeout(12000)
+        });
+        if (response.status === 429) {
+          reply.textContent = "Слишком много сообщений. Попробуйте через минуту.";
+          return;
+        }
+        if (!response.ok || (await response.json()).ok !== true) throw new Error("Delivery failed");
+        reply.textContent = contact ? "Вопрос отправлен. Ответим вам в Telegram." : "Вопрос отправлен.";
+        if (form.elements.question.value.trim() === question && form.elements.contact.value.trim() === contact) form.reset();
+      } catch {
+        const tip = consultTopics.find(([pattern]) => pattern.test(question.toLowerCase()))?.[1];
+        reply.textContent = "Вопрос не отправлен. Попробуйте позже или откройте «Контакты»."
+          + (tip ? " Подсказка: " + tip : "");
+      } finally {
+        button.disabled = false;
+      }
     });
 
     for (const button of document.querySelectorAll("[data-open-dialog]")) {
